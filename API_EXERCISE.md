@@ -60,18 +60,18 @@
 
 #### Back End External
 java
- package Interpreter;
-	Public class Intepreter(){
-	Public Command stringToCommand(String command) - parses input command string as a command
-	Public String commandToString(Command command) - returns string value of current command object from input string given
-	Public void mathCommand(Command command) - instantiates math command from math subpackage
-	Public void turtleCommand(Command command) - instantiates command from command subpackage
-	Public void turtleQuery(Command command) - instantiates command from query subpackage
-	Public void turtleBoolean(Command command) - instantiates command from boolean subpackage
-	Public void turtleLogic(Command command) - instantiates command from logic subpackage (loops, conditionals, etc.)
-*	Public void setConstant(Command command) - allows user to set a constant value
-*	Public void setVariable(Command command) - allows user to set a variable
-* 	Public void executeCommand(Command command) - chooses which command to access from command type and accesses proper subpackage	
+ * package Interpreter;
+ *	Public class Intepreter(){
+    *	Public Command stringToCommand(String command) - parses input command string as a command
+	*   Public String commandToString(Command command) - returns string value of current command object from input string given
+	*   Public void mathCommand(Command command) - instantiates math command from math subpackage
+	*   Public void turtleCommand(Command command) - instantiates command from command subpackage
+	*   Public void turtleQuery(Command command) - instantiates command from query subpackage
+	*   Public void turtleBoolean(Command command) - instantiates command from boolean subpackage
+	*   Public void turtleLogic(Command command) - instantiates command from logic subpackage (loops, conditionals, etc.)
+    *	Public void setConstant(Command command) - allows user to set a constant value
+    *	Public void setVariable(Command command) - allows user to set a variable
+    * 	Public void executeCommand(Command command) - chooses which command to access from command type and accesses proper subpackage	
 }
 
 * package Interpreter;
