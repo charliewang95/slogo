@@ -60,7 +60,7 @@
 
 #### Back End External
 java
- * package Interpreter;
+ package Interpreter;
  *	Public class Intepreter(){
     *	Public Command stringToCommand(String command) - parses input command string as a command
 	*   Public String commandToString(Command command) - returns string value of current command object from input string given
@@ -75,11 +75,11 @@ java
 }
 
 * package Interpreter;
-	* Public abstract class Command{
-		* 	Public Command(String) - constructor
-		* 	Public String getString() - returns input string of command
-		* 	Public Type getCommandType() - returns whether command is math, bool, etc.
-		* 	Public Type setCommandType() - returns whether command is math, bool, etc.
+* Public abstract class Command{
+	* 	Public Command(String) - constructor
+	* 	Public String getString() - returns input string of command
+	* 	Public Type getCommandType() - returns whether command is math, bool, etc.
+	* 	Public Type setCommandType() - returns whether command is math, bool, etc.
 
 }
 
