@@ -37,7 +37,7 @@ Design - SLogo Team 12
   * Command History: This shows a list of previously entered commands, in order, and includes information about the status of each command (i.e., different colors will be assigned to commands currently running, already completed, and yet to run). In addition to typing commands into the console, we will attempt to implement the ability for users to be able to reuse previous commands by clicking on them in the command history. Different types of commands will need to be represented differently, visually speaking; e.g., FOR loops will need to look different from a simple FORWARD command, in order to incorporate the additional code within them.
   * Toolbar: This section will be above the TurtleLand. The height of this section is small while it is as wide as the other three sections combined. This part will contain buttons with dropdown lists handling the following features: a Utilities menu, for setting the background color, setting the image of the turtle, setting the pen color, and perhaps more; a View menu, for showing/hiding different parts of the UI such as, previously called commands, current variables, current user-defined commands, etc.; and a Help menu, which will allow the user to access the help page for the available commands.
 
-
+   [UI Layout](https://git.cs.duke.edu/CompSci308_2016Fall/slogo_team12/blob/master/images/uilayout.jpg)
 ### API Details 
 
 Frontend:
