@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+/bin
+=======
 # IDEA Ignores #
 ################
 *.iml
@@ -124,3 +127,4 @@ local.properties
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+>>>>>>> 0cb354778c90fc8d72bd4e0cf1fe30a23072fbab
