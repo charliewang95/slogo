@@ -26,7 +26,7 @@ Design - SLogo Team 12
 * Description of interaction of APIs 
  * The program opens to a blank UI Screen of the turtle and the input command box. From there, the user can input text commands to command the turtle on the screen. The Front End External API methods will handle the input of these commands, then pass them to the Back End External API for them to be interpreted by the Interpreter class which is controlled by a Command Controller superclass, controlling all backend APIs. The Interpreter class will determine the type of command given by checking its dictionary of known possible commands, then instantiate a subclass of Interpreter depending on the operation type (math, boolean, command, etc.). These will then return the command type to the Command Controller class, which then adds it to a Priority Queue of commands in a PQ class. The Turtle class (back end internal API), will then update its parameters based on the iterations of all commands in the priority Queue. The turtle’s current state can be accessed with a getter from the Front End Internal API (getCommandQueue()), and the Display Class will handle the actual setting of the turtle and its trail of movement based on the Turtle’s current parameters. 
 
-    [Design Layout](https://git.cs.duke.edu/CompSci308_2016Fall/SLogo_team12/blob/master/images/SLogo_team12_DesignLayout.png)
+    [Design Layout](https://git.cs.duke.edu/CompSci308_2016Fall/slogo_team12/blob/master/images/Slogo_team12_DesignLayout.png)
 
 
 ### User Interface 
