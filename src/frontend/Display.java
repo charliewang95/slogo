@@ -7,6 +7,10 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+/**
+ * @author Charlie Wang
+ *
+ */
 public class Display {
 	private static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
 	
@@ -27,15 +31,16 @@ public class Display {
 		myWidth = Integer.parseInt(myResources.getString("Width"));
 		myHeight = Integer.parseInt(myResources.getString("Height"));
 		myScene = new Scene(myRoot, myWidth, myHeight);
-		bp = new BorderPane();
-		myConsole = new Console();
-		init();
-		display();
 	}
 	
-	private void init() {
+	public void init() {
+		bp = new BorderPane();
+		
 		//set up console
-		bp.setLeft(myConsole.getTextField());
+		myConsole = new Console();
+		bp.setLeft(myConsole.getConsole());
+		
+		display();
 	}
 	
 	private void display() {
@@ -43,5 +48,13 @@ public class Display {
 		myStage.setScene(myScene);
 		myStage.setTitle(myResources.getString("Title"));
 		myStage.show();
+	}
+	
+	public double getWidth() {
+		return myWidth;
+	}
+	
+	public double getHeight() {
+		return myHeight;
 	}
 }

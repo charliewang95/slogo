@@ -7,13 +7,15 @@ import javafx.stage.Stage;
 
 public class Playground {
 	private Display myDisplay;
+	private Stage myStage;
 	
 	public Playground(Stage s) {
-		myDisplay = new Display(s);
+		myStage = s;
 	}
 	
 	public void init() {
-		
+		myDisplay = new Display(myStage);
+		myDisplay.init();
 	}
 	
 	
