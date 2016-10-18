@@ -10,28 +10,26 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 
 /**
  * @author Charlie Wang
- *
  */
 public class Console {
 	private static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
-
+	private Display myDisplay;
 	private TextField myTextField;
-	private Button myButton;
 	private Label myErrorLabel;
-	private HBox hb;
 	private GridPane gp;
 	private ResourceBundle myResources;
 	private SimpleObjectProperty<ObservableList<String>> myCommands;
 
-	public Console() {
+	public Console(Display display) {
+		myDisplay = display;
 		myCommands = new SimpleObjectProperty<>(FXCollections.observableArrayList());
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Common");
 
@@ -39,6 +37,7 @@ public class Console {
 		gp.setPadding(new Insets(10, 10, 10, 10));
 		gp.setVgap(10);
 		gp.setHgap(5);
+		//gp.setStyle("-fx-background-color: #C0C0C0");
 
 		Label label1 = new Label(myResources.getString("ConsoleText"));
 		GridPane.setConstraints(label1, 0, 0);
@@ -61,23 +60,37 @@ public class Console {
 		GridPane.setConstraints(myErrorLabel, 1, 1);
 		gp.getChildren().add(myErrorLabel);
 		
-		myButton = new Button(myResources.getString("ConsoleButton"));
-		GridPane.setConstraints(myButton, 2, 0);
-		gp.getChildren().add(myButton);
-		myButton.setOnAction(new EventHandler<ActionEvent>() {
-
+		Button button1 = new Button(myResources.getString("ConsoleButton"));
+		GridPane.setConstraints(button1, 2, 0);
+		gp.getChildren().add(button1);
+		
+		button1.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 				checkInput();
+			}
+		});
+		
+		Button button2 = new Button(myResources.getString("ConsoleClear"));
+		GridPane.setConstraints(button2, 3, 0);
+		gp.getChildren().add(button2);
+		
+		button2.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				myTextField.clear();
 			}
 		});
 	}
 
 	private void checkInput() {
 		if ((myTextField.getText() != null && !myTextField.getText().isEmpty())) {
-			myCommands.getValue().add(myTextField.getText());
+			String s = myTextField.getText();
+			myCommands.getValue().add(s);
 			myTextField.clear();
 			myErrorLabel.setText("");
+			myDisplay.getHistory().addHistory(s);
+			
 		} else {
 			myErrorLabel.setText(myResources.getString("NoCommandError"));
 		}
@@ -85,6 +98,11 @@ public class Console {
 	
 	public GridPane getConsole() {
 		return gp;
+	}
+	
+	public void clear() {
+		myTextField.clear();
+		myCommands = new SimpleObjectProperty<>(FXCollections.observableArrayList());
 	}
 	
 	public SimpleObjectProperty<ObservableList<String>> getCommandList() {

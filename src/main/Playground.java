@@ -17,6 +17,4 @@ public class Playground {
 		myDisplay = new Display(myStage);
 		myDisplay.init();
 	}
-	
-	
 }
