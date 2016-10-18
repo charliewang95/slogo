@@ -11,8 +11,8 @@ public class SLogoMain extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Playground a = new Playground(primaryStage);
-		a.init();
+		Playground p = new Playground(primaryStage);
+		p.init();
 	}
 
 }
