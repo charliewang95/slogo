@@ -37,11 +37,11 @@ public class Console {
 		gp.setPadding(new Insets(10, 10, 10, 10));
 		gp.setVgap(10);
 		gp.setHgap(5);
-		//gp.setStyle("-fx-background-color: #C0C0C0");
 
 		Label label1 = new Label(myResources.getString("ConsoleText"));
 		GridPane.setConstraints(label1, 0, 0);
 		gp.getChildren().add(label1);
+		GridPane.setMargin(label1, new Insets(0, 0, 0, 5));
 
 		myTextField = new TextField();
 		myTextField.setPromptText(myResources.getString("ConsoleHint"));
@@ -90,7 +90,6 @@ public class Console {
 			myTextField.clear();
 			myErrorLabel.setText("");
 			myDisplay.getHistory().addHistory(s);
-			
 		} else {
 			myErrorLabel.setText(myResources.getString("NoCommandError"));
 		}
@@ -103,6 +102,7 @@ public class Console {
 	public void clear() {
 		myTextField.clear();
 		myCommands = new SimpleObjectProperty<>(FXCollections.observableArrayList());
+		myErrorLabel.setText("");
 	}
 	
 	public SimpleObjectProperty<ObservableList<String>> getCommandList() {
