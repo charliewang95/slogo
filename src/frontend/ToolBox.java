@@ -25,17 +25,17 @@ import javafx.stage.Stage;
 
 /**
  * @author Charlie Wang
+ * 
  */
 public class ToolBox {
 	private static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
 	private static final Color DEFAULTPENCOLOR = Color.PINK;
 	private static final Color DEFAULTBACKGROUNDCOLOR = Color.LIGHTGREY;
+	private String[] turtleList = { "Turtle", "Elephant" };
+	private String[] languageList = {"Chinese", "English", "French", "German", "Italian", "Portuguese", "Russian", "Spanish", "System"};
 
 	private GridPane gp;
 	private WebView myPage;
-	private ComboBox<String> cb;
-	SimpleObjectProperty<ObservableList<String>> myTurtleTypes = new SimpleObjectProperty<>(
-			FXCollections.observableArrayList());
 	private Display myDisplay;
 	private ResourceBundle myResources;
 	private int count = 0;
@@ -48,13 +48,13 @@ public class ToolBox {
 		gp.setPrefSize(300, 50);
 		gp.setHgap(0);
 
-		// tool bax title
-		Label title = new Label("      " + myResources.getString("ToolTitle"));
+		// tool box title
+		Label title = new Label("   "+myResources.getString("ToolTitle"));
 		title.setTextFill(Color.BLUE);
 		title.setFont(Font.font("Verdana", 14));
 		GridPane.setConstraints(title, 0, ++count);
 		gp.getChildren().add(title);
-		GridPane.setMargin(title, new Insets(10, 10, 15, 10));
+		GridPane.setMargin(title, new Insets(30, 10, 15, 10));
 
 		// reset button (reset console, command, and history)
 		addButton("Reset");
@@ -65,6 +65,9 @@ public class ToolBox {
 		// save current image that the turtle draws
 		addButton("SaveImage");
 
+		// set online help
+		addButton("OnlineHelp");
+		
 		// set pen's color
 		addToolLabel("SetPenColor");
 		addPalette("SetPenColor");
@@ -75,32 +78,37 @@ public class ToolBox {
 
 		// set turtle image
 		addToolLabel("SetTurtle");
-		addTurtleList();
-		
-		//set command language
+		addComboBox(turtleList, "SetTurtle");
+
+		// set command language
 		addToolLabel("SetLanguage");
-		addLanguageList();
-		
-		// set online help
-		addButton("OnlineHelp");
-		
-		//gp.getChildren().add(myPage);
+		addComboBox(languageList, "SetLanguage");
+
+
 	}
 
-	public void addTurtleList() {
-		myTurtleTypes = new SimpleObjectProperty<>(FXCollections.observableArrayList());
-		myTurtleTypes.getValue().add("Turtle");
-		cb = new ComboBox<>();
-		cb.setPromptText(myTurtleTypes.get().get(0));
-		cb.itemsProperty().bind(myTurtleTypes);
+	public void addComboBox(String[] namelist, String refer) {
+		SimpleObjectProperty<ObservableList<String>> list = new SimpleObjectProperty<>(
+				FXCollections.observableArrayList());
+		list.getValue().addAll(namelist);
+		ComboBox<String> cb = new ComboBox<>();
+		cb.setPromptText(list.get().get(0));
+		cb.itemsProperty().bind(list);
 		GridPane.setConstraints(cb, 0, ++count);
 		gp.getChildren().add(cb);
-		
+
 		GridPane.setMargin(cb, new Insets(0, 0, 15, 15));
 	}
-	
+
 	public void addLanguageList() {
-		
+		SimpleObjectProperty<ObservableList<String>> myTypes = new SimpleObjectProperty<>(
+				FXCollections.observableArrayList());
+		myTypes.getValue().add("Turtle");
+		ComboBox<String> cbTurtle = new ComboBox<>();
+		cbTurtle.setPromptText(myTypes.get().get(0));
+		cbTurtle.itemsProperty().bind(myTypes);
+		GridPane.setConstraints(cbTurtle, 0, ++count);
+		gp.getChildren().add(cbTurtle);
 	}
 
 	public void addToolLabel(String refer) {
@@ -125,7 +133,7 @@ public class ToolBox {
 			colorPicker.setValue(DEFAULTPENCOLOR);
 		} else if (refer.equals("SetBackground")) {
 			colorPicker.setValue(DEFAULTBACKGROUNDCOLOR);
-		} 
+		}
 		addPaletteEvent(colorPicker, refer);
 		GridPane.setConstraints(colorPicker, 0, ++count);
 		gp.getChildren().add(colorPicker);
@@ -145,7 +153,20 @@ public class ToolBox {
 				} else if (function.equals("OnlineHelp")) {
 					setOnlineHelpEvent();
 				} else {
-					
+
+				}
+			}
+		});
+	}
+
+	private void addPaletteEvent(ColorPicker cp, String function) {
+		cp.setOnAction(new EventHandler() {
+			@Override
+			public void handle(Event t) {
+				if (function.equals("PenColor")) {
+					setPenEvent();
+				} else if (function.equals("BackgroundColor")) {
+					setBackgroundEvent();
 				}
 			}
 		});
@@ -153,11 +174,10 @@ public class ToolBox {
 
 	private void setResetEvent() {
 		myDisplay.getConsole().clear();
-		myDisplay.getHistory().clear();
 	}
 
 	private void setSaveCommandsEvent() {
-		myDisplay.getHistory().printHistoryToFile();
+		myDisplay.getConsole().getHistory().printHistoryToFile();
 	}
 
 	private void setSaveImageEvent() {
@@ -175,19 +195,6 @@ public class ToolBox {
 		stage.setScene(scene);
 		stage.setTitle(myResources.getString("URLTitle"));
 		stage.show();
-	}
-	
-	private void addPaletteEvent(ColorPicker cp, String function) {
-		cp.setOnAction(new EventHandler() {
-			@Override
-			public void handle(Event t) {
-				if (function.equals("PenColor")) {
-					setPenEvent();
-				} else if (function.equals("BackgroundColor")) {
-					setBackgroundEvent();
-				}
-			}
-		});
 	}
 
 	private void setPenEvent() {

@@ -50,11 +50,11 @@ public class Display {
 		// set up console
 		myConsole = new Console(this);
 		// BorderPane.setAlignment(myConsole.getConsole(), Pos.CENTER_RIGHT);
-		myBorderPane.setTop(myConsole.getConsole());
+		myBorderPane.setBottom(myConsole.getConsole());
 
 		// set up command history
-		myHistory = new History(this);
-		myBorderPane.setRight(myHistory.getHistory());
+		//myHistory = new History(this);
+		//myBorderPane.setRight(myHistory.getHistory());
 		// BorderPane.setAlignment(myHistory.getHistory(), Pos.TOP_LEFT);
 
 		// set up toolbar
