@@ -1,4 +1,4 @@
-package frontend;
+package frontend.center;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
