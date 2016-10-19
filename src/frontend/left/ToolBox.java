@@ -1,12 +1,12 @@
-package frontend;
+package frontend.left;
 
 import java.util.ResourceBundle;
 
+import frontend.Display;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
@@ -29,10 +29,11 @@ import javafx.stage.Stage;
  */
 public class ToolBox {
 	private static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
-	private static final Color DEFAULTPENCOLOR = Color.PINK;
-	private static final Color DEFAULTBACKGROUNDCOLOR = Color.LIGHTGREY;
+	private static final Color DEFAULTPENCOLOR = Color.BLACK;
+	private static final Color DEFAULTBACKGROUNDCOLOR = Color.LIGHTGREEN;
 	private String[] turtleList = { "Turtle", "Elephant" };
-	private String[] languageList = {"Chinese", "English", "French", "German", "Italian", "Portuguese", "Russian", "Spanish", "System"};
+	private String[] languageList = { "English", "Chinese", "French", "German", "Italian", "Portuguese", "Russian",
+			"Spanish", "System" };
 
 	private GridPane gp;
 	private WebView myPage;
@@ -45,16 +46,17 @@ public class ToolBox {
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Common");
 
 		gp = new GridPane();
-		gp.setPrefSize(300, 50);
+		gp.setPrefSize(Integer.parseInt(myResources.getString("ToolBoxWidth")),
+				Integer.parseInt(myResources.getString("ToolBoxHeight")));
 		gp.setHgap(0);
 
 		// tool box title
-		Label title = new Label("   "+myResources.getString("ToolTitle"));
+		Label title = new Label("         " + myResources.getString("ToolTitle"));
 		title.setTextFill(Color.BLUE);
-		title.setFont(Font.font("Verdana", 14));
+		title.setFont(Font.font(myResources.getString("TitleFont"), Integer.parseInt(myResources.getString("ToolBoxFontSize"))));
 		GridPane.setConstraints(title, 0, ++count);
 		gp.getChildren().add(title);
-		GridPane.setMargin(title, new Insets(30, 10, 15, 10));
+		GridPane.setMargin(title, new Insets(20, 10, 15, 10));
 
 		// reset button (reset console, command, and history)
 		addButton("Reset");
@@ -67,7 +69,7 @@ public class ToolBox {
 
 		// set online help
 		addButton("OnlineHelp");
-		
+
 		// set pen's color
 		addToolLabel("SetPenColor");
 		addPalette("SetPenColor");
@@ -83,7 +85,6 @@ public class ToolBox {
 		// set command language
 		addToolLabel("SetLanguage");
 		addComboBox(languageList, "SetLanguage");
-
 
 	}
 
@@ -135,6 +136,7 @@ public class ToolBox {
 			colorPicker.setValue(DEFAULTBACKGROUNDCOLOR);
 		}
 		addPaletteEvent(colorPicker, refer);
+		
 		GridPane.setConstraints(colorPicker, 0, ++count);
 		gp.getChildren().add(colorPicker);
 		GridPane.setMargin(colorPicker, new Insets(0, 0, 15, 15));
@@ -160,14 +162,12 @@ public class ToolBox {
 	}
 
 	private void addPaletteEvent(ColorPicker cp, String function) {
-		cp.setOnAction(new EventHandler() {
-			@Override
-			public void handle(Event t) {
-				if (function.equals("PenColor")) {
-					setPenEvent();
-				} else if (function.equals("BackgroundColor")) {
-					setBackgroundEvent();
-				}
+		cp.setOnAction(t -> {
+			if (function.equals("SetPenColor")) {
+				setPenEvent();
+			} else if (function.equals("SetBackground")) {
+				setBackgroundEvent(cp.getValue());
+				System.out.print(1);
 			}
 		});
 	}
@@ -201,8 +201,9 @@ public class ToolBox {
 		// TODO change pen color
 	}
 
-	private void setBackgroundEvent() {
+	private void setBackgroundEvent(Color c) {
 		// TODO change background color
+		myDisplay.getTurtleLand().changeBackground(c);
 	}
 
 	private void addShadow(Button button) {

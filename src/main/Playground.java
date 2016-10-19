@@ -1,5 +1,6 @@
 package main;
 
+import backend.Interpreter;
 import frontend.Display;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -16,5 +17,19 @@ public class Playground {
 	public void init() {
 		myDisplay = new Display(myStage);
 		myDisplay.init();
+	}
+	
+	public void interpretInput(String input){
+		
+		try {
+			Interpreter.class.newInstance().interpretString(input);
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }
