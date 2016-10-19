@@ -15,6 +15,7 @@ public class TurtleLand {
 	private Color defaultGround = Color.LIGHTGREEN;
 	private Pane myPane;
 	private Canvas myCanvas, myBackground;
+	private TurtleMascot myTurtle;
 	private int myWidth;
 	private int myHeight;
 	private ResourceBundle myResources;
@@ -45,8 +46,11 @@ public class TurtleLand {
 		gcc.setFill(Color.RED);
 		gcc.fillOval(centerX, centerY, 20, 20);
 		
+		myTurtle = new TurtleMascot();
+		
 		myPane.getChildren().add(myBackground);
 		myPane.getChildren().add(myCanvas);
+		myPane.getChildren().add(myTurtle.getImage());
 	}
 
 	public Pane getLand() {
