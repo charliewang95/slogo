@@ -1,7 +1,8 @@
 package frontend;
-
+import main.Playground;
 import java.util.ResourceBundle;
 
+import backend.Interpreter;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -90,8 +91,22 @@ public class Console {
 			myTextField.clear();
 			myErrorLabel.setText("");
 			myDisplay.getHistory().addHistory(s);
+			interpretInput(s);
 		} else {
 			myErrorLabel.setText(myResources.getString("NoCommandError"));
+		}
+	}
+	
+	public void interpretInput(String input){
+		try {
+			System.out.println(input);
+			Interpreter.class.newInstance().interpretString(input);
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
