@@ -9,6 +9,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.web.WebView;
@@ -62,15 +63,35 @@ public class Display {
 		myBorderPane.setLeft(myTool.getTool());
 
 		// set up canvas
-		myCanvas = new Canvas();
+		/*myCanvas = new Canvas();
 		GraphicsContext gc = myCanvas.getGraphicsContext2D();
 		
 		myBorderPane.setCenter(myCanvas);
 		gc.fillRect(myBorderPane.getCenter().getLayoutX(), myBorderPane.getCenter().getLayoutY(),
 				myBorderPane.getCenter().getScaleX(), myBorderPane.getCenter().getScaleY());
-		gc.setFill(Color.ORANGE);
+		gc.setFill(Color.ORANGE);*/
+		setCanvas();
 
 		display();
+	}
+	
+	private void setCanvas() {
+	    // create wrapper Pane
+	    Pane wrapperPane = new Pane();
+	    myBorderPane.setCenter(wrapperPane);
+	    // put Canvas in center
+	    myCanvas = new Canvas();
+	    wrapperPane.getChildren().add(myCanvas);
+	    // Bind width/height to wrapper Pane
+	    myCanvas.widthProperty().bind(wrapperPane.widthProperty());
+	    myCanvas.heightProperty().bind(wrapperPane.heightProperty());
+	    
+            GraphicsContext gc = myCanvas.getGraphicsContext2D();
+            
+            // draw a triangle
+            gc.setFill(Color.ORANGE);
+            gc.fillOval(10, 50, 5, 20);
+            
 	}
 
 	private void display() {

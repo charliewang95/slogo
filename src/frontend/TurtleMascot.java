@@ -6,12 +6,14 @@ import javafx.scene.image.ImageView;
 public class TurtleMascot {
     private ImageView myImage;
     private int myX, myY;
+    private double myDir;
     private boolean isDown;
     
     public TurtleMascot() {
         myX = 0;
         myY = 0;
         this.setImage("turtlemascot.png");
+        myDir = 0;
         isDown = true;
     }
     
@@ -41,6 +43,17 @@ public class TurtleMascot {
      */
     public int getY() {
         return myY;
+    }
+    
+    public double getDirection() {
+        return myDir;
+    }
+    
+    /**
+     * @param direction - an angle from 0 (inclusive) to 360 (exclusive)
+     */
+    public void setDirection(double direction) {
+        myDir = direction;
     }
     
     /**
