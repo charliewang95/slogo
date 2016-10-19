@@ -41,7 +41,7 @@ public class Variable {
 		title1.setFont(Font.font(myResources.getString("TitleFont"),
 				Integer.parseInt(myResources.getString("VariableFontSize"))));
 
-		VBox.setMargin(title1, new Insets(20, 10, 0, 10));
+		VBox.setMargin(title1, new Insets(0, 10, 0, 10));
 		myVBox.getChildren().add(title1);
 		VBox.setMargin(lvVariable, new Insets(0, 10, 0, 10));
 		myVBox.getChildren().add(lvVariable);
