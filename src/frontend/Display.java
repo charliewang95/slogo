@@ -2,6 +2,12 @@ package frontend;
 
 import java.util.ResourceBundle;
 
+import frontend.bottom.Console;
+import frontend.bottom.History;
+import frontend.center.TurtleLand;
+import frontend.left.ToolBox;
+import frontend.right.Variable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -24,7 +30,8 @@ public class Display {
 	private Console myConsole;
 	private History myHistory;
 	private ToolBox myTool;
-	private Canvas myCanvas;
+	private Variable myVariable;
+	private TurtleLand myTurtleLand;
 	private Stage myStage;
 	private Group myRoot;
 	private Scene myScene;
@@ -45,31 +52,30 @@ public class Display {
 	public void init() {
 		myBorderPane = new BorderPane();
 		myBorderPane.setPrefSize(myWidth, myHeight);
-		myBorderPane.setStyle("-fx-background-color: linear-gradient(from 15% 15% to 85% 85%, #42E5EA, #4FEFA4)");
-		
-		// set up console
-		myConsole = new Console(this);
-		// BorderPane.setAlignment(myConsole.getConsole(), Pos.CENTER_RIGHT);
-		myBorderPane.setTop(myConsole.getConsole());
+		myBorderPane.setStyle("-fx-background-color: linear-gradient(from 15% 15% to 85% 85%, #C1D6F6, #76ACFE)");
 
-		// set up command history
-		myHistory = new History(this);
-		myBorderPane.setRight(myHistory.getHistory());
-		// BorderPane.setAlignment(myHistory.getHistory(), Pos.TOP_LEFT);
+		// set up console and history
+		myConsole = new Console(this);
+		myBorderPane.setBottom(myConsole.getConsole());
 
 		// set up toolbar
 		myTool = new ToolBox(this);
 		myBorderPane.setLeft(myTool.getTool());
 
-		// set up canvas
-		myCanvas = new Canvas();
-		GraphicsContext gc = myCanvas.getGraphicsContext2D();
-		
-		myBorderPane.setCenter(myCanvas);
-		gc.fillRect(myBorderPane.getCenter().getLayoutX(), myBorderPane.getCenter().getLayoutY(),
-				myBorderPane.getCenter().getScaleX(), myBorderPane.getCenter().getScaleY());
-		gc.setFill(Color.ORANGE);
+		// set up variable and new commands screen
+		myVariable = new Variable();
+		myBorderPane.setRight(myVariable.getVariable());
 
+		// set up canvas
+		myTurtleLand = new TurtleLand();
+		myBorderPane.setCenter(myTurtleLand.getCanvas());
+		
+		//set transparent header
+		Rectangle recBlank = new Rectangle(0, 0, 840, 20);
+		recBlank.setVisible(false);
+		myBorderPane.setTop(recBlank);
+		
+		// put everything there on the board
 		display();
 	}
 
@@ -80,7 +86,7 @@ public class Display {
 		myStage.show();
 		myStage.setResizable(false);
 	}
-	
+
 	public double getWidth() {
 		return myWidth;
 	}
@@ -99,5 +105,9 @@ public class Display {
 
 	public ToolBox getTool() {
 		return myTool;
+	}
+	
+	public TurtleLand getTurtleLand() {
+		return myTurtleLand;
 	}
 }
