@@ -7,13 +7,11 @@ public class TurtleMascot {
     private ImageView myImage;
     private int myX, myY;
     private boolean isDown;
-    private Pen myPen;
     
     public TurtleMascot() {
         myX = 0;
         myY = 0;
         this.setImage("turtlemascot.png");
-        myPen = new Pen();
         isDown = true;
     }
     
@@ -72,9 +70,5 @@ public class TurtleMascot {
      */
     public void setDrawing(boolean penStatus) {
         isDown = penStatus;
-    }
-    
-    public Pen getPen() {
-        return myPen;
     }
 }
