@@ -25,21 +25,6 @@
  * getImage() - gets the image of the turtle
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #### Front End Internal
 * InputHandler
  * getCommandQueue() - returns the current queue of commands to run
@@ -51,37 +36,54 @@
 * UIObjectPlacer()
  * buttonPlacer()
  * turtlePlacer()
- 
- 
- 
- 
-
 
 
 #### Back End External
 java
  package Interpreter;
- *	Public class Intepreter(){
-    *	Public Command stringToCommand(String command) - parses input command string as a command
-	*   Public String commandToString(Command command) - returns string value of current command object from input string given
-	*   Public void mathCommand(Command command) - instantiates math command from math subpackage
-	*   Public void turtleCommand(Command command) - instantiates command from command subpackage
-	*   Public void turtleQuery(Command command) - instantiates command from query subpackage
-	*   Public void turtleBoolean(Command command) - instantiates command from boolean subpackage
-	*   Public void turtleLogic(Command command) - instantiates command from logic subpackage (loops, conditionals, etc.)
-    *	Public void setConstant(Command command) - allows user to set a constant value
-    *	Public void setVariable(Command command) - allows user to set a variable
-    * 	Public void executeCommand(Command command) - chooses which command to access from command type and accesses proper subpackage	
+ *	public class Intepreter{
+    *	public Command stringToCommand(String command) - parses input command string as a command
+	*   public String commandToString(Command command) - returns string value of current command object from input string given
+	* 	public Command getCurrentCommand() - returns the "currentCommand" we are working with
+	*   public void mathCommand(Command command) - instantiates math command from math subpackage
+	*   public void turtleCommand(Command command) - instantiates command from command subpackage
+	*   public void turtleQuery(Command command) - instantiates command from query subpackage
+	*   public void turtleBoolean(Command command) - instantiates command from boolean subpackage
+	*   public void turtleLogic(Command command) - instantiates command from logic subpackage (loops, conditionals, etc.)
+    *	public void setConstant(Command command) - allows user to set a constant value
+    *	public void setVariable(Command command) - allows user to set a variable
+    * 	public void executeCommand(Command command) - chooses which command to access from command type and accesses proper subpackage
+	* 	public Node commandToNode(Command command) - instantiates the currentCommand as an expression tree of nodes of individual command pieces in ExpressionTree Class 	
 }
 
-* package Interpreter;
-* Public abstract class Command{
-	* 	Public Command(String) - constructor
-	* 	Public String getString() - returns input string of command
-	* 	Public Type getCommandType() - returns whether command is math, bool, etc.
-	* 	Public Type setCommandType() - returns whether command is math, bool, etc.
+* public class ExpressionTree{
+
+	* public Tree(Node[] n) - ** This code is more of a black box for now. It will modify Dr. Duvall's code to instantiate a tree from possible expressions ** - iterates through all nodes in currentCommand and puts them in tree
 
 }
+
+package Interpreter;
+* public abstract class Command{
+	* 	public Command(String) - constructor
+	* 	public String getString() - returns input string of command
+	* 	public Type getCommandType() - returns whether command is math, bool, etc.
+	* 	public Type setCommandType() - returns whether command is math, bool, etc.
+
+}
+
+* public class Queue{
+	
+	* public PriorityQueue<
+	* public void stackCommand(Tree treeNode, PriorityQueue< Iterable > PQ) - adds a tree of Command Nodes (and they're children) to a PQ (FIFO)
+	* public void popCommand(PriorityQueue< Iterable > PQ) - pops the top of the PQ off and stores it as nextAction
+	* public Tree getNextAction() - returns most recently popped Command Tree 		
+	
+}
+
+* public class Turtle{
+	
+}
+
 
 
 #### Back End Internal
