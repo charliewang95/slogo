@@ -4,16 +4,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class TurtleMascot {
+    public static final int WIDTH = 75;
+    public static final int HEIGHT = 75;
+    
     private ImageView myImage;
-    private int myX, myY;
-    private double myDir;
+    private double myX, myY;
     private boolean isDown;
     
     public TurtleMascot() {
         myX = 0;
         myY = 0;
-        this.setImage("turtlemascot.png");
-        myDir = 0;
+        setImage("turtlemascot.png");
         isDown = true;
     }
     
@@ -22,13 +23,15 @@ public class TurtleMascot {
      */
     public void setX(int x) {
         myX = x;
+        myImage.setLayoutX(x);
     }
     
     /**
      * @return
      */
-    public int getX() {
-        return myX;
+    public double getX() {
+        //return myX;
+        return myImage.getLayoutX();
     }
     
     /**
@@ -36,24 +39,27 @@ public class TurtleMascot {
      */
     public void setY(int y) {
         myY = y;
+        myImage.setLayoutY(y);
     }
     
     /**
      * @return
      */
-    public int getY() {
-        return myY;
+    public double getY() {
+        //return myY;
+        return myImage.getLayoutY();
     }
     
     public double getDirection() {
-        return myDir;
+        return myImage.getRotate();
     }
     
     /**
-     * @param direction - an angle from 0 (inclusive) to 360 (exclusive)
+     * @param direction - an angle, in degrees, 
+     *                    from 0 (inclusive) to 360 (exclusive)
      */
     public void setDirection(double direction) {
-        myDir = direction;
+        myImage.setRotate(direction);
     }
     
     /**
@@ -63,6 +69,8 @@ public class TurtleMascot {
     public void setImage (String imageFileName) {
         Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageFileName));
         myImage = new ImageView(image);
+        myImage.setFitWidth(WIDTH);
+        myImage.setFitHeight(HEIGHT);
     }
     
     /**
