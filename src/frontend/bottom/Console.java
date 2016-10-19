@@ -1,11 +1,13 @@
-package frontend;
+package frontend.bottom;
 
 import java.util.ResourceBundle;
 
+import frontend.Display;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -15,6 +17,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
@@ -26,7 +29,7 @@ public class Console {
 	private Display myDisplay;
 	private History myHistory;
 	private TextArea myTextArea;
-	private GridPane myGridPane;
+	private HBox myHBox;
 	private VBox myLeftArea;
 	private VBox myMidArea;
 	private ResourceBundle myResources;
@@ -40,11 +43,10 @@ public class Console {
 		myHistory = new History();
 		myCommands = new SimpleObjectProperty<>(FXCollections.observableArrayList());
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Common");
-
-		myGridPane = new GridPane();
-		myGridPane.setPadding(new Insets(10, 10, 10, 10));
-		myGridPane.setVgap(10);
-		myGridPane.setHgap(5);
+		
+		myHBox = new HBox();
+		myHBox.setPadding(new Insets(10, 10, 10, 10));
+		myHBox.setSpacing(10);
 		myLeftArea.setSpacing(10);
 		myMidArea.setSpacing(10);
 
@@ -57,7 +59,7 @@ public class Console {
 		button1.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				checkInput();
+				checkInput(e);
 			}
 		});
 
@@ -68,55 +70,53 @@ public class Console {
 			@Override
 			public void handle(ActionEvent e) {
 				myTextArea.clear();
+				e.consume();
 			}
 		});
-		GridPane.setConstraints(myLeftArea, 0, 0);
-		myGridPane.getChildren().add(myLeftArea);
-
+		myHBox.getChildren().add(myLeftArea);
+		
 		myTextArea = new TextArea();
 		myTextArea.setPromptText(myResources.getString("ConsoleHint"));
 		myTextArea.setPrefColumnCount(Integer.parseInt(myResources.getString("ConsoleColumn")));
 		myTextArea.getText();
-		myTextArea.setPrefSize(340, 150);
-		GridPane.setConstraints(myTextArea, 1, 0);
-		myGridPane.getChildren().add(myTextArea);
+		myTextArea.setPrefSize(Integer.parseInt(myResources.getString("ConsoleWidth")),
+				Integer.parseInt(myResources.getString("ConsoleHeight")));
+		myHBox.getChildren().add(myTextArea);
 		myTextArea.setOnKeyPressed(e -> {
 			if (e.getCode().equals(KeyCode.ENTER)) {
-				if (myTextArea.getText().trim().charAt(myTextArea.getText().trim().length() - 1) == '[') {
-					bracketCount++;
-				} else if (myTextArea.getText().trim().charAt(myTextArea.getText().trim().length() - 1) == ']') {
-					bracketCount--;
-				} 
-				if (bracketCount == 0) {
-					checkInput();
-					e.consume();
-				}
+				checkInput(e);
 			}
 		});
-
+		
 		Label label2 = new Label(myResources.getString("HistoryTitle"));
 		GridPane.setMargin(myMidArea, new Insets(0, 0, 0, 10));
 
-		GridPane.setConstraints(myMidArea, 2, 0);
-		myGridPane.getChildren().add(myMidArea);
+		myHBox.getChildren().add(myMidArea);
 		myMidArea.getChildren().add(label2);
 
 		myHistory.getHistory().itemsProperty().bind(myCommands);
-		GridPane.setConstraints(myHistory.getHistory(), 3, 0);
-		myGridPane.getChildren().add(myHistory.getHistory());
+		myHBox.getChildren().add(myHistory.getHistory());
 	}
 
-	private void checkInput() {
+	private void checkInput(Event e) {
 		if ((myTextArea.getText().trim() != null && !myTextArea.getText().trim().isEmpty())) {
-			String s = myTextArea.getText();
-			myCommands.getValue().add(s);
-			myHistory.addString(s);
-			myTextArea.clear();
+			if (myTextArea.getText().trim().charAt(myTextArea.getText().trim().length() - 1) == '[') {
+				bracketCount++;
+			} else if (myTextArea.getText().trim().charAt(myTextArea.getText().trim().length() - 1) == ']') {
+				bracketCount--;
+			}
+			if (bracketCount == 0) {
+				String s = myTextArea.getText().replace("\n", " ");
+				myCommands.getValue().add(s);
+				myHistory.addString(s);
+				myTextArea.clear();
+				e.consume();
+			}
 		}
 	}
 
-	public GridPane getConsole() {
-		return myGridPane;
+	public HBox getConsole() {
+		return myHBox;
 	}
 
 	public History getHistory() {

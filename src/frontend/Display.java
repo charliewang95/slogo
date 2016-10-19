@@ -2,6 +2,10 @@ package frontend;
 
 import java.util.ResourceBundle;
 
+import frontend.bottom.Console;
+import frontend.bottom.History;
+import frontend.left.ToolBox;
+import frontend.right.Variable;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -24,6 +28,7 @@ public class Display {
 	private Console myConsole;
 	private History myHistory;
 	private ToolBox myTool;
+	private Variable myVariable;
 	private Canvas myCanvas;
 	private Stage myStage;
 	private Group myRoot;
@@ -47,20 +52,19 @@ public class Display {
 		myBorderPane.setPrefSize(myWidth, myHeight);
 		myBorderPane.setStyle("-fx-background-color: linear-gradient(from 15% 15% to 85% 85%, #42E5EA, #4FEFA4)");
 		
-		// set up console
+		// set up console and history
 		myConsole = new Console(this);
 		// BorderPane.setAlignment(myConsole.getConsole(), Pos.CENTER_RIGHT);
 		myBorderPane.setBottom(myConsole.getConsole());
-
-		// set up command history
-		//myHistory = new History(this);
-		//myBorderPane.setRight(myHistory.getHistory());
-		// BorderPane.setAlignment(myHistory.getHistory(), Pos.TOP_LEFT);
 
 		// set up toolbar
 		myTool = new ToolBox(this);
 		myBorderPane.setLeft(myTool.getTool());
 
+		// set up variable and new commands screen
+		myVariable = new Variable();
+		myBorderPane.setRight(myVariable.getVariable());
+		
 		// set up canvas
 		myCanvas = new Canvas();
 		GraphicsContext gc = myCanvas.getGraphicsContext2D();
@@ -69,7 +73,8 @@ public class Display {
 		gc.fillRect(myBorderPane.getCenter().getLayoutX(), myBorderPane.getCenter().getLayoutY(),
 				myBorderPane.getCenter().getScaleX(), myBorderPane.getCenter().getScaleY());
 		gc.setFill(Color.ORANGE);
-
+		
+		// put everything there on the board
 		display();
 	}
 
