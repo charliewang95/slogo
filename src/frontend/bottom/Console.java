@@ -101,9 +101,10 @@ public class Console {
 
 	private void checkInput(Event e) {
 		if ((myTextArea.getText().trim() != null && !myTextArea.getText().trim().isEmpty())) {
-			if (myTextArea.getText().trim().charAt(myTextArea.getText().trim().length() - 1) == '[') {
+			int words = myTextArea.getText().trim().split(" ").length;
+			if (myTextArea.getText().trim().split(" ")[words-1].equals("[")) {
 				bracketCount++;
-			} else if (myTextArea.getText().trim().charAt(myTextArea.getText().trim().length() - 1) == ']') {
+			} else if (myTextArea.getText().trim().split(" ")[words-1].equals("]")) {
 				bracketCount--;
 			}
 			if (bracketCount == 0) {
@@ -119,7 +120,7 @@ public class Console {
 	
 	public void interpretInput(String input){
 		try {
-			System.out.println(input);
+			//System.out.println(input);
 			Interpreter.class.newInstance().interpretString(input);
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block

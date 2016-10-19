@@ -52,7 +52,7 @@ public class Display {
 	public void init() {
 		myBorderPane = new BorderPane();
 		myBorderPane.setPrefSize(myWidth, myHeight);
-		myBorderPane.setStyle("-fx-background-color: linear-gradient(from 15% 15% to 85% 85%, #C1D6F6, #76ACFE)");
+		myBorderPane.setStyle("-fx-background-color: linear-gradient(from 5% 5% to 95% 95%, #C1D6F6, #76ACFE)");
 
 		// set up console and history
 		myConsole = new Console(this);
@@ -68,12 +68,8 @@ public class Display {
 
 		// set up canvas
 		myTurtleLand = new TurtleLand();
-		myBorderPane.setCenter(myTurtleLand.getCanvas());
-		
-		//set transparent header
-		Rectangle recBlank = new Rectangle(0, 0, 840, 20);
-		recBlank.setVisible(false);
-		myBorderPane.setTop(recBlank);
+		BorderPane.setMargin(myTurtleLand.getLand(), new Insets(20, 20, 20, 20));
+		myBorderPane.setCenter(myTurtleLand.getLand());
 		
 		// put everything there on the board
 		display();

@@ -56,7 +56,7 @@ public class ToolBox {
 		title.setFont(Font.font(myResources.getString("TitleFont"), Integer.parseInt(myResources.getString("ToolBoxFontSize"))));
 		GridPane.setConstraints(title, 0, ++count);
 		gp.getChildren().add(title);
-		GridPane.setMargin(title, new Insets(0, 10, 15, 10));
+		GridPane.setMargin(title, new Insets(20, 10, 15, 10));
 
 		// reset button (reset console, command, and history)
 		addButton("Reset");
