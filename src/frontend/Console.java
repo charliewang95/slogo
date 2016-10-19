@@ -11,9 +11,11 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 /**
@@ -22,89 +24,111 @@ import javafx.scene.paint.Color;
 public class Console {
 	private static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
 	private Display myDisplay;
-	private TextField myTextField;
-	private Label myErrorLabel;
-	private GridPane gp;
+	private History myHistory;
+	private TextArea myTextArea;
+	private GridPane myGridPane;
+	private VBox myLeftArea;
+	private VBox myMidArea;
 	private ResourceBundle myResources;
+	private int bracketCount = 0;
 	private SimpleObjectProperty<ObservableList<String>> myCommands;
 
 	public Console(Display display) {
 		myDisplay = display;
+		myLeftArea = new VBox();
+		myMidArea = new VBox();
+		myHistory = new History();
 		myCommands = new SimpleObjectProperty<>(FXCollections.observableArrayList());
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Common");
 
-		gp = new GridPane();
-		gp.setPadding(new Insets(10, 10, 10, 10));
-		gp.setVgap(10);
-		gp.setHgap(5);
-		//gp.setStyle("-fx-background-color: #C0C0C0");
+		myGridPane = new GridPane();
+		myGridPane.setPadding(new Insets(10, 10, 10, 10));
+		myGridPane.setVgap(10);
+		myGridPane.setHgap(5);
+		myLeftArea.setSpacing(10);
+		myMidArea.setSpacing(10);
 
 		Label label1 = new Label(myResources.getString("ConsoleText"));
-		GridPane.setConstraints(label1, 0, 0);
-		gp.getChildren().add(label1);
+		myLeftArea.getChildren().add(label1);
+		GridPane.setMargin(label1, new Insets(0, 0, 0, 5));
 
-		myTextField = new TextField();
-		myTextField.setPromptText(myResources.getString("ConsoleHint"));
-		myTextField.setPrefColumnCount(Integer.parseInt(myResources.getString("ConsoleColumn")));
-		myTextField.getText();
-		GridPane.setConstraints(myTextField, 1, 0);
-		gp.getChildren().add(myTextField);
-		myTextField.setOnKeyPressed(e -> {
-			if (e.getCode().equals(KeyCode.ENTER)) {
-				checkInput();
-			}
-		});
-
-		myErrorLabel = new Label();
-		myErrorLabel.setTextFill(Color.RED);
-		GridPane.setConstraints(myErrorLabel, 1, 1);
-		gp.getChildren().add(myErrorLabel);
-		
 		Button button1 = new Button(myResources.getString("ConsoleButton"));
-		GridPane.setConstraints(button1, 2, 0);
-		gp.getChildren().add(button1);
-		
+		myLeftArea.getChildren().add(button1);
 		button1.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 				checkInput();
 			}
 		});
-		
+
 		Button button2 = new Button(myResources.getString("ConsoleClear"));
-		GridPane.setConstraints(button2, 3, 0);
-		gp.getChildren().add(button2);
-		
+		GridPane.setConstraints(button2, 0, 2);
+		myLeftArea.getChildren().add(button2);
 		button2.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				myTextField.clear();
+				myTextArea.clear();
 			}
 		});
+		GridPane.setConstraints(myLeftArea, 0, 0);
+		myGridPane.getChildren().add(myLeftArea);
+
+		myTextArea = new TextArea();
+		myTextArea.setPromptText(myResources.getString("ConsoleHint"));
+		myTextArea.setPrefColumnCount(Integer.parseInt(myResources.getString("ConsoleColumn")));
+		myTextArea.getText();
+		myTextArea.setPrefSize(340, 150);
+		GridPane.setConstraints(myTextArea, 1, 0);
+		myGridPane.getChildren().add(myTextArea);
+		myTextArea.setOnKeyPressed(e -> {
+			if (e.getCode().equals(KeyCode.ENTER)) {
+				if (myTextArea.getText().trim().charAt(myTextArea.getText().trim().length() - 1) == '[') {
+					bracketCount++;
+				} else if (myTextArea.getText().trim().charAt(myTextArea.getText().trim().length() - 1) == ']') {
+					bracketCount--;
+				} 
+				if (bracketCount == 0) {
+					checkInput();
+					e.consume();
+				}
+			}
+		});
+
+		Label label2 = new Label(myResources.getString("HistoryTitle"));
+		GridPane.setMargin(myMidArea, new Insets(0, 0, 0, 10));
+
+		GridPane.setConstraints(myMidArea, 2, 0);
+		myGridPane.getChildren().add(myMidArea);
+		myMidArea.getChildren().add(label2);
+
+		myHistory.getHistory().itemsProperty().bind(myCommands);
+		GridPane.setConstraints(myHistory.getHistory(), 3, 0);
+		myGridPane.getChildren().add(myHistory.getHistory());
 	}
 
 	private void checkInput() {
-		if ((myTextField.getText() != null && !myTextField.getText().isEmpty())) {
-			String s = myTextField.getText();
+		if ((myTextArea.getText().trim() != null && !myTextArea.getText().trim().isEmpty())) {
+			String s = myTextArea.getText();
 			myCommands.getValue().add(s);
-			myTextField.clear();
-			myErrorLabel.setText("");
-			myDisplay.getHistory().addHistory(s);
-			
-		} else {
-			myErrorLabel.setText(myResources.getString("NoCommandError"));
+			myHistory.addString(s);
+			myTextArea.clear();
 		}
 	}
-	
+
 	public GridPane getConsole() {
-		return gp;
+		return myGridPane;
 	}
-	
+
+	public History getHistory() {
+		return myHistory;
+	}
+
 	public void clear() {
-		myTextField.clear();
+		myTextArea.clear();
 		myCommands = new SimpleObjectProperty<>(FXCollections.observableArrayList());
+		myHistory.getHistory().itemsProperty().bind(myCommands);
 	}
-	
+
 	public SimpleObjectProperty<ObservableList<String>> getCommandList() {
 		return myCommands;
 	}

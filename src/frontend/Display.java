@@ -8,17 +8,19 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
 /**
  * @author Charlie Wang
- *
  */
 public class Display {
 	private static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
 
-	private BorderPane bp;
+	private BorderPane myBorderPane;
 	private Console myConsole;
 	private History myHistory;
 	private ToolBox myTool;
@@ -41,42 +43,44 @@ public class Display {
 	}
 
 	public void init() {
-		bp = new BorderPane();
-		bp.setPrefSize(myWidth, myHeight);
-		bp.setStyle("-fx-background-color: linear-gradient(from 15% 15% to 85% 85%, #42E5EA, #4FEFA4)");
+		myBorderPane = new BorderPane();
+		myBorderPane.setPrefSize(myWidth, myHeight);
+		myBorderPane.setStyle("-fx-background-color: linear-gradient(from 15% 15% to 85% 85%, #42E5EA, #4FEFA4)");
+		
 		// set up console
 		myConsole = new Console(this);
 		// BorderPane.setAlignment(myConsole.getConsole(), Pos.CENTER_RIGHT);
-		bp.setTop(myConsole.getConsole());
+		myBorderPane.setBottom(myConsole.getConsole());
 
 		// set up command history
-		myHistory = new History(this);
-		bp.setRight(myHistory.getHistory());
+		//myHistory = new History(this);
+		//myBorderPane.setRight(myHistory.getHistory());
 		// BorderPane.setAlignment(myHistory.getHistory(), Pos.TOP_LEFT);
 
 		// set up toolbar
 		myTool = new ToolBox(this);
-		bp.setLeft(myTool.getTool());
+		myBorderPane.setLeft(myTool.getTool());
 
 		// set up canvas
-		//myCanvas = new Canvas(500, 500);
-		//GraphicsContext gc = myCanvas.getGraphicsContext2D();
-		//gc.setFill(Color.ORANGE);
-		//gc.fill();
-		// myCanvas.autosize();
-		//bp.setBottom(myCanvas);
+		myCanvas = new Canvas();
+		GraphicsContext gc = myCanvas.getGraphicsContext2D();
+		
+		myBorderPane.setCenter(myCanvas);
+		gc.fillRect(myBorderPane.getCenter().getLayoutX(), myBorderPane.getCenter().getLayoutY(),
+				myBorderPane.getCenter().getScaleX(), myBorderPane.getCenter().getScaleY());
+		gc.setFill(Color.ORANGE);
 
 		display();
 	}
 
 	private void display() {
-		myRoot.getChildren().add(bp);
+		myRoot.getChildren().add(myBorderPane);
 		myStage.setScene(myScene);
 		myStage.setTitle(myResources.getString("Title"));
 		myStage.show();
 		myStage.setResizable(false);
 	}
-
+	
 	public double getWidth() {
 		return myWidth;
 	}
@@ -92,7 +96,7 @@ public class Display {
 	public History getHistory() {
 		return myHistory;
 	}
-	
+
 	public ToolBox getTool() {
 		return myTool;
 	}
