@@ -25,6 +25,7 @@ public class Turtle {
 	}
 
 	public void setMyX(int myX) {
+		//needs work with lines
 		this.myX = myX;
 	}
 
@@ -33,6 +34,7 @@ public class Turtle {
 	}
 
 	public void setMyY(int myY) {
+		//needs work with lines
 		this.myY = myY;
 	}
 

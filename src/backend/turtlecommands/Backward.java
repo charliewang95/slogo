@@ -3,18 +3,18 @@ import java.util.ArrayList;
 
 import backend.*;
 
-public class Forward extends VerticalMove {
+public class Backward extends VerticalMove {
 	
 	private Turtle myTurtle;
 	
-	Forward(Turtle t) {
+	Backward(Turtle t) {
 		super();
 		myTurtle = t;
 	}
-		
+	
 	public String compute(ArrayList<Command> inputs) {
 		
-		return computeVerticalMove(myTurtle, inputs, true); //true for moving forward
+		return computeVerticalMove(myTurtle, inputs, false); //false for moving backward
 		
 	}
 
