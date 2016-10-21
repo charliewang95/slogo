@@ -1,20 +1,22 @@
 package backend.turtlecommands;
+
 import java.util.ArrayList;
 
-import backend.*;
+import backend.Command;
+import backend.Turtle;
 
-public class Forward extends VerticalMove {
+public class SetHeading extends SpinMove{
 	
 	private Turtle myTurtle;
 	
-	public Forward(Turtle t) {
+	public SetHeading(Turtle t) {
 		super();
 		myTurtle = t;
 	}
-		
+	
 	public String compute(ArrayList<Command> inputs) {
 		
-		return computeVerticalMove(myTurtle, inputs, true); //true for moving forward
+		return set(myTurtle, inputs);
 		
 	}
 

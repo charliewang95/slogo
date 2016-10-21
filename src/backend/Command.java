@@ -20,6 +20,10 @@ public abstract class Command {
 		return numInputs;
 	}
 	
+	public String getString() {
+		return this.getClass().toString();
+	}
+	
 	public boolean checkOneNumberInput(ArrayList<Command> inputs) {
 		if(inputs.size() != 1) {
 			//error length
