@@ -68,6 +68,7 @@ public class Interpreter {
 			Command currCommand = commandList.get(i);
 			Node tempNode = new Node(currCommand);
 			tempNode.value = currCommand;
+			tempNode.children = new ArrayList<Node>();
 			nodeList.add(tempNode);
 		}
 		// if tempCommand fits in a certain type, assign it to that type. If it doesn't fit in a type and is a bracket
@@ -75,15 +76,29 @@ public class Interpreter {
 
 		commandTree.root = nodeList.get(0);
 		Node currNode = commandTree.root;
+		nodeList.remove(nodeList.get(0));
 
-		for (int i = 1; i < nodeList.size(); i++){
-			if (nodeList.get(i).value.getType().equals("Math")){
+		for (int i = 0; i < nodeList.size(); i++){
+			if (true){//nodeList.get(i).value.getType().equals("Math")){
 			nodeList.get(i).parent = currNode;
+			currNode.children.add(nodeList.get(i));
+			}
+			if (nodeList.get(i).value.getType().equals("TurtleCommand")){
+				currNode = nodeList.get(i);
 			}
 		}
-
+		System.out.println(commandTree.root);
+		
+		System.out.println(commandTree.root.children);
+		for (int i = 0; i<commandTree.root.children.size(); i++){
+			System.out.println(commandTree.root.children.get(i).children);
+		}
 		return commandTree;
 
+	}
+	
+	public void parseTree(Tree tree){
+		
 	}
 
 	public class Tree{
@@ -98,14 +113,5 @@ public class Interpreter {
 		public Node parent;
 		public Command value;
 	}
-
-//	public void setChild(Node parent, Node newChild){
-//		newChild.parent = parent;
-//		System.out.println(parent);
-//		parent.children.add(newChild);
-//		System.out.println(newChild.value);
-//		System.out.println(parent.value);
-//		System.out.println(newChild.parent.value);
-//	}
 	
 }
