@@ -16,7 +16,7 @@ public class Right extends SpinMove {
 		
 	public String compute(ArrayList<Command> inputs) {
 		
-		return computeSpinMove(myTurtle, inputs, true); //true for clockwise direction
+		return turn(myTurtle, inputs, true); //true for clockwise direction
 		
 	}
 

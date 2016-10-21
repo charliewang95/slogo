@@ -7,7 +7,7 @@ public class Backward extends VerticalMove {
 	
 	private Turtle myTurtle;
 	
-	Backward(Turtle t) {
+	public Backward(Turtle t) {
 		super();
 		myTurtle = t;
 	}
