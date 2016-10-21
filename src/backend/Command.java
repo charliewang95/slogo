@@ -1,19 +1,25 @@
 package backend;
 
+import java.util.ArrayList;
+
 public abstract class Command {
-	private String stringText;
 	private String commandType;
+	private int numInputs;
 	
-	public Command(String command, String type){
-		stringText = command;
+	public Command(String type, int inputs){
 		commandType = type;
+		numInputs = inputs;
 	}
 	
-	public String getString(){
-		return stringText;
-	}
 	
 	public String getType(){
 		return commandType;
 	}
+	
+	public int getNumInputs() {
+		return numInputs;
+	}
+	
+	abstract public String compute(ArrayList<Command> inputs);
+	
 }
