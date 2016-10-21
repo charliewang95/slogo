@@ -1,5 +1,11 @@
 package frontend.left;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import java.util.ResourceBundle;
 
 import frontend.Display;
@@ -21,6 +27,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.web.WebView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
@@ -34,6 +41,8 @@ public class ToolBox {
 	private String[] turtleList = { "Turtle", "Elephant" };
 	private String[] languageList = { "English", "Chinese", "French", "German", "Italian", "Portuguese", "Russian",
 			"Spanish", "System" };
+	private SimpleObjectProperty<ObservableList<String>> myTurtleList;
+	private SimpleObjectProperty<ObservableList<String>> myLanguageList;
 
 	private GridPane gp;
 	private WebView myPage;
@@ -44,6 +53,12 @@ public class ToolBox {
 	public ToolBox(Display display) {
 		myDisplay = display;
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Common");
+		myTurtleList = new SimpleObjectProperty<>(FXCollections.observableArrayList());
+		myTurtleList.getValue().addAll(turtleList);
+		myTurtleList.getValue().add(myResources.getString("AddAnother"));
+		myLanguageList = new SimpleObjectProperty<>(FXCollections.observableArrayList());
+		myLanguageList.getValue().addAll(languageList);
+		myLanguageList.getValue().add(myResources.getString("AddAnother"));
 
 		gp = new GridPane();
 		gp.setPrefSize(Integer.parseInt(myResources.getString("ToolBoxWidth")),
@@ -53,7 +68,8 @@ public class ToolBox {
 		// tool box title
 		Label title = new Label("         " + myResources.getString("ToolTitle"));
 		title.setTextFill(Color.BLUE);
-		title.setFont(Font.font(myResources.getString("TitleFont"), Integer.parseInt(myResources.getString("ToolBoxFontSize"))));
+		title.setFont(Font.font(myResources.getString("TitleFont"),
+				Integer.parseInt(myResources.getString("ToolBoxFontSize"))));
 		GridPane.setConstraints(title, 0, ++count);
 		gp.getChildren().add(title);
 		GridPane.setMargin(title, new Insets(20, 10, 15, 10));
@@ -80,36 +96,22 @@ public class ToolBox {
 
 		// set turtle image
 		addToolLabel("SetTurtle");
-		addComboBox(turtleList, "SetTurtle");
+		addComboBox(myTurtleList, "SetTurtle");
 
 		// set command language
 		addToolLabel("SetLanguage");
-		addComboBox(languageList, "SetLanguage");
+		addComboBox(myLanguageList, "SetLanguage");
 
 	}
 
-	public void addComboBox(String[] namelist, String refer) {
-		SimpleObjectProperty<ObservableList<String>> list = new SimpleObjectProperty<>(
-				FXCollections.observableArrayList());
-		list.getValue().addAll(namelist);
+	public void addComboBox(SimpleObjectProperty<ObservableList<String>> namelist, String refer) {
 		ComboBox<String> cb = new ComboBox<>();
-		cb.setPromptText(list.get().get(0));
-		cb.itemsProperty().bind(list);
+		cb.setPromptText(namelist.get().get(0));
+		cb.itemsProperty().bind(namelist);
 		GridPane.setConstraints(cb, 0, ++count);
 		gp.getChildren().add(cb);
-
+		addComboBoxEvent(cb, refer);
 		GridPane.setMargin(cb, new Insets(0, 0, 15, 15));
-	}
-
-	public void addLanguageList() {
-		SimpleObjectProperty<ObservableList<String>> myTypes = new SimpleObjectProperty<>(
-				FXCollections.observableArrayList());
-		myTypes.getValue().add("Turtle");
-		ComboBox<String> cbTurtle = new ComboBox<>();
-		cbTurtle.setPromptText(myTypes.get().get(0));
-		cbTurtle.itemsProperty().bind(myTypes);
-		GridPane.setConstraints(cbTurtle, 0, ++count);
-		gp.getChildren().add(cbTurtle);
 	}
 
 	public void addToolLabel(String refer) {
@@ -136,7 +138,7 @@ public class ToolBox {
 			colorPicker.setValue(DEFAULTBACKGROUNDCOLOR);
 		}
 		addPaletteEvent(colorPicker, refer);
-		
+
 		GridPane.setConstraints(colorPicker, 0, ++count);
 		gp.getChildren().add(colorPicker);
 		GridPane.setMargin(colorPicker, new Insets(0, 0, 15, 15));
@@ -170,6 +172,44 @@ public class ToolBox {
 				System.out.print(1);
 			}
 		});
+	}
+
+	private void addComboBoxEvent(ComboBox<String> box, String refer) {
+		box.setOnAction(t -> {
+			if (refer.equals("SetTurtle")) {
+				try {
+					setTurtleEvent(box.getValue());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else if (refer.equals("SetLanguage")) {
+
+			}
+		});
+	}
+
+	private void setTurtleEvent(String value) throws IOException {
+		if (value.equals(myResources.getString("AddAnother"))) {
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Open Resource File");
+			File newImage = fileChooser.showOpenDialog(null);
+			if (newImage != null && newImage.getName().endsWith(".png")) {
+				myTurtleList.getValue().add(newImage.getName());
+				Path from = Paths.get(newImage.getParent(), newImage.getName());
+				Path to = Paths.get("/Users/charliewang95/Documents/DUKE/2016 Fall/CS 308/workspace/slogo_team12/src", newImage.getName());
+				Files.copy(from, to, REPLACE_EXISTING);
+				//System.out.println(myDisplay.getTurtleLand().getTurtle().getAnimalMap().values());
+				myDisplay.getTurtleLand().getTurtle().addAnimal(newImage.getName(), newImage.getName());
+				//System.out.println(myDisplay.getTurtleLand().getTurtle().getAnimalMap().values());
+				myDisplay.getTurtleLand().changeTurtle(newImage.getName());
+			}
+		}
+		try {
+			myDisplay.getTurtleLand().changeTurtle(value);
+		} catch (Exception e) {
+
+		}
 	}
 
 	private void setResetEvent() {

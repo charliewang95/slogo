@@ -1,20 +1,28 @@
 package frontend.center;
 
+import java.util.HashMap;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class TurtleMascot {
-    public static final int WIDTH = 75;
-    public static final int HEIGHT = 75;
+    public final int WIDTH = 50;
+    public final int HEIGHT = 50;
     
     private ImageView myImage;
+    private String myIcon;
     private double myX, myY;
+    private HashMap<String, String> myAnimalMap;
     private boolean isDown;
     
     public TurtleMascot() {
         myX = 0;
         myY = 0;
-        setImage("turtlemascot.png");
+        myAnimalMap = new HashMap<String, String>();
+        myAnimalMap.put("Turtle", "turtlemascot.png");
+        myAnimalMap.put("Elephant", "elephantmascot.png");
+        setImage(myAnimalMap.get("Turtle"));
+        //setImage(myAnimalMap.get("Elephant"));
         isDown = true;
     }
     
@@ -68,6 +76,7 @@ public class TurtleMascot {
      */
     public void setImage (String imageFileName) {
         Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageFileName));
+        
         myImage = new ImageView(image);
         myImage.setFitWidth(WIDTH);
         myImage.setFitHeight(HEIGHT);
@@ -91,5 +100,13 @@ public class TurtleMascot {
      */
     public void setDrawing(boolean penStatus) {
         isDown = penStatus;
+    }
+    
+    public HashMap<String, String> getAnimalMap() {
+    	return myAnimalMap;
+    }
+    
+    public void addAnimal(String key, String value) {
+    	myAnimalMap.put(key, value);
     }
 }
