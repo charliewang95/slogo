@@ -20,6 +20,17 @@ public abstract class Command {
 		return numInputs;
 	}
 	
+	public boolean checkOneNumberInput(ArrayList<Command> inputs) {
+		if(inputs.size() != 1) {
+			//error length
+			return false;
+		} else if(! (inputs.get(0) instanceof CommandNumber) ) {
+			//error not number
+			return false;
+		}
+		return true;
+	}
+	
 	abstract public String compute(ArrayList<Command> inputs);
 	
 }
