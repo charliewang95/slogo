@@ -4,8 +4,10 @@ import java.util.ResourceBundle;
 
 import frontend.bottom.Console;
 import frontend.bottom.History;
+import frontend.center.TurtleLand;
 import frontend.left.ToolBox;
 import frontend.right.Variable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -13,6 +15,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.web.WebView;
@@ -29,7 +33,7 @@ public class Display {
 	private History myHistory;
 	private ToolBox myTool;
 	private Variable myVariable;
-	private Canvas myCanvas;
+	private TurtleLand myTurtleLand;
 	private Stage myStage;
 	private Group myRoot;
 	private Scene myScene;
@@ -50,11 +54,10 @@ public class Display {
 	public void init() {
 		myBorderPane = new BorderPane();
 		myBorderPane.setPrefSize(myWidth, myHeight);
-		myBorderPane.setStyle("-fx-background-color: linear-gradient(from 15% 15% to 85% 85%, #42E5EA, #4FEFA4)");
-		
+		myBorderPane.setStyle("-fx-background-color: linear-gradient(from 5% 5% to 95% 95%, #C1D6F6, #76ACFE)");
+
 		// set up console and history
 		myConsole = new Console(this);
-		// BorderPane.setAlignment(myConsole.getConsole(), Pos.CENTER_RIGHT);
 		myBorderPane.setBottom(myConsole.getConsole());
 
 		// set up toolbar
@@ -64,15 +67,11 @@ public class Display {
 		// set up variable and new commands screen
 		myVariable = new Variable();
 		myBorderPane.setRight(myVariable.getVariable());
-		
+
 		// set up canvas
-		myCanvas = new Canvas();
-		GraphicsContext gc = myCanvas.getGraphicsContext2D();
-		
-		myBorderPane.setCenter(myCanvas);
-		gc.fillRect(myBorderPane.getCenter().getLayoutX(), myBorderPane.getCenter().getLayoutY(),
-				myBorderPane.getCenter().getScaleX(), myBorderPane.getCenter().getScaleY());
-		gc.setFill(Color.ORANGE);
+		myTurtleLand = new TurtleLand();
+		BorderPane.setMargin(myTurtleLand.getLand(), new Insets(20, 20, 20, 20));
+		myBorderPane.setCenter(myTurtleLand.getLand());
 		
 		// put everything there on the board
 		display();
@@ -85,7 +84,7 @@ public class Display {
 		myStage.show();
 		myStage.setResizable(false);
 	}
-	
+
 	public double getWidth() {
 		return myWidth;
 	}
@@ -104,5 +103,9 @@ public class Display {
 
 	public ToolBox getTool() {
 		return myTool;
+	}
+	
+	public TurtleLand getTurtleLand() {
+		return myTurtleLand;
 	}
 }

@@ -2,6 +2,7 @@ package frontend.bottom;
 
 import java.util.ResourceBundle;
 
+import backend.Interpreter;
 import frontend.Display;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -100,18 +101,33 @@ public class Console {
 
 	private void checkInput(Event e) {
 		if ((myTextArea.getText().trim() != null && !myTextArea.getText().trim().isEmpty())) {
-			if (myTextArea.getText().trim().charAt(myTextArea.getText().trim().length() - 1) == '[') {
+			int words = myTextArea.getText().trim().split(" ").length;
+			if (myTextArea.getText().trim().split(" ")[words-1].equals("[")) {
 				bracketCount++;
-			} else if (myTextArea.getText().trim().charAt(myTextArea.getText().trim().length() - 1) == ']') {
+			} else if (myTextArea.getText().trim().split(" ")[words-1].equals("]")) {
 				bracketCount--;
 			}
 			if (bracketCount == 0) {
 				String s = myTextArea.getText().replace("\n", " ");
 				myCommands.getValue().add(s);
 				myHistory.addString(s);
+				interpretInput(s);
 				myTextArea.clear();
 				e.consume();
 			}
+		}
+	}
+	
+	public void interpretInput(String input){
+		try {
+			//System.out.println(input);
+			Interpreter.class.newInstance().interpretString(input);
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
