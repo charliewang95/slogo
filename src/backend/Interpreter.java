@@ -3,6 +3,9 @@ package backend;
 import java.util.ArrayList;
 import java.util.List;
 
+import backend.turtlecommands.Forward;
+import backend.turtlecommands.VerticalMove;
+
 public class Interpreter {
 
 	private ProgramParser parse = new ProgramParser();
@@ -10,18 +13,30 @@ public class Interpreter {
 	private List<Node> nodeList = new ArrayList<Node>();
 	private List<Command> commandList = new ArrayList<Command>();
 	private Command tempCommand;
+	private List<String> stringList;
+	private int output =0;
 
 	public Tree interpretString(String input){
 
-		//parse.addPatterns(command);
-		//separateStrings(input);
-		createCommandTree(createCommandList(separateStrings(input)));
+		List<String> stringList = separateStrings(input);
+		List<String> parsedList = new ArrayList<String>();
+
+		parse.addPatterns("resources.languages/English");
+		parse.addPatterns("resources.languages/Syntax");
+		for (int i = 0; i < stringList.size(); i++){
+			parsedList.add(parse.getSymbol(stringList.get(i)));
+			System.out.println(parsedList);
+		}
+		createCommandTree(createCommandList(parsedList));
+		
+		parseTree(commandTree.root);
+		
 		return commandTree;
 
 	}
 
 	private List<String> separateStrings(String input){
-		List<String> stringList = new ArrayList<String>();
+		stringList = new ArrayList<String>();
 		StringBuilder currentString = new StringBuilder();
 		input = input + " ";
 		for (int i = 0; i < input.length(); i++){
@@ -39,7 +54,6 @@ public class Interpreter {
 			}
 
 		}
-		System.out.println(stringList);
 		return stringList;
 
 	}
@@ -49,15 +63,21 @@ public class Interpreter {
 
 		for (int i = 0; i < list.size(); i++){
 
-			if (list.get(i).matches("\\d*")){
-				tempCommand = new MathOperations(list.get(i), null);
+			if (list.get(i).equals("Constant")){
+				tempCommand = new CommandNumber(Integer.parseInt(stringList.get(i)));
+
+				System.out.println(tempCommand.compute(null));
 			}
 			else{
-				tempCommand = new TurtleCommands(list.get(i), null);
+				/*
+				 * this is where we need reflection
+				 */
+				
+				tempCommand = new Forward(new Turtle(0,0));
 			}
+
 			commandList.add(tempCommand);
 		}
-
 		return commandList;
 
 	}
@@ -67,7 +87,8 @@ public class Interpreter {
 		for (int i = 0; i < commandList.size(); i++){
 			Command currCommand = commandList.get(i);
 			Node tempNode = new Node(currCommand);
-			tempNode.value = currCommand;
+			tempNode.type = currCommand.getType();
+			tempNode.value = stringList.get(i);
 			tempNode.children = new ArrayList<Node>();
 			nodeList.add(tempNode);
 		}
@@ -76,29 +97,38 @@ public class Interpreter {
 
 		commandTree.root = nodeList.get(0);
 		Node currNode = commandTree.root;
-		nodeList.remove(nodeList.get(0));
+		//		nodeList.remove(nodeList.get(0));
 
-		for (int i = 0; i < nodeList.size(); i++){
-			if (true){//nodeList.get(i).value.getType().equals("Math")){
+		for (int i = 1; i < nodeList.size(); i++){
 			nodeList.get(i).parent = currNode;
 			currNode.children.add(nodeList.get(i));
-			}
-			if (nodeList.get(i).value.getType().equals("TurtleCommand")){
+
+			if (nodeList.get(i).type.equals("Forward")){
 				currNode = nodeList.get(i);
 			}
 		}
-		System.out.println(commandTree.root);
-		
-		System.out.println(commandTree.root.children);
-		for (int i = 0; i<commandTree.root.children.size(); i++){
-			System.out.println(commandTree.root.children.get(i).children);
-		}
+
 		return commandTree;
 
 	}
-	
-	public void parseTree(Tree tree){
-		
+
+	public int parseTree(Node n){
+		Node myNode = n;
+		if (myNode.children.size()>0){
+			for (int i = myNode.children.size() - 1; i>=0; i--){
+				Node child = myNode.children.get(i);
+				if (child.type.equals("Constant")){
+					System.out.println("Child type is a constant");
+					System.out.println(child.value);
+					output+= Integer.parseInt(child.value);
+				}
+				else{
+					parseTree(child);
+				}
+			}
+		}
+		System.out.println(output);
+		return output;
 	}
 
 	public class Tree{
@@ -111,7 +141,8 @@ public class Interpreter {
 		}
 		public ArrayList<Node> children;
 		public Node parent;
-		public Command value;
+		public String value;
+		public String type;
 	}
-	
+
 }
