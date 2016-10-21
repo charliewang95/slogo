@@ -7,8 +7,12 @@ public class Turtle {
 	private boolean penDown;
 	private int direction;
 	private boolean visable;
+	private int xPixFromCenter;
+	private int yPixFromCenter;
 	
-	public Turtle() {
+	public Turtle(int xPixFromCenter, int yPixFromCenter) {
+		this.xPixFromCenter = xPixFromCenter;
+		this.yPixFromCenter = yPixFromCenter;
 		myX = 0;
 		myY = 0;
 		penDown = false;
@@ -21,6 +25,7 @@ public class Turtle {
 	}
 
 	public void setMyX(int myX) {
+		//needs work with lines
 		this.myX = myX;
 	}
 
@@ -29,6 +34,7 @@ public class Turtle {
 	}
 
 	public void setMyY(int myY) {
+		//needs work with lines
 		this.myY = myY;
 	}
 
@@ -55,5 +61,14 @@ public class Turtle {
 	public void setVisable(boolean visable) {
 		this.visable = visable;
 	}
+	
+	public int getxPixFromCenter() {
+		return xPixFromCenter;
+	}
+
+	public int getyPixFromCenter() {
+		return yPixFromCenter;
+	}
+	
 	
 }

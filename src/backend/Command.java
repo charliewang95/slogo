@@ -1,19 +1,36 @@
 package backend;
 
+import java.util.ArrayList;
+
 public abstract class Command {
-	private String stringText;
 	private String commandType;
+	private int numInputs;
 	
-	public Command(String command, String type){
-		stringText = command;
+	public Command(String type, int inputs){
 		commandType = type;
+		numInputs = inputs;
 	}
 	
-	public String getString(){
-		return stringText;
-	}
 	
 	public String getType(){
 		return commandType;
 	}
+	
+	public int getNumInputs() {
+		return numInputs;
+	}
+	
+	public boolean checkOneNumberInput(ArrayList<Command> inputs) {
+		if(inputs.size() != 1) {
+			//error length
+			return false;
+		} else if(! (inputs.get(0) instanceof CommandNumber) ) {
+			//error not number
+			return false;
+		}
+		return true;
+	}
+	
+	abstract public String compute(ArrayList<Command> inputs);
+	
 }

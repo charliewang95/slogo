@@ -3,6 +3,9 @@ package backend;
 import java.util.ArrayList;
 import java.util.List;
 
+import backend.turtlecommands.Forward;
+import backend.turtlecommands.VerticalMove;
+
 public class Interpreter {
 
 	private ProgramParser parse = new ProgramParser();
@@ -11,10 +14,10 @@ public class Interpreter {
 	private List<Command> commandList = new ArrayList<Command>();
 	private Command tempCommand;
 	private List<String> stringList;
+	private int output =0;
 
 	public Tree interpretString(String input){
 
-		//parse.addPatterns(command);
 		List<String> stringList = separateStrings(input);
 		List<String> parsedList = new ArrayList<String>();
 
@@ -25,7 +28,9 @@ public class Interpreter {
 			System.out.println(parsedList);
 		}
 		createCommandTree(createCommandList(parsedList));
-
+		
+		parseTree(commandTree.root);
+		
 		return commandTree;
 
 	}
@@ -59,10 +64,16 @@ public class Interpreter {
 		for (int i = 0; i < list.size(); i++){
 
 			if (list.get(i).equals("Constant")){
-				tempCommand = new MathOperations(list.get(i), null);
+				tempCommand = new CommandNumber(Integer.parseInt(stringList.get(i)));
+
+				System.out.println(tempCommand.compute(null));
 			}
 			else{
-				tempCommand = new TurtleCommands(list.get(i), null);
+				/*
+				 * this is where we need reflection
+				 */
+				
+				tempCommand = new Forward(new Turtle(0,0));
 			}
 
 			commandList.add(tempCommand);
@@ -76,7 +87,7 @@ public class Interpreter {
 		for (int i = 0; i < commandList.size(); i++){
 			Command currCommand = commandList.get(i);
 			Node tempNode = new Node(currCommand);
-			tempNode.type = currCommand.getString();
+			tempNode.type = currCommand.getType();
 			tempNode.value = stringList.get(i);
 			tempNode.children = new ArrayList<Node>();
 			nodeList.add(tempNode);
@@ -101,8 +112,23 @@ public class Interpreter {
 
 	}
 
-	public void parseTree(Tree tree){
-
+	public int parseTree(Node n){
+		Node myNode = n;
+		if (myNode.children.size()>0){
+			for (int i = myNode.children.size() - 1; i>=0; i--){
+				Node child = myNode.children.get(i);
+				if (child.type.equals("Constant")){
+					System.out.println("Child type is a constant");
+					System.out.println(child.value);
+					output+= Integer.parseInt(child.value);
+				}
+				else{
+					parseTree(child);
+				}
+			}
+		}
+		System.out.println(output);
+		return output;
 	}
 
 	public class Tree{
