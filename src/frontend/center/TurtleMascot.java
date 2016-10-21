@@ -1,5 +1,6 @@
 package frontend.center;
 
+import java.util.ResourceBundle;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -11,6 +12,11 @@ public class TurtleMascot {
     private double myX, myY;
     private boolean isDown;
     
+    private static ResourceBundle resources = ResourceBundle.getBundle(TurtleLand.DEFAULT_RESOURCE_PACKAGE + "Common");
+    private static int environmentWidth = Integer.parseInt(resources.getString("CanvasWidth"));
+    private static int environmentHeight = Integer.parseInt(resources.getString("CanvasHeight"));
+    private static CoordinateConverter converter = new CoordinateConverter(environmentWidth, environmentHeight);
+    
     public TurtleMascot() {
         myX = 0;
         myY = 0;
@@ -19,35 +25,37 @@ public class TurtleMascot {
     }
     
     /**
-     * @param x
+     * @param x - TurtleLand X-coordinate
      */
     public void setX(int x) {
         myX = x;
-        myImage.setLayoutX(x);
+        int layoutX = converter.xFromTurtleLandToLayout(x);
+        myImage.setLayoutX(layoutX);
     }
     
     /**
-     * @return
+     * @return TurtleLand X-coordinate
      */
     public double getX() {
-        //return myX;
-        return myImage.getLayoutX();
+        return myX;
+        //return myImage.getLayoutX(); //returns the layout X-coord
     }
     
     /**
-     * @param y
+     * @param y - TurtleLand Y-coordinate
      */
     public void setY(int y) {
         myY = y;
-        myImage.setLayoutY(y);
+        int layoutY = converter.yFromTurtleLandToLayout(y);
+        myImage.setLayoutY(layoutY);
     }
     
     /**
-     * @return
+     * @return TurtleLand Y-coordinate
      */
     public double getY() {
-        //return myY;
-        return myImage.getLayoutY();
+        return myY;
+        //return myImage.getLayoutY(); //returns the layout Y-coord
     }
     
     public double getDirection() {

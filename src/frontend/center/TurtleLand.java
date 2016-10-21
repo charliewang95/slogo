@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class TurtleLand {
-	private static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
+	public static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
 	private Color defaultGround = Color.LIGHTGREEN;
 	private Pane myPane;
 	private Canvas myCanvas, myBackground;
@@ -47,6 +47,8 @@ public class TurtleLand {
 		gcc.fillOval(centerX, centerY, 20, 20);
 		
 		myTurtle = new TurtleMascot();
+		myTurtle.setX(100);
+		myTurtle.setY(30);
 		
 		myPane.getChildren().add(myBackground);
 		myPane.getChildren().add(myCanvas);
