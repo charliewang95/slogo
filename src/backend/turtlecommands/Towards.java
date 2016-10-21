@@ -1,21 +1,23 @@
 package backend.turtlecommands;
+
 import java.util.ArrayList;
 
-import backend.*;
+import backend.Command;
+import backend.Turtle;
 
-public class Backward extends VerticalMove {
+public class Towards extends SpinMove {
 	
 	private Turtle myTurtle;
 	
-	public Backward(Turtle t) {
+	public Towards(Turtle t) {
 		super();
 		myTurtle = t;
 	}
 	
 	public String compute(ArrayList<Command> inputs) {
 		
-		return computeVerticalMove(myTurtle, inputs, false); //false for moving backward
+		return toward(myTurtle, inputs);
 		
-	}
+	}	
 
 }

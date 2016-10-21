@@ -35,6 +35,20 @@ public abstract class Command {
 		return true;
 	}
 	
+	public boolean checkTwoNumberInput(ArrayList<Command> inputs) {
+		if(inputs.size() != 2) {
+			//error length
+			return false;
+		} else if(! (inputs.get(0) instanceof CommandNumber) ) {
+			//error not number
+			return false;
+		} else if(! (inputs.get(1) instanceof CommandNumber) ) {
+			//error not number
+			return false;
+		}
+		return true;
+	}
+	
 	abstract public String compute(ArrayList<Command> inputs);
 	
 }

@@ -8,11 +8,16 @@ import backend.Turtle;
 
 public abstract class SpinMove extends Command {
 	
+	private final int NORTH = 0;
+//	private final int EAST = 90;
+//	private final int SOUTH = 180;
+//	private final int WEST = 270;
+	
 	public SpinMove() {
 		super("TurtleCommand", 1);
 	}
 	
-	public String turn(Turtle turtle, ArrayList<Command> inputs, boolean clockwise) {
+	protected String turn(Turtle turtle, ArrayList<Command> inputs, boolean clockwise) {
 		
 		//makes sure that there is a single input that is a CommandNumber
 		if(! checkOneNumberInput(inputs) ) {
@@ -29,21 +34,54 @@ public abstract class SpinMove extends Command {
 		
 	}
 	
-	public String set(Turtle turtle, ArrayList<Command> inputs) {
+	protected String set(Turtle turtle, ArrayList<Command> inputs) {
 		
 		//makes sure that there is a single input that is a CommandNumber
 		if(! checkOneNumberInput(inputs) ) {
 			return "0";
 		}
 		
-		int degMove = ( Integer.parseInt( inputs.get(0).compute(null) ) )%360;
-		int currentDirection = turtle.getDirection();
-		int degreesDif = Math.abs(degMove-currentDirection);
-		Integer displacement = Math.min(degreesDif, 360-degreesDif);
+		int oldDirection = turtle.getDirection();
+		int newDirection = ( Integer.parseInt( inputs.get(0).compute(null) ) )%360;
 		
-		turtle.setDirection(degMove);
+		Integer displacement = getAngleDisplacement(oldDirection, newDirection);
+		turtle.setDirection(newDirection);
 		
 		return displacement.toString();
+		
+	}
+	
+	protected String toward(Turtle turtle, ArrayList<Command> inputs) {
+		
+		//makes sure that there are two inputs that are both a CommandNumber
+		if(! checkTwoNumberInput(inputs) ) {
+			return "0";
+		}
+		
+		int oldDirection = turtle.getDirection();
+		int xDis = Integer.parseInt( inputs.get(0).compute(null) ) - turtle.getMyX();
+		int yDis = Integer.parseInt( inputs.get(1).compute(null) ) - turtle.getMyY();
+		int newDirection = calculateAngle(xDis,yDis);
+		
+		Integer displacement = getAngleDisplacement(oldDirection, newDirection);
+		turtle.setDirection(newDirection);
+		
+		return displacement.toString();
+		
+	}
+	
+	private Integer getAngleDisplacement(int a, int b) {
+		int degreesDif = Math.abs(a-b);
+		return Math.min(degreesDif, 360-degreesDif);
+	}
+	
+	private int calculateAngle(int x, int y) {
+		
+		if(x == 0 && y == 0) {
+			return NORTH;
+		}
+		
+		return ( (int) ( 180/Math.PI*Math.atan2(y, x) ) )%360;
 		
 	}
 
