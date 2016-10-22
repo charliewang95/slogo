@@ -100,6 +100,12 @@ public class TurtleLand {
 	public Pane getLand() {
 		return myPane;
 	}
+	
+	public void reset() {
+		myCanvas = new Canvas(myWidth, myHeight);
+		myTurtle.setX(0);
+	    myTurtle.setY(0);
+	}
 
 	public TurtleMascot getTurtle() {
 		return myTurtle;

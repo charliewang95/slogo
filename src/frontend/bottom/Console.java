@@ -28,6 +28,7 @@ import javafx.scene.paint.Color;
 public class Console {
 	private static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
 	private Display myDisplay;
+	private Interpreter myInterpreter;
 	private History myHistory;
 	private TextArea myTextArea;
 	private HBox myHBox;
@@ -37,14 +38,15 @@ public class Console {
 	private int bracketCount = 0;
 	private SimpleObjectProperty<ObservableList<String>> myCommands;
 
-	public Console(Display display) {
+	public Console(Display display, Interpreter inter) {
+		myInterpreter = inter;
 		myDisplay = display;
 		myLeftArea = new VBox();
 		myMidArea = new VBox();
 		myHistory = new History();
 		myCommands = new SimpleObjectProperty<>(FXCollections.observableArrayList());
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Common");
-		
+
 		myHBox = new HBox();
 		myHBox.setPadding(new Insets(10, 10, 10, 10));
 		myHBox.setSpacing(10);
@@ -75,7 +77,7 @@ public class Console {
 			}
 		});
 		myHBox.getChildren().add(myLeftArea);
-		
+
 		myTextArea = new TextArea();
 		myTextArea.setPromptText(myResources.getString("ConsoleHint"));
 		myTextArea.setPrefColumnCount(Integer.parseInt(myResources.getString("ConsoleColumn")));
@@ -88,7 +90,7 @@ public class Console {
 				checkInput(e);
 			}
 		});
-		
+
 		Label label2 = new Label(myResources.getString("HistoryTitle"));
 		GridPane.setMargin(myMidArea, new Insets(0, 0, 0, 10));
 
@@ -100,35 +102,33 @@ public class Console {
 	}
 
 	private void checkInput(Event e) {
+		bracketCount = 0;
 		if ((myTextArea.getText().trim() != null && !myTextArea.getText().trim().isEmpty())) {
-			int words = myTextArea.getText().trim().split(" ").length;
-			if (myTextArea.getText().trim().split(" ")[words-1].equals("[")) {
-				bracketCount++;
-			} else if (myTextArea.getText().trim().split(" ")[words-1].equals("]")) {
-				bracketCount--;
+			String[] words = myTextArea.getText().trim().replace("\n", " ").split(" ");
+			for (String word : words) {
+				if (word.equals("[")) {
+					bracketCount++;
+				} else if (word.equals("]")) {
+					bracketCount--;
+					if (bracketCount < 0) {
+						//ErrorException ee = new ErrorException();
+					}
+				}
 			}
+			System.out.println(bracketCount);
 			if (bracketCount == 0) {
-				String s = myTextArea.getText().replace("\n", " ");
+				String s = myTextArea.getText().replace("\n", " ").replaceAll(" +", " ");
 				myCommands.getValue().add(s);
 				myHistory.addString(s);
-				interpretInput(s);
 				myTextArea.clear();
 				e.consume();
+				interpretInput(s);
 			}
 		}
 	}
-	
-	public void interpretInput(String input){
-		try {
-			//System.out.println(input);
-			Interpreter.class.newInstance().interpretString(input);
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+	public void interpretInput(String input) {
+		myInterpreter.interpretString(input);
 	}
 
 	public HBox getConsole() {
