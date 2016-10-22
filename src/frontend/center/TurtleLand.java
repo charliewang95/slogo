@@ -12,7 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class TurtleLand {
-	private static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
+	public static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
 	private Color defaultGround = Color.LIGHTGREEN;
 	private Pane myPane;
 	private Canvas myCanvas, myBackground;
@@ -22,10 +22,9 @@ public class TurtleLand {
 	private int myHeight;
 	private ResourceBundle myResources;
 	private GraphicsContext gcb, gcc;
-	private int centerX;
-	private int centerY;
-	private int fittedX;
-	private int fittedY;
+	private double centerX;
+	private double centerY;
+	private CoordinateConverter converter;
 
 	public TurtleLand() {
 		myPane = new Pane();
@@ -35,8 +34,11 @@ public class TurtleLand {
 		myHeight = Integer.parseInt(myResources.getString("CanvasHeight"));
 		myPane.setPrefSize(myWidth, myHeight);
 		
-		centerX = myWidth / 2;
-		centerY = myHeight / 2;
+
+		converter = new CoordinateConverter(myWidth,myHeight,TurtleMascot.WIDTH,TurtleMascot.HEIGHT);
+		
+		centerX = myWidth / 2.0;
+		centerY = myHeight / 2.0;
 		
 		myCanvas = new Canvas(myWidth, myHeight);
 		myBackground = new Canvas(myWidth, myHeight);
@@ -48,15 +50,16 @@ public class TurtleLand {
 		gcb.fillRect(0, 0, myWidth, myHeight);
 		
 		gcc.setFill(Color.RED);
-		//gcc.fillOval(centerX, centerY, 20, 20);
+		/*gcc.fillOval(centerX-10, centerY-10, 20, 20);
+		gcc.setLineWidth(2);
+                gcc.setFill(Color.BLUE);
+                gcc.strokeRect(centerX-20, centerY-25, 40, 50);*/ //encloses the turtle in the center
 		
-		myTurtle = new TurtleMascot();
+		myTurtle = new TurtleMascot(converter);
 		myTurtleImage = myTurtle.getImage();
-		
-		fittedX = centerX-myTurtle.WIDTH/2;
-		fittedY = centerY-myTurtle.HEIGHT/2;
-		myTurtle.setX(fittedX);
-		myTurtle.setY(fittedY);
+		myTurtle.setX(0);
+		myTurtle.setY(0);
+
 		
 		myPane.getChildren().add(myBackground);
 		//myPane.getChildren().add(myCanvas);
@@ -82,7 +85,7 @@ public class TurtleLand {
 		myTurtle.setImage(newImageStr);
 		myTurtleImage = myTurtle.getImage();
 		myPane.getChildren().add(myTurtleImage);
-		myTurtle.setX(fittedX);
-		myTurtle.setY(fittedY);
+		myTurtle.setX(0);
+		myTurtle.setY(0);
 	}
 }

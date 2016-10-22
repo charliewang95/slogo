@@ -1,13 +1,17 @@
 package frontend.center;
 
+import java.util.ResourceBundle;
 import java.util.HashMap;
-
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/**
+ * @author Niklas Sjoquist
+ *
+ */
 public class TurtleMascot {
-    public final int WIDTH = 50;
-    public final int HEIGHT = 50;
+    public static final int WIDTH = 50;
+    public static final int HEIGHT = 50;
     
     private ImageView myImage;
     private String myIcon;
@@ -15,47 +19,54 @@ public class TurtleMascot {
     private HashMap<String, String> myAnimalMap;
     private boolean isDown;
     
-    public TurtleMascot() {
+    private static CoordinateConverter converter;
+    
+    public TurtleMascot(CoordinateConverter coordinateConverter) {
         myX = 0;
         myY = 0;
         myAnimalMap = new HashMap<String, String>();
-        myAnimalMap.put("Turtle", "turtlemascot.png");
+        myAnimalMap.put("Turtle", "turtlemascotcropped.png");
         myAnimalMap.put("Elephant", "elephantmascot.png");
         setImage(myAnimalMap.get("Turtle"));
         //setImage(myAnimalMap.get("Elephant"));
         isDown = true;
+        converter = coordinateConverter;
     }
     
     /**
-     * @param x
+     * @param x - TurtleLand X-coordinate
      */
-    public void setX(int x) {
+    public void setX(double x) {
+        // TODO: implement toroidal TurtleLand
         myX = x;
-        myImage.setLayoutX(x);
+        double layoutX = converter.xFromTurtleLandToLayout(x);
+        myImage.setLayoutX(layoutX);
     }
     
     /**
-     * @return
+     * @return TurtleLand X-coordinate
      */
     public double getX() {
-        //return myX;
-        return myImage.getLayoutX();
+        return myX;
+        //return myImage.getLayoutX(); //returns the layout X-coord
     }
     
     /**
-     * @param y
+     * @param y - TurtleLand Y-coordinate
      */
-    public void setY(int y) {
+    public void setY(double y) {
+        // TODO: implement toroidal TurtleLand
         myY = y;
-        myImage.setLayoutY(y);
+        double layoutY = converter.yFromTurtleLandToLayout(y);
+        myImage.setLayoutY(layoutY);
     }
     
     /**
-     * @return
+     * @return TurtleLand Y-coordinate
      */
     public double getY() {
-        //return myY;
-        return myImage.getLayoutY();
+        return myY;
+        //return myImage.getLayoutY(); //returns the layout Y-coord
     }
     
     public double getDirection() {
@@ -78,6 +89,7 @@ public class TurtleMascot {
         Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageFileName));
         
         myImage = new ImageView(image);
+        myImage.setPreserveRatio(true);
         myImage.setFitWidth(WIDTH);
         myImage.setFitHeight(HEIGHT);
     }
