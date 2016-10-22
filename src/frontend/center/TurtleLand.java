@@ -47,11 +47,10 @@ public class TurtleLand {
 		gcb.fillRect(0, 0, myWidth, myHeight);
 		
 		gcc.setFill(Color.RED);
-		gcc.fillOval(centerX, centerY, 20, 20);
+		gcc.fillOval(centerX-10, centerY-10, 20, 20);
 		gcc.setLineWidth(2);
                 gcc.setFill(Color.BLUE);
-                gcc.rect(0, 0, 100, 100);
-                gcc.stroke();
+                gcc.strokeRect(centerX-20, centerY-25, 40, 50); //encloses the turtle in the center
 		
 		myTurtle = new TurtleMascot(converter);
 		myTurtle.setX(0);

@@ -7,8 +7,6 @@ package frontend.center;
  *
  */
 public class CoordinateConverter {
-    private static final double IMAGE_X_OFFSET = 10;
-    private static final double IMAGE_Y_OFFSET = 10;
     
     private double centerX, centerY;
     private double turtleXoffset, turtleYoffset;
@@ -22,8 +20,8 @@ public class CoordinateConverter {
     public CoordinateConverter(int environmentWidth, int environmentHeight, double turtleWidth, double turtleHeight) {
         centerX = environmentWidth/2.0;
         centerY = environmentHeight/2.0;
-        turtleXoffset = turtleWidth/2.0 - IMAGE_X_OFFSET;
-        turtleYoffset = turtleHeight/2.0 - IMAGE_Y_OFFSET;
+        turtleXoffset = turtleWidth/2.0;
+        turtleYoffset = turtleHeight/2.0;
     }
 
     /**
