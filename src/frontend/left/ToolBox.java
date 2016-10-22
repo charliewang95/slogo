@@ -5,11 +5,16 @@ import java.nio.file.Paths;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
@@ -50,8 +55,7 @@ public class ToolBox {
 	private static final Color DEFAULTPENCOLOR = Color.BLACK;
 	private static final Color DEFAULTBACKGROUNDCOLOR = Color.LIGHTGREEN;
 	private String[] turtleList = { "Turtle", "Elephant", "Rocket" };
-	private String[] languageList = { "English", "Chinese", "French", "German", "Italian", "Portuguese", "Russian",
-			"Spanish", "System"};
+	private String[] languageList;
 	private SimpleObjectProperty<ObservableList<String>> myTurtleList;
 	private SimpleObjectProperty<ObservableList<String>> myLanguageList;
 
@@ -68,7 +72,7 @@ public class ToolBox {
 		myTurtleList.getValue().addAll(turtleList);
 		myTurtleList.getValue().add(myResources.getString("AddAnother"));
 		myLanguageList = new SimpleObjectProperty<>(FXCollections.observableArrayList());
-		myLanguageList.getValue().addAll(languageList);
+		myLanguageList.getValue().addAll(getLanguages());
 
 		gp = new GridPane();
 		gp.setPrefSize(Integer.parseInt(myResources.getString("ToolBoxWidth")),
@@ -289,5 +293,16 @@ public class ToolBox {
 
 	public GridPane getTool() {
 		return gp;
+	}
+	
+	public String[] getLanguages(){
+		File dir = new File("src/resources/languages/");
+		if (dir.isDirectory()) {
+		  languageList = dir.list();
+		  for (int i = 0; i < languageList.length; i++){
+			  languageList[i] = languageList[i].substring(0, languageList[i].length()-11);
+		  }
+		}
+		return languageList;
 	}
 }
