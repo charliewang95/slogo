@@ -3,7 +3,6 @@ package backend.turtlecommands;
 import java.util.ArrayList;
 
 import backend.Command;
-import backend.CommandNumber;
 import backend.Turtle;
 
 public abstract class SpinMove extends Command {
