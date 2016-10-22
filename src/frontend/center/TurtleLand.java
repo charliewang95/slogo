@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 import javafx.geometry.Insets;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -16,6 +17,7 @@ public class TurtleLand {
 	private Pane myPane;
 	private Canvas myCanvas, myBackground;
 	private TurtleMascot myTurtle;
+	private ImageView myTurtleImage;
 	private int myWidth;
 	private int myHeight;
 	private ResourceBundle myResources;
@@ -32,6 +34,7 @@ public class TurtleLand {
 		myHeight = Integer.parseInt(myResources.getString("CanvasHeight"));
 		myPane.setPrefSize(myWidth, myHeight);
 		
+
 		converter = new CoordinateConverter(myWidth,myHeight,TurtleMascot.WIDTH,TurtleMascot.HEIGHT);
 		
 		centerX = myWidth / 2.0;
@@ -47,26 +50,42 @@ public class TurtleLand {
 		gcb.fillRect(0, 0, myWidth, myHeight);
 		
 		gcc.setFill(Color.RED);
-		gcc.fillOval(centerX-10, centerY-10, 20, 20);
+		/*gcc.fillOval(centerX-10, centerY-10, 20, 20);
 		gcc.setLineWidth(2);
                 gcc.setFill(Color.BLUE);
-                gcc.strokeRect(centerX-20, centerY-25, 40, 50); //encloses the turtle in the center
+                gcc.strokeRect(centerX-20, centerY-25, 40, 50);*/ //encloses the turtle in the center
 		
 		myTurtle = new TurtleMascot(converter);
+		myTurtleImage = myTurtle.getImage();
 		myTurtle.setX(0);
 		myTurtle.setY(0);
+
 		
 		myPane.getChildren().add(myBackground);
-		myPane.getChildren().add(myCanvas);
-		myPane.getChildren().add(myTurtle.getImage());
+		//myPane.getChildren().add(myCanvas);
+		myPane.getChildren().add(myTurtleImage);
 	}
 
 	public Pane getLand() {
 		return myPane;
 	}
+	
+	public TurtleMascot getTurtle() {
+		return myTurtle;
+	}
 
 	public void changeBackground(Color c) {
 		gcb.setFill(c);
 		gcb.fillRect(0, 0, myWidth, myHeight);
+	}
+	
+	public void changeTurtle(String value) {
+		myPane.getChildren().remove(myTurtleImage);
+		String newImageStr = myTurtle.getAnimalMap().get(value);
+		myTurtle.setImage(newImageStr);
+		myTurtleImage = myTurtle.getImage();
+		myPane.getChildren().add(myTurtleImage);
+		myTurtle.setX(0);
+		myTurtle.setY(0);
 	}
 }

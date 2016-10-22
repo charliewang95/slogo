@@ -1,6 +1,7 @@
 package frontend.center;
 
 import java.util.ResourceBundle;
+import java.util.HashMap;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -9,11 +10,13 @@ import javafx.scene.image.ImageView;
  *
  */
 public class TurtleMascot {
-    public static final int WIDTH = 39;
+    public static final int WIDTH = 50;
     public static final int HEIGHT = 50;
     
     private ImageView myImage;
+    private String myIcon;
     private double myX, myY;
+    private HashMap<String, String> myAnimalMap;
     private boolean isDown;
     
     private static CoordinateConverter converter;
@@ -21,7 +24,11 @@ public class TurtleMascot {
     public TurtleMascot(CoordinateConverter coordinateConverter) {
         myX = 0;
         myY = 0;
-        setImage("turtlemascotcropped.png");
+        myAnimalMap = new HashMap<String, String>();
+        myAnimalMap.put("Turtle", "turtlemascotcropped.png");
+        myAnimalMap.put("Elephant", "elephantmascot.png");
+        setImage(myAnimalMap.get("Turtle"));
+        //setImage(myAnimalMap.get("Elephant"));
         isDown = true;
         converter = coordinateConverter;
     }
@@ -80,6 +87,7 @@ public class TurtleMascot {
      */
     public void setImage (String imageFileName) {
         Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageFileName));
+        
         myImage = new ImageView(image);
         myImage.setPreserveRatio(true);
         myImage.setFitWidth(WIDTH);
@@ -104,5 +112,13 @@ public class TurtleMascot {
      */
     public void setDrawing(boolean penStatus) {
         isDown = penStatus;
+    }
+    
+    public HashMap<String, String> getAnimalMap() {
+    	return myAnimalMap;
+    }
+    
+    public void addAnimal(String key, String value) {
+    	myAnimalMap.put(key, value);
     }
 }

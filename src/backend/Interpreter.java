@@ -3,8 +3,7 @@ package backend;
 import java.util.ArrayList;
 import java.util.List;
 
-import backend.turtlecommands.Forward;
-import backend.turtlecommands.VerticalMove;
+import backend.turtlecommands.*;
 
 public class Interpreter {
 
@@ -14,7 +13,7 @@ public class Interpreter {
 	private List<Command> commandList = new ArrayList<Command>();
 	private Command tempCommand;
 	private List<String> stringList;
-	private int output =0;
+	private int output = 0;
 
 	public Tree interpretString(String input){
 
@@ -89,6 +88,9 @@ public class Interpreter {
 			Node tempNode = new Node(currCommand);
 			tempNode.type = currCommand.getType();
 			tempNode.value = stringList.get(i);
+			if (tempNode.type.equals("Constant")){
+				tempNode.returnValue = currCommand.compute(null);
+			}
 			tempNode.children = new ArrayList<Node>();
 			nodeList.add(tempNode);
 		}
@@ -118,13 +120,21 @@ public class Interpreter {
 			for (int i = myNode.children.size() - 1; i>=0; i--){
 				Node child = myNode.children.get(i);
 				if (child.type.equals("Constant")){
+					
 					System.out.println("Child type is a constant");
-					System.out.println(child.value);
-					output+= Integer.parseInt(child.value);
+					System.out.println(child.returnValue);
+					output+= Integer.parseInt(child.value);//child.value);
 				}
 				else{
 					parseTree(child);
 				}
+				/**
+				 * 
+				 * WE WILL NEED AN UPDATE TURTLE METHOD HERE TO DRAW OUT EVERY STEP
+				 * updateTurtle();
+				 * 
+				 */
+				
 			}
 		}
 		System.out.println(output);
@@ -143,6 +153,7 @@ public class Interpreter {
 		public Node parent;
 		public String value;
 		public String type;
+		public String returnValue;
 	}
 
 }
