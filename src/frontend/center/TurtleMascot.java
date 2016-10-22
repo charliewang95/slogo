@@ -4,32 +4,35 @@ import java.util.ResourceBundle;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/**
+ * @author Niklas Sjoquist
+ *
+ */
 public class TurtleMascot {
-    public static final int WIDTH = 75;
-    public static final int HEIGHT = 75;
+    public static final int WIDTH = 39;
+    public static final int HEIGHT = 50;
     
     private ImageView myImage;
     private double myX, myY;
     private boolean isDown;
     
-    private static ResourceBundle resources = ResourceBundle.getBundle(TurtleLand.DEFAULT_RESOURCE_PACKAGE + "Common");
-    private static int environmentWidth = Integer.parseInt(resources.getString("CanvasWidth"));
-    private static int environmentHeight = Integer.parseInt(resources.getString("CanvasHeight"));
-    private static CoordinateConverter converter = new CoordinateConverter(environmentWidth, environmentHeight);
+    private static CoordinateConverter converter;
     
-    public TurtleMascot() {
+    public TurtleMascot(CoordinateConverter coordinateConverter) {
         myX = 0;
         myY = 0;
-        setImage("turtlemascot.png");
+        setImage("turtlemascotcropped.png");
         isDown = true;
+        converter = coordinateConverter;
     }
     
     /**
      * @param x - TurtleLand X-coordinate
      */
-    public void setX(int x) {
+    public void setX(double x) {
+        // TODO: implement toroidal TurtleLand
         myX = x;
-        int layoutX = converter.xFromTurtleLandToLayout(x);
+        double layoutX = converter.xFromTurtleLandToLayout(x);
         myImage.setLayoutX(layoutX);
     }
     
@@ -44,9 +47,10 @@ public class TurtleMascot {
     /**
      * @param y - TurtleLand Y-coordinate
      */
-    public void setY(int y) {
+    public void setY(double y) {
+        // TODO: implement toroidal TurtleLand
         myY = y;
-        int layoutY = converter.yFromTurtleLandToLayout(y);
+        double layoutY = converter.yFromTurtleLandToLayout(y);
         myImage.setLayoutY(layoutY);
     }
     
@@ -77,6 +81,7 @@ public class TurtleMascot {
     public void setImage (String imageFileName) {
         Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageFileName));
         myImage = new ImageView(image);
+        myImage.setPreserveRatio(true);
         myImage.setFitWidth(WIDTH);
         myImage.setFitHeight(HEIGHT);
     }

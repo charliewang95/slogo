@@ -22,6 +22,7 @@ public class TurtleLand {
 	private GraphicsContext gcb, gcc;
 	private double centerX;
 	private double centerY;
+	private CoordinateConverter converter;
 
 	public TurtleLand() {
 		myPane = new Pane();
@@ -30,6 +31,8 @@ public class TurtleLand {
 		myWidth = Integer.parseInt(myResources.getString("CanvasWidth"));
 		myHeight = Integer.parseInt(myResources.getString("CanvasHeight"));
 		myPane.setPrefSize(myWidth, myHeight);
+		
+		converter = new CoordinateConverter(myWidth,myHeight,TurtleMascot.WIDTH,TurtleMascot.HEIGHT);
 		
 		centerX = myWidth / 2.0;
 		centerY = myHeight / 2.0;
@@ -45,10 +48,14 @@ public class TurtleLand {
 		
 		gcc.setFill(Color.RED);
 		gcc.fillOval(centerX, centerY, 20, 20);
+		gcc.setLineWidth(2);
+                gcc.setFill(Color.BLUE);
+                gcc.rect(0, 0, 100, 100);
+                gcc.stroke();
 		
-		myTurtle = new TurtleMascot();
-		myTurtle.setX(100);
-		myTurtle.setY(30);
+		myTurtle = new TurtleMascot(converter);
+		myTurtle.setX(0);
+		myTurtle.setY(0);
 		
 		myPane.getChildren().add(myBackground);
 		myPane.getChildren().add(myCanvas);
