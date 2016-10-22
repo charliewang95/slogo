@@ -20,6 +20,10 @@ public class Turtle {
 		visable = true;
 	}
 	
+	public void eraseLines() {
+		//erase all lines drawn
+	}
+	
 	public int getMyX() {
 		return myX;
 	}
