@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 
 /**
@@ -36,4 +37,14 @@ public class ErrorException{
 		    // ... user chose CANCEL or closed the dialog
 		}
 	}
+	
+	public ErrorException(String message, String option1, String option2) {
+	Alert alert = new Alert(AlertType.CONFIRMATION);
+	alert.setTitle("ErrorTitle");
+	alert.setHeaderText(null);
+	alert.setContentText(message);
+
+	ButtonType buttonTypeOne = new ButtonType(option1);
+	ButtonType buttonTypeTwo = new ButtonType(option2);
+	ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
 }

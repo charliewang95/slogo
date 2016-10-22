@@ -101,14 +101,15 @@ public class Console {
 
 	private void checkInput(Event e) {
 		if ((myTextArea.getText().trim() != null && !myTextArea.getText().trim().isEmpty())) {
-			int words = myTextArea.getText().trim().split(" ").length;
-			if (myTextArea.getText().trim().split(" ")[words-1].equals("[")) {
+			String[] words = myTextArea.getText().trim().replace("\n", " ").split(" ");
+			int len = words.length;
+			if (words[len-1].equals("[")) {
 				bracketCount++;
-			} else if (myTextArea.getText().trim().split(" ")[words-1].equals("]")) {
+			} else if (words[len-1].equals("]")) {
 				bracketCount--;
 			}
 			if (bracketCount == 0) {
-				String s = myTextArea.getText().replace("\n", " ");
+				String s = myTextArea.getText().replace("\n", " ").replaceAll(" +", " ");
 				myCommands.getValue().add(s);
 				myHistory.addString(s);
 				interpretInput(s);
