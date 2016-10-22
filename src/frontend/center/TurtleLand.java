@@ -63,9 +63,26 @@ public class TurtleLand {
 		myTurtle.setX(0);
 		myTurtle.setY(0);
 		
+		right45fd100();
+		
 		myPane.getChildren().add(myBackground);
-		//myPane.getChildren().add(myCanvas);
+		myPane.getChildren().add(myCanvas);
 		myPane.getChildren().add(myTurtleImage);
+	}
+	
+	private void right45fd100() {
+	    myTurtle.setDirection(45);
+	    myTurtle.setX(100);
+	    myTurtle.setY(100);
+	    gcc.setLineWidth(2);
+	    gcc.setFill(Color.BLUE);
+	    gcc.strokeLine(centerX, centerY, converter.xFromTurtleLandToLayout(100), converter.yFromTurtleLandToLayout(100));
+	    
+	    /*gcc.beginPath();
+	    gcc.moveTo(centerX, centerY);
+	    gcc.lineTo(converter.xFromTurtleLandToLayout(100), converter.yFromTurtleLandToLayout(100));
+	    gcc.closePath();
+	    gcc.stroke();*/
 	}
 
 	public Pane getLand() {
