@@ -2,25 +2,35 @@ package backend;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.reflect.*;
 
+import frontend.left.ToolBox;
 import backend.turtlecommands.*;
 
 public class Interpreter {
+	
+	public Interpreter(){
+		
+	}
 
 	private ProgramParser parse = new ProgramParser();
-	private Tree commandTree = new Tree();
-	private List<Node> nodeList = new ArrayList<Node>();
-	private List<Command> commandList = new ArrayList<Command>();
+	private Tree commandTree;
+	private List<Node> nodeList;
+	private List<Command> commandList;
 	private Command tempCommand;
 	private List<String> stringList;
 	private int output = 0;
+	private String myLanguage;
 
 	public Tree interpretString(String input){
 
 		List<String> stringList = separateStrings(input);
 		List<String> parsedList = new ArrayList<String>();
-
-		parse.addPatterns("resources.languages/English");
+		output = 0;
+		if (myLanguage == null){
+			myLanguage = "English";
+		}
+		parse.addPatterns("resources.languages/" + myLanguage);
 		parse.addPatterns("resources.languages/Syntax");
 		for (int i = 0; i < stringList.size(); i++){
 			parsedList.add(parse.getSymbol(stringList.get(i)));
@@ -59,20 +69,48 @@ public class Interpreter {
 
 	public List<Command> createCommandList(List<String> list) {
 		//  must handle all types when converting to commands
-
+		commandList = new ArrayList<Command>();
 		for (int i = 0; i < list.size(); i++){
 
 			if (list.get(i).equals("Constant")){
 				tempCommand = new CommandNumber(Integer.parseInt(stringList.get(i)));
-
-				System.out.println(tempCommand.compute(null));
+				//System.out.println(tempCommand.compute(null));
+				
 			}
 			else{
 				/*
 				 * this is where we need reflection
 				 */
+				try {
+					Class<?> cls = Class.forName("backend.turtlecommands." + list.get(i));
+					Constructor<?> cst = cls.getConstructor(Turtle.class);
+					Object instance = cst.newInstance(new Turtle(0,0));
+					tempCommand = (Command) instance;
+					
+					// reflection issues?```
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InstantiationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NoSuchMethodException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SecurityException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
-				tempCommand = new Forward(new Turtle(0,0));
 			}
 
 			commandList.add(tempCommand);
@@ -82,7 +120,8 @@ public class Interpreter {
 	}
 
 	public Tree createCommandTree(List<Command> commandList){
-
+		commandTree = new Tree();
+		nodeList = new ArrayList<Node>();
 		for (int i = 0; i < commandList.size(); i++){
 			Command currCommand = commandList.get(i);
 			Node tempNode = new Node(currCommand);
@@ -123,11 +162,18 @@ public class Interpreter {
 					
 					System.out.println("Child type is a constant");
 					System.out.println(child.returnValue);
-					output+= Integer.parseInt(child.value);//child.value);
+					output += Integer.parseInt(child.value);
+					child.parent.returnValue += output;
+					System.out.println(child.parent.type);
 				}
 				else{
+					if (child.returnValue == null){
 					parseTree(child);
-				}
+					}
+					else{
+						output += Integer.parseInt(child.returnValue);
+					}
+				};
 				/**
 				 * 
 				 * WE WILL NEED AN UPDATE TURTLE METHOD HERE TO DRAW OUT EVERY STEP
@@ -154,6 +200,10 @@ public class Interpreter {
 		public String value;
 		public String type;
 		public String returnValue;
+	}
+	
+	public void setLanguage(String language){
+		myLanguage = language;
 	}
 
 }

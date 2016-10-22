@@ -15,9 +15,13 @@ public class Turtle {
 		this.yPixFromCenter = yPixFromCenter;
 		myX = 0;
 		myY = 0;
-		penDown = false;
+		penDown = true;
 		direction = 0;
 		visable = true;
+	}
+	
+	public void eraseLines() {
+		//erase all lines drawn
 	}
 	
 	public int getMyX() {

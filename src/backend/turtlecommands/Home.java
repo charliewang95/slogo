@@ -5,19 +5,23 @@ import java.util.ArrayList;
 import backend.Command;
 import backend.Turtle;
 
-public class Right extends SpinMove {
+public class Home extends PositionMove {
 	
 	private Turtle myTurtle;
-	
-	public Right(Turtle t) {
+
+	public Home(Turtle t) {
 		super();
 		myTurtle = t;
 	}
-		
+	
 	public String compute(ArrayList<Command> inputs) {
+		if(! checkNoInputs(inputs) ) {
+			return "0";
+		}
 		
-		return turn(myTurtle, inputs, true); //true for clockwise direction
+		return setPosition(0, 0, myTurtle);
 		
 	}
+	
 
 }

@@ -3,11 +3,16 @@ package frontend.center;
 import java.io.File;
 import java.util.ResourceBundle;
 
+import javax.imageio.ImageIO;
+
+import frontend.ErrorException;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -37,7 +42,7 @@ public class TurtleLand {
 
 	public TurtleLand() {
 		myPane = new Pane();
-
+		
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Common");
 		myWidth = Integer.parseInt(myResources.getString("CanvasWidth"));
 		myHeight = Integer.parseInt(myResources.getString("CanvasHeight"));
@@ -95,6 +100,14 @@ public class TurtleLand {
 	public Pane getLand() {
 		return myPane;
 	}
+	
+	public void reset() {
+		gcc.clearRect(0, 0, myWidth, myHeight);
+		myTurtle.setX(0);
+	    myTurtle.setY(0);
+	    myTurtle.setDirection(0);
+	    myTurtle.setDrawing(true);
+	}
 
 	public TurtleMascot getTurtle() {
 		return myTurtle;
@@ -116,5 +129,17 @@ public class TurtleLand {
 	
 	public void setPenColor(Color color) {
 		myPenColor = color;
+	}
+	
+	public void printGround() {
+		WritableImage wi = new WritableImage(myWidth, myHeight);
+		myBackground.snapshot(null, wi);
+		myCanvas.snapshot(null, wi);
+		File file = new File("output.png");
+		try {
+			ImageIO.write(SwingFXUtils.fromFXImage(wi, null), "png", file);
+		} catch (Exception e) {
+			//TODO:
+		}
 	}
 }

@@ -3,7 +3,6 @@ package backend.turtlecommands;
 import java.util.ArrayList;
 
 import backend.Command;
-import backend.CommandNumber;
 import backend.Turtle;
 
 public abstract class SpinMove extends Command {
@@ -24,7 +23,7 @@ public abstract class SpinMove extends Command {
 			return "0";
 		}
 		
-		Integer degMove = Integer.parseInt( inputs.get(0).compute(null) );
+		Integer degMove = (int) (double) getNumCommand(inputs, 0);
 		int newDirection = (clockwise) ? turtle.getDirection()+degMove : turtle.getDirection()-degMove;
 		newDirection %= 360;
 		
@@ -42,7 +41,7 @@ public abstract class SpinMove extends Command {
 		}
 		
 		int oldDirection = turtle.getDirection();
-		int newDirection = ( Integer.parseInt( inputs.get(0).compute(null) ) )%360;
+		int newDirection = ( getNumCommand(inputs, 0) )%360;
 		
 		Integer displacement = getAngleDisplacement(oldDirection, newDirection);
 		turtle.setDirection(newDirection);
@@ -59,8 +58,8 @@ public abstract class SpinMove extends Command {
 		}
 		
 		int oldDirection = turtle.getDirection();
-		int xDis = Integer.parseInt( inputs.get(0).compute(null) ) - turtle.getMyX();
-		int yDis = Integer.parseInt( inputs.get(1).compute(null) ) - turtle.getMyY();
+		int xDis = getNumCommand(inputs, 0) - turtle.getMyX();
+		int yDis = getNumCommand(inputs, 1) - turtle.getMyY();
 		int newDirection = calculateAngle(xDis,yDis);
 		
 		Integer displacement = getAngleDisplacement(oldDirection, newDirection);

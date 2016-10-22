@@ -3,11 +3,11 @@ import java.util.ArrayList;
 
 import backend.*;
 
-public class Back extends VerticalMove {
+public class Backward extends VerticalMove {
 	
 	private Turtle myTurtle;
 	
-	public Back(Turtle t) {
+	public Backward(Turtle t) {
 		super();
 		myTurtle = t;
 	}

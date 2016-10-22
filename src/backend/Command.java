@@ -24,6 +24,14 @@ public abstract class Command {
 		return this.getClass().toString();
 	}
 	
+	public boolean checkNoInputs(ArrayList<Command> inputs) {
+		if(inputs.size() != 0) {
+			//error length
+			return false;
+		}
+		return true;
+	}
+	
 	public boolean checkOneNumberInput(ArrayList<Command> inputs) {
 		if(inputs.size() != 1) {
 			//error length
@@ -47,6 +55,14 @@ public abstract class Command {
 			return false;
 		}
 		return true;
+	}
+	
+	protected Double getNumCommandDouble(ArrayList<Command> inputs, int index) {
+		return Double.parseDouble(inputs.get(index).compute(null));
+	}
+	
+	protected Integer getNumCommand(ArrayList<Command> inputs, int index) {
+		return (int) (double) Double.parseDouble(inputs.get(index).compute(null));
 	}
 	
 	abstract public String compute(ArrayList<Command> inputs);
