@@ -10,7 +10,7 @@ public class XCor extends Command {
 	private Turtle myTurtle;
 	
 	public XCor(Turtle t) {
-		super("TurtleCommand", 0);
+		super("TurtleQuery", 0);
 		myTurtle = t;
 	}
 

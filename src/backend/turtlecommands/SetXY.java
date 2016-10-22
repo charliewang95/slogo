@@ -19,8 +19,8 @@ public class SetXY extends PositionMove {
 			return "0";
 		}
 		
-		int newX = getNumCommand(inputs, 0);
-		int newY = getNumCommand(inputs, 1);
+		int newX = (int) (double) getNumCommand(inputs, 0);
+		int newY = (int) (double) getNumCommand(inputs, 1);
 		
 		return setPosition(newX, newY, myTurtle);
 		
