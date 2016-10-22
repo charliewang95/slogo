@@ -20,7 +20,7 @@ import javafx.scene.image.ImageView;
  * @modifier Charlie Wang
  */
 public class TurtleMascot {
-    public static final int WIDTH = 50;
+    public static final int WIDTH = 39;
     public static final int HEIGHT = 50;
     
     private ImageView myImage;
@@ -50,7 +50,7 @@ public class TurtleMascot {
     public void setX(double x) {
         // TODO: implement toroidal TurtleLand
         myX = x;
-        double layoutX = converter.xFromTurtleLandToLayout(x);
+        double layoutX = converter.xFromTurtleToLayout(x);
         myImage.setLayoutX(layoutX);
     }
     
@@ -68,7 +68,7 @@ public class TurtleMascot {
     public void setY(double y) {
         // TODO: implement toroidal TurtleLand
         myY = y;
-        double layoutY = converter.yFromTurtleLandToLayout(y);
+        double layoutY = converter.yFromTurtleToLayout(y);
         myImage.setLayoutY(layoutY);
     }
     
