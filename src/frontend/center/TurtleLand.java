@@ -1,10 +1,12 @@
 package frontend.center;
 
+import java.io.File;
 import java.util.ResourceBundle;
 
 import javafx.geometry.Insets;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -57,9 +59,9 @@ public class TurtleLand {
 		
 		myTurtle = new TurtleMascot(converter);
 		myTurtleImage = myTurtle.getImage();
+
 		myTurtle.setX(0);
 		myTurtle.setY(0);
-
 		
 		myPane.getChildren().add(myBackground);
 		//myPane.getChildren().add(myCanvas);
@@ -80,12 +82,16 @@ public class TurtleLand {
 	}
 	
 	public void changeTurtle(String value) {
-		myPane.getChildren().remove(myTurtleImage);
-		String newImageStr = myTurtle.getAnimalMap().get(value);
-		myTurtle.setImage(newImageStr);
-		myTurtleImage = myTurtle.getImage();
-		myPane.getChildren().add(myTurtleImage);
+		Image newImage = myTurtle.getAnimalMap().get(value);
+		myTurtle.setImage(newImage);
 		myTurtle.setX(0);
 		myTurtle.setY(0);
 	}
+	
+	public void changeTurtle(String name, File file) {
+		myTurtle.convertToImage(name, file);
+		myTurtle.setX(0);
+		myTurtle.setY(0);
+	}
+	
 }
