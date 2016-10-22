@@ -23,6 +23,20 @@ public class CoordinateConverter {
         turtleXoffset = turtleWidth/2.0;
         turtleYoffset = turtleHeight/2.0;
     }
+    
+    public double[] fromTurtleLandToLayout(double x, double y) {
+        double layoutX = xFromTurtleLandToLayout(x);
+        double layoutY = yFromTurtleLandToLayout(y);
+        return makePoint(layoutX, layoutY);
+    }
+    
+    public double xFromTurtleLandToLayout(double x) {
+        return x + centerX;
+    }
+    
+    public double yFromTurtleLandToLayout(double y) {
+        return (-1)*y + centerY;
+    }
 
     /**
      * Converts a point from TurtleLand coordinates to layout coordinates.
@@ -32,9 +46,9 @@ public class CoordinateConverter {
      *         array[0] - x,
      *         array[1] - y
      */
-    public double[] fromTurtleLandToLayout(double x, double y) {
-        double layoutX = xFromTurtleLandToLayout(x);
-        double layoutY = yFromTurtleLandToLayout(y);
+    public double[] fromTurtleToLayout(double x, double y) {
+        double layoutX = xFromTurtleToLayout(x);
+        double layoutY = yFromTurtleToLayout(y);
         return makePoint(layoutX, layoutY);
     }
     
@@ -43,7 +57,7 @@ public class CoordinateConverter {
      * @param x
      * @return
      */
-    public double xFromTurtleLandToLayout(double x) {
+    public double xFromTurtleToLayout(double x) {
         return x + centerX - turtleXoffset;
     }
     
@@ -52,7 +66,7 @@ public class CoordinateConverter {
      * @param y
      * @return
      */
-    public double yFromTurtleLandToLayout(double y) {
+    public double yFromTurtleToLayout(double y) {
         return (-1)*y + centerY - turtleYoffset;
     }
     
@@ -64,9 +78,9 @@ public class CoordinateConverter {
      *         array[0] - x,
      *         array[1] - y
      */
-    public double[] fromLayoutToTurtleLand(double x, double y) {
-        double turtleLandX = xFromLayoutToTurtleLand(x);
-        double turtleLandY = yFromLayoutToTurtleLand(y);
+    public double[] fromLayoutToTurtle(double x, double y) {
+        double turtleLandX = xFromLayoutToTurtle(x);
+        double turtleLandY = yFromLayoutToTurtle(y);
         return makePoint(turtleLandX, turtleLandY);
     }
     
@@ -75,7 +89,7 @@ public class CoordinateConverter {
      * @param x
      * @return
      */
-    public double xFromLayoutToTurtleLand(double x) {
+    public double xFromLayoutToTurtle(double x) {
         return x - centerX;
     }
     
@@ -84,7 +98,7 @@ public class CoordinateConverter {
      * @param y
      * @return
      */
-    public double yFromLayoutToTurtleLand(double y) {
+    public double yFromLayoutToTurtle(double y) {
         return -(y - centerY);
     }
     
