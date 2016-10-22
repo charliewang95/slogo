@@ -1,7 +1,5 @@
 package backend.turtlecommands;
 
-import java.util.ArrayList;
-
 import backend.Command;
 import backend.Turtle;
 
