@@ -17,10 +17,12 @@ import javafx.scene.shape.Rectangle;
  * @author Charlie Wang
  * 
  * @modifier Niklas Sjoquist
+ *
  */
 public class TurtleLand {
 	public static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
 	private Color defaultGround = Color.LIGHTGREEN;
+	private Color myPenColor = Color.BLACK;
 	private Pane myPane;
 	private Canvas myCanvas, myBackground;
 	private TurtleMascot myTurtle;
@@ -55,7 +57,7 @@ public class TurtleLand {
 		gcb.setFill(defaultGround);
 		gcb.fillRect(0, 0, myWidth, myHeight);
 
-		gcc.setFill(Color.RED);
+		//gcc.setFill(Color.RED);
 		/*
 		 * gcc.fillOval(centerX-10, centerY-10, 20, 20); gcc.setLineWidth(2);
 		 * gcc.setFill(Color.BLUE); gcc.strokeRect(centerX-20, centerY-25, 40,
@@ -80,7 +82,7 @@ public class TurtleLand {
 	    myTurtle.setX(100);
 	    myTurtle.setY(100);
 	    gcc.setLineWidth(2);
-	    gcc.setFill(Color.BLUE);
+	    gcc.setStroke(myPenColor);
 	    gcc.strokeLine(centerX, centerY, converter.xFromTurtleLandToLayout(100), converter.yFromTurtleLandToLayout(100));
 	    
 	    /*gcc.beginPath();
@@ -102,17 +104,17 @@ public class TurtleLand {
 		gcb.setFill(c);
 		gcb.fillRect(0, 0, myWidth, myHeight);
 	}
-
+	
 	public void changeTurtle(String value) {
 		Image newImage = myTurtle.getAnimalMap().get(value);
 		myTurtle.setImage(newImage);
-		myTurtle.setX(0);
-		myTurtle.setY(0);
 	}
 
 	public void changeTurtle(String name, File file) {
 		myTurtle.convertToImage(name, file);
-		myTurtle.setX(0);
-		myTurtle.setY(0);
+	}
+	
+	public void setPenColor(Color color) {
+		myPenColor = color;
 	}
 }

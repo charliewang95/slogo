@@ -175,10 +175,9 @@ public class ToolBox {
 	private void addPaletteEvent(ColorPicker cp, String function) {
 		cp.setOnAction(t -> {
 			if (function.equals("SetPenColor")) {
-				setPenEvent();
+				setPenEvent(cp.getValue());
 			} else if (function.equals("SetBackground")) {
 				setBackgroundEvent(cp.getValue());
-				System.out.print(1);
 			}
 		});
 	}
@@ -264,8 +263,8 @@ public class ToolBox {
 		stage.show();
 	}
 
-	private void setPenEvent() {
-		// TODO change pen color
+	private void setPenEvent(Color color) {
+		myDisplay.getTurtleLand().setPenColor(color);
 	}
 
 	private void setBackgroundEvent(Color c) {
