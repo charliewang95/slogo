@@ -10,6 +10,7 @@ public class Forward extends VerticalMove {
 	public Forward(Turtle t) {
 		super();
 		myTurtle = t;
+		System.out.println(this.getClass().getName().toString());
 	}
 		
 	public String compute(ArrayList<Command> inputs) {
