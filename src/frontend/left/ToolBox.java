@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
 import javax.imageio.ImageIO;
 
 import frontend.Display;
+import frontend.ErrorException;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -188,8 +189,7 @@ public class ToolBox {
 				try {
 					setTurtleEvent(box, box.getValue());
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					ErrorException ee = new ErrorException("Option Not found");
 				}
 			} else if (refer.equals("SetLanguage")) {
 
@@ -247,7 +247,7 @@ public class ToolBox {
 	}
 
 	private void setSaveImageEvent() {
-		// TODO save image
+		myDisplay.getTurtleLand().printGround();
 	}
 
 	private void setOnlineHelpEvent() {
