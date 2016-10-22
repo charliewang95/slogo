@@ -1,5 +1,5 @@
 package frontend;
 
-public class ErrorReport {
+public class ErrorReport{
 
 }
