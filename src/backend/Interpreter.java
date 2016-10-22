@@ -13,7 +13,7 @@ public class Interpreter {
 	private List<Command> commandList = new ArrayList<Command>();
 	private Command tempCommand;
 	private List<String> stringList;
-	private int output =0;
+	private int output = 0;
 
 	public Tree interpretString(String input){
 
