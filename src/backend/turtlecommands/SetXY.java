@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import backend.Command;
 import backend.Turtle;
 
-public class SetXY extends Command {
+public class SetXY extends PositionMove {
 	
 	private Turtle myTurtle;
 
 	public SetXY(Turtle t) {
-		super("TurtleCommand", 1);
+		super();
 		myTurtle = t;
 	}
 	
@@ -21,19 +21,8 @@ public class SetXY extends Command {
 		
 		int newX = getNumCommand(inputs, 0);
 		int newY = getNumCommand(inputs, 1);
-		Integer distance = computeDistance(newX,newY);
 		
-		//should this draw a line?
-		myTurtle.setMyX(newX);
-		myTurtle.setMyY(newY);
-		
-		return distance.toString();
-		
-	}
-	
-	private Integer computeDistance(int x, int y) {
-		
-		return (int) Math.sqrt( Math.pow(x-myTurtle.getMyX(), 2) + Math.pow(y-myTurtle.getMyY(), 2) );
+		return setPosition(newX, newY, myTurtle);
 		
 	}
 	

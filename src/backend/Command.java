@@ -24,6 +24,14 @@ public abstract class Command {
 		return this.getClass().toString();
 	}
 	
+	public boolean checkNoInputs(ArrayList<Command> inputs) {
+		if(inputs.size() != 0) {
+			//error length
+			return false;
+		}
+		return true;
+	}
+	
 	public boolean checkOneNumberInput(ArrayList<Command> inputs) {
 		if(inputs.size() != 1) {
 			//error length

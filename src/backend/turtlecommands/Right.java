@@ -9,7 +9,7 @@ public class Right extends SpinMove {
 	
 	private Turtle myTurtle;
 	
-	Right(Turtle t) {
+	public Right(Turtle t) {
 		super();
 		myTurtle = t;
 	}
