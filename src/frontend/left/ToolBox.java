@@ -6,22 +6,32 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+
+import java.awt.image.BufferedImage;
+import java.util.Optional;
 import java.util.ResourceBundle;
+
+import javax.imageio.ImageIO;
 
 import frontend.Display;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -38,9 +48,9 @@ public class ToolBox {
 	private static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
 	private static final Color DEFAULTPENCOLOR = Color.BLACK;
 	private static final Color DEFAULTBACKGROUNDCOLOR = Color.LIGHTGREEN;
-	private String[] turtleList = { "Turtle", "Elephant" };
+	private String[] turtleList = { "Turtle", "Elephant", "Rocket" };
 	private String[] languageList = { "English", "Chinese", "French", "German", "Italian", "Portuguese", "Russian",
-			"Spanish", "System" };
+			"Spanish", "System"};
 	private SimpleObjectProperty<ObservableList<String>> myTurtleList;
 	private SimpleObjectProperty<ObservableList<String>> myLanguageList;
 
@@ -58,7 +68,6 @@ public class ToolBox {
 		myTurtleList.getValue().add(myResources.getString("AddAnother"));
 		myLanguageList = new SimpleObjectProperty<>(FXCollections.observableArrayList());
 		myLanguageList.getValue().addAll(languageList);
-		myLanguageList.getValue().add(myResources.getString("AddAnother"));
 
 		gp = new GridPane();
 		gp.setPrefSize(Integer.parseInt(myResources.getString("ToolBoxWidth")),
@@ -178,7 +187,7 @@ public class ToolBox {
 		box.setOnAction(t -> {
 			if (refer.equals("SetTurtle")) {
 				try {
-					setTurtleEvent(box.getValue());
+					setTurtleEvent(box, box.getValue());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -189,27 +198,45 @@ public class ToolBox {
 		});
 	}
 
-	private void setTurtleEvent(String value) throws IOException {
+	private void setTurtleEvent(ComboBox<String> box, String value) throws IOException {
 		if (value.equals(myResources.getString("AddAnother"))) {
 			FileChooser fileChooser = new FileChooser();
-			fileChooser.setTitle("Open Resource File");
+			fileChooser.setTitle(myResources.getString("AddAnotherTitle"));
+			FileChooser.ExtensionFilter filterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG");
+            FileChooser.ExtensionFilter filterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
+            fileChooser.getExtensionFilters().addAll(filterJPG, filterPNG);
+            
+            
 			File newImage = fileChooser.showOpenDialog(null);
-			if (newImage != null && newImage.getName().endsWith(".png")) {
-				myTurtleList.getValue().add(newImage.getName());
-				Path from = Paths.get(newImage.getParent(), newImage.getName());
-				Path to = Paths.get("/Users/charliewang95/Documents/DUKE/2016 Fall/CS 308/workspace/slogo_team12/src", newImage.getName());
-				Files.copy(from, to, REPLACE_EXISTING);
-				//System.out.println(myDisplay.getTurtleLand().getTurtle().getAnimalMap().values());
-				myDisplay.getTurtleLand().getTurtle().addAnimal(newImage.getName(), newImage.getName());
-				//System.out.println(myDisplay.getTurtleLand().getTurtle().getAnimalMap().values());
-				myDisplay.getTurtleLand().changeTurtle(newImage.getName());
+			String newName = newImage.getName().replace(".png", "").replace(".jpg", "");
+			TextInputDialog dialog = new TextInputDialog("");
+			dialog.setTitle(null);
+			dialog.setHeaderText(null);
+			dialog.setContentText("Please name the image:");
+			Optional<String> result = dialog.showAndWait();
+			if (result.isPresent()){
+			    newName = result.get();
+			}
+			
+			try {
+				myTurtleList.getValue().remove(myResources.getString("AddAnother"));
+				myTurtleList.getValue().add(newName);
+				myTurtleList.getValue().add(myResources.getString("AddAnother"));
+				myDisplay.getTurtleLand().changeTurtle(newName, newImage);
+			} catch (Exception e) {
+				//TODO 
+			}
+		} else {
+			try {
+				myDisplay.getTurtleLand().changeTurtle(value);
+			} catch (Exception e) {
+				//TODO 
 			}
 		}
-		try {
-			myDisplay.getTurtleLand().changeTurtle(value);
-		} catch (Exception e) {
+	}
 
-		}
+	private void setLanguageEvent(String value) {
+
 	}
 
 	private void setResetEvent() {
@@ -242,7 +269,6 @@ public class ToolBox {
 	}
 
 	private void setBackgroundEvent(Color c) {
-		// TODO change background color
 		myDisplay.getTurtleLand().changeBackground(c);
 	}
 
