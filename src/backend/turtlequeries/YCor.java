@@ -10,7 +10,7 @@ public class YCor extends Command {
 	private Turtle myTurtle;
 	
 	public YCor(Turtle t) {
-		super("TurtleCommand", 0);
+		super("TurtleQuery", 0);
 		myTurtle = t;
 	}
 

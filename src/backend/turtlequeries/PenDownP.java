@@ -12,14 +12,14 @@ public class PenDownP extends Command {
 	private final String PEN_IS_UP = "0";
 	
 	public PenDownP(Turtle t) {
-		super("TurtleCommand", 0);
+		super("TurtleQuery", 0);
 		myTurtle = t;
 	}
 
 	public String compute(ArrayList<Command> inputs) {
 		
 		if(! checkNoInputs(inputs) ) {
-			return "0";
+			return "0"; //might change because that is the expected output
 		}
 		
 		if(myTurtle.isPenDown()) {

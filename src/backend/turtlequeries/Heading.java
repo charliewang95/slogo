@@ -10,7 +10,7 @@ public class Heading extends Command {
 	private Turtle myTurtle;
 	
 	public Heading(Turtle t) {
-		super("TurtleCommand", 0);
+		super("TurtleQuery", 0);
 		myTurtle = t;
 	}
 

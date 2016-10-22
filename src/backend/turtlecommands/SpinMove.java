@@ -23,7 +23,7 @@ public abstract class SpinMove extends Command {
 			return "0";
 		}
 		
-		Integer degMove = getNumCommand(inputs, 0);
+		Integer degMove = (int) (double) getNumCommand(inputs, 0);
 		int newDirection = (clockwise) ? turtle.getDirection()+degMove : turtle.getDirection()-degMove;
 		newDirection %= 360;
 		

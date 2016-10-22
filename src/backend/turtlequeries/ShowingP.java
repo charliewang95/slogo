@@ -12,7 +12,7 @@ public class ShowingP extends Command {
 	private final String IS_HIDING = "0";
 	
 	public ShowingP(Turtle t) {
-		super("TurtleCommand", 0);
+		super("TurtleQuery", 0);
 		myTurtle = t;
 	}
 

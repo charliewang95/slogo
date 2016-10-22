@@ -18,7 +18,7 @@ public abstract class VerticalMove extends Command {
 			return "0";
 		}
 		
-		Integer pix = getNumCommand(inputs, 0);
+		Integer pix = (int) (double) getNumCommand(inputs, 0);
 		
 		//compute displacement
 		//because direction 0 is north, xDis is sine and yDis is cosine
