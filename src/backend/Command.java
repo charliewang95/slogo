@@ -49,6 +49,10 @@ public abstract class Command {
 		return true;
 	}
 	
+	protected Integer getNumCommand(ArrayList<Command> inputs, int index) {
+		return Integer.parseInt(inputs.get(index).compute(null));
+	}
+	
 	abstract public String compute(ArrayList<Command> inputs);
 	
 }

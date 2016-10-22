@@ -3,7 +3,6 @@ package backend.turtlecommands;
 import java.util.ArrayList;
 
 import backend.Command;
-import backend.CommandNumber;
 import backend.Turtle;
 
 public abstract class VerticalMove extends Command {
@@ -19,7 +18,7 @@ public abstract class VerticalMove extends Command {
 			return "0";
 		}
 		
-		Integer pix = Integer.parseInt( inputs.get(0).compute(null) );
+		Integer pix = getNumCommand(inputs, 0);
 		
 		//compute displacement
 		//because direction 0 is north, xDis is sine and yDis is cosine
