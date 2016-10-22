@@ -102,9 +102,11 @@ public class TurtleLand {
 	}
 	
 	public void reset() {
-		myCanvas = new Canvas(myWidth, myHeight);
+		gcc.clearRect(0, 0, myWidth, myHeight);
 		myTurtle.setX(0);
 	    myTurtle.setY(0);
+	    myTurtle.setDirection(0);
+	    myTurtle.setDrawing(true);
 	}
 
 	public TurtleMascot getTurtle() {

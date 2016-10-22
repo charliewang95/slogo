@@ -82,7 +82,8 @@ public class Interpreter {
 	}
 
 	public Tree createCommandTree(List<Command> commandList){
-
+		System.out.println("checking "+commandList.size());
+		System.out.println("checking "+stringList.size());
 		for (int i = 0; i < commandList.size(); i++){
 			Command currCommand = commandList.get(i);
 			Node tempNode = new Node(currCommand);

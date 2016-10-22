@@ -118,6 +118,7 @@ public class Console {
 			System.out.println(bracketCount);
 			if (bracketCount == 0) {
 				String s = myTextArea.getText().replace("\n", " ").replaceAll(" +", " ");
+				System.out.println("checking "+s);
 				myCommands.getValue().add(s);
 				myHistory.addString(s);
 				myTextArea.clear();
@@ -135,6 +136,10 @@ public class Console {
 		return myHBox;
 	}
 
+	public void setLanguage(String language) {
+		//myInterpreter.setLanguage(language);
+	}
+	
 	public History getHistory() {
 		return myHistory;
 	}
