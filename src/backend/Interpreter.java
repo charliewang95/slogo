@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.lang.reflect.*;
 
+import frontend.left.ToolBox;
 import backend.turtlecommands.*;
 
 public class Interpreter {
@@ -13,9 +14,9 @@ public class Interpreter {
 	}
 
 	private ProgramParser parse = new ProgramParser();
-	private Tree commandTree = new Tree();
-	private List<Node> nodeList = new ArrayList<Node>();
-	private List<Command> commandList = new ArrayList<Command>();
+	private Tree commandTree;
+	private List<Node> nodeList;
+	private List<Command> commandList;
 	private Command tempCommand;
 	private List<String> stringList;
 	private int output = 0;
@@ -25,7 +26,10 @@ public class Interpreter {
 
 		List<String> stringList = separateStrings(input);
 		List<String> parsedList = new ArrayList<String>();
-		myLanguage = "English";
+		output = 0;
+		if (myLanguage == null){
+			myLanguage = "English";
+		}
 		parse.addPatterns("resources.languages/" + myLanguage);
 		parse.addPatterns("resources.languages/Syntax");
 		for (int i = 0; i < stringList.size(); i++){
@@ -65,13 +69,13 @@ public class Interpreter {
 
 	public List<Command> createCommandList(List<String> list) {
 		//  must handle all types when converting to commands
-
+		commandList = new ArrayList<Command>();
 		for (int i = 0; i < list.size(); i++){
 
 			if (list.get(i).equals("Constant")){
 				tempCommand = new CommandNumber(Integer.parseInt(stringList.get(i)));
-
-				System.out.println(tempCommand.compute(null));
+				//System.out.println(tempCommand.compute(null));
+				
 			}
 			else{
 				/*
@@ -81,7 +85,6 @@ public class Interpreter {
 					Class<?> cls = Class.forName("backend.turtlecommands." + list.get(i));
 					Constructor<?> cst = cls.getConstructor(Turtle.class);
 					Object instance = cst.newInstance(new Turtle(0,0));
-					
 					tempCommand = (Command) instance;
 					
 					// reflection issues?```
@@ -108,7 +111,6 @@ public class Interpreter {
 					e.printStackTrace();
 				}
 				
-//				tempCommand = new Forward(new Turtle(0,0));
 			}
 
 			commandList.add(tempCommand);
@@ -117,19 +119,9 @@ public class Interpreter {
 
 	}
 
-	private Command obj(Turtle turtle) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private Command cls(Turtle turtle) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public Tree createCommandTree(List<Command> commandList){
-		System.out.println("checking "+commandList.size());
-		System.out.println("checking "+stringList.size());
+		commandTree = new Tree();
+		nodeList = new ArrayList<Node>();
 		for (int i = 0; i < commandList.size(); i++){
 			Command currCommand = commandList.get(i);
 			Node tempNode = new Node(currCommand);

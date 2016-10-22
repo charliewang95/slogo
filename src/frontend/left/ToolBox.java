@@ -2,9 +2,10 @@ package frontend.left;
 
 import java.io.File;
 import java.io.IOException;
-
 import java.util.Optional;
 import java.util.ResourceBundle;
+
+import backend.Interpreter;
 import frontend.Display;
 import frontend.ErrorException;
 import javafx.beans.property.SimpleObjectProperty;
