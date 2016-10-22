@@ -72,7 +72,7 @@ public class TurtleLand {
 	    myTurtle.setX(100);
 	    myTurtle.setY(100);
 	    gcc.setLineWidth(2);
-	    gcc.setFill(Color.BLUE);
+	    gcc.setStroke(Color.BLUE);
 	    gcc.strokeLine(centerX, centerY, converter.xFromTurtleLandToLayout(100), converter.yFromTurtleLandToLayout(100));
 	    
 	    /*gcc.beginPath();
