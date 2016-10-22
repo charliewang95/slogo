@@ -162,7 +162,7 @@ public class Interpreter {
 					
 					System.out.println("Child type is a constant");
 					System.out.println(child.returnValue);
-					output+= Integer.parseInt(child.value);
+					output += Integer.parseInt(child.value);
 					child.parent.returnValue += output;
 					System.out.println(child.parent.type);
 				}
