@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
@@ -17,7 +16,8 @@ import javafx.scene.image.ImageView;
 
 /**
  * @author Niklas Sjoquist
- *
+ * 
+ * @modifier Charlie Wang
  */
 public class TurtleMascot {
     public static final int WIDTH = 50;
@@ -91,19 +91,6 @@ public class TurtleMascot {
     public void setDirection(double direction) {
         myImage.setRotate(direction);
     }
-    
-    /**
-     * Sets the ImageView of the Sprite
-     * @param imageFileName
-     */
-//    public void setImage (String imageFileName) {
-//        Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageFileName));
-//        
-//        myImage = new ImageView(image);
-//        myImage.setPreserveRatio(true);
-//        myImage.setFitWidth(WIDTH);
-//        myImage.setFitHeight(HEIGHT);
-//    }
 
 	/**
 	 * Convert a file to a image and save it to the map

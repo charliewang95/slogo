@@ -13,6 +13,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * @author Charlie Wang
+ * 
+ * @modifier Niklas Sjoquist
+ */
 public class TurtleLand {
 	public static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
 	private Color defaultGround = Color.LIGHTGREEN;
@@ -30,48 +35,48 @@ public class TurtleLand {
 
 	public TurtleLand() {
 		myPane = new Pane();
-		
+
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Common");
 		myWidth = Integer.parseInt(myResources.getString("CanvasWidth"));
 		myHeight = Integer.parseInt(myResources.getString("CanvasHeight"));
 		myPane.setPrefSize(myWidth, myHeight);
-		
 
-		converter = new CoordinateConverter(myWidth,myHeight,TurtleMascot.WIDTH,TurtleMascot.HEIGHT);
-		
+		converter = new CoordinateConverter(myWidth, myHeight, TurtleMascot.WIDTH, TurtleMascot.HEIGHT);
+
 		centerX = myWidth / 2.0;
 		centerY = myHeight / 2.0;
-		
+
 		myCanvas = new Canvas(myWidth, myHeight);
 		myBackground = new Canvas(myWidth, myHeight);
-		
+
 		gcb = myBackground.getGraphicsContext2D();
 		gcc = myCanvas.getGraphicsContext2D();
-		
+
 		gcb.setFill(defaultGround);
 		gcb.fillRect(0, 0, myWidth, myHeight);
-		
+
 		gcc.setFill(Color.RED);
-		/*gcc.fillOval(centerX-10, centerY-10, 20, 20);
-		gcc.setLineWidth(2);
-                gcc.setFill(Color.BLUE);
-                gcc.strokeRect(centerX-20, centerY-25, 40, 50);*/ //encloses the turtle in the center
-		
+		/*
+		 * gcc.fillOval(centerX-10, centerY-10, 20, 20); gcc.setLineWidth(2);
+		 * gcc.setFill(Color.BLUE); gcc.strokeRect(centerX-20, centerY-25, 40,
+		 * 50);
+		 */ // encloses the turtle in the center
+
 		myTurtle = new TurtleMascot(converter);
 		myTurtleImage = myTurtle.getImage();
 
 		myTurtle.setX(0);
 		myTurtle.setY(0);
-		
+
 		myPane.getChildren().add(myBackground);
-		//myPane.getChildren().add(myCanvas);
+		// myPane.getChildren().add(myCanvas);
 		myPane.getChildren().add(myTurtleImage);
 	}
 
 	public Pane getLand() {
 		return myPane;
 	}
-	
+
 	public TurtleMascot getTurtle() {
 		return myTurtle;
 	}
@@ -80,18 +85,18 @@ public class TurtleLand {
 		gcb.setFill(c);
 		gcb.fillRect(0, 0, myWidth, myHeight);
 	}
-	
+
 	public void changeTurtle(String value) {
 		Image newImage = myTurtle.getAnimalMap().get(value);
 		myTurtle.setImage(newImage);
 		myTurtle.setX(0);
 		myTurtle.setY(0);
 	}
-	
+
 	public void changeTurtle(String name, File file) {
 		myTurtle.convertToImage(name, file);
 		myTurtle.setX(0);
 		myTurtle.setY(0);
 	}
-	
+
 }
