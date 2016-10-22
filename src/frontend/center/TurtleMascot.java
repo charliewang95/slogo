@@ -20,7 +20,7 @@ import javafx.scene.image.ImageView;
  *
  */
 public class TurtleMascot {
-    public static final int WIDTH = 39;
+    public static final int WIDTH = 50;
     public static final int HEIGHT = 50;
     
     private ImageView myImage;
