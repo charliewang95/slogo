@@ -2,6 +2,7 @@ package frontend;
 
 import java.util.ResourceBundle;
 
+import backend.Interpreter;
 import frontend.bottom.Console;
 import frontend.bottom.History;
 import frontend.center.TurtleLand;
@@ -28,6 +29,7 @@ import javafx.stage.Stage;
 public class Display {
 	private static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
 
+	private Interpreter myInterpreter;
 	private BorderPane myBorderPane;
 	private Console myConsole;
 	private History myHistory;
@@ -51,13 +53,15 @@ public class Display {
 		myScene = new Scene(myRoot, myWidth, myHeight);
 	}
 
-	public void init() {
+	public void init(Interpreter inter) {
+		myInterpreter = inter;
+		
 		myBorderPane = new BorderPane();
 		myBorderPane.setPrefSize(myWidth, myHeight);
 		myBorderPane.setStyle("-fx-background-color: linear-gradient(from 5% 5% to 95% 95%, #C1D6F6, #76ACFE)");
 
 		// set up console and history
-		myConsole = new Console(this);
+		myConsole = new Console(this, myInterpreter);
 		myBorderPane.setBottom(myConsole.getConsole());
 
 		// set up toolbar

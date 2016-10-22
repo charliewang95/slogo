@@ -100,6 +100,14 @@ public class TurtleLand {
 	public Pane getLand() {
 		return myPane;
 	}
+	
+	public void reset() {
+		gcc.clearRect(0, 0, myWidth, myHeight);
+		myTurtle.setX(0);
+	    myTurtle.setY(0);
+	    myTurtle.setDirection(0);
+	    myTurtle.setDrawing(true);
+	}
 
 	public TurtleMascot getTurtle() {
 		return myTurtle;

@@ -9,14 +9,16 @@ import javafx.stage.Stage;
 public class Playground {
 	private Display myDisplay;
 	private Stage myStage;
+	private Interpreter myInterpreter;
 	
 	public Playground(Stage s) {
 		myStage = s;
+		myInterpreter = new Interpreter();
 	}
 	
 	public void init() {
 		myDisplay = new Display(myStage);
-		myDisplay.init();
+		myDisplay.init(myInterpreter);
 	}
 	
 	public void interpretInput(String input){

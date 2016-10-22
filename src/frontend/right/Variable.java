@@ -28,8 +28,6 @@ public class Variable {
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Common");
 		lvVariable = new ListView<>();
 		lvCommands = new ListView<>();
-		lvVariable.setStyle("-fx-background-color: #FEB03B");
-		lvCommands.setStyle("-fx-background-color: #FEB03B");
 
 		lvVariable.setPrefSize(Integer.parseInt(myResources.getString("VariableWidth")),
 				Integer.parseInt(myResources.getString("VariableHeight")));
