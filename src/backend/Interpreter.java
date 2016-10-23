@@ -4,14 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.lang.reflect.*;
 
+import main.Playground;
 import frontend.left.ToolBox;
 
 public class Interpreter {
 	
-	public Interpreter(){
-		
+	public Interpreter(Playground myPlay){
+		this.myPlayground = myPlay;
 	}
 
+	private Playground myPlayground;
 	private ProgramParser parse;
 	private Tree commandTree;
 	private List<Node> nodeList;
@@ -93,7 +95,7 @@ public class Interpreter {
 					System.out.println(list.get(i));
 					cls = Class.forName("backend." + getType(list.get(i))+"." + list.get(i));
 					cst = cls.getConstructor(Turtle.class);
-					instance = cst.newInstance(new Turtle(0,0));
+					instance = cst.newInstance(new Turtle(0,0,myPlayground));
 					tempCommand = (Command) instance;
 					
 					// reflection issues?```
