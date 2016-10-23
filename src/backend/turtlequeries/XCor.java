@@ -20,7 +20,7 @@ public class XCor extends Command {
 			return "0";
 		}
 		
-		return ( (Integer) myTurtle.getMyX() ).toString();
+		return ( (Double) myTurtle.getMyX() ).toString();
 		
 	}
 
