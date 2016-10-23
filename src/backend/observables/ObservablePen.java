@@ -2,6 +2,10 @@ package backend.observables;
 
 import java.util.Observable;
 
+/**
+ * @author Niklas Sjoquist
+ *
+ */
 public class ObservablePen extends Observable {
     private boolean myPen = true;
 

@@ -4,6 +4,10 @@ import java.util.Observable;
 import backend.observables.ObservablePen;
 import frontend.center.TurtleMascot;
 
+/**
+ * @author Niklas Sjoquist
+ *
+ */
 public class PenObserver extends TurtleObserver {
     private ObservablePen turtlePen = null;
 

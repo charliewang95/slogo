@@ -4,6 +4,10 @@ import java.util.Observable;
 import backend.observables.ObservablePosition;
 import frontend.center.TurtleMascot;
 
+/**
+ * @author Niklas Sjoquist
+ *
+ */
 public class PositionObserver extends TurtleObserver {
     private ObservablePosition turtlePosition = null;
 

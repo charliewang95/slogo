@@ -1,7 +1,7 @@
 package frontend.coordinates;
 
 /**
- * Converts coordinates between TurteLand (0,0 in the center), to layout coordinates (0,0 in the top left).
+ * Converts coordinates to another coordinate frame.
  * 
  * @author Niklas Sjoquist
  *

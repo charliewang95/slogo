@@ -3,16 +3,18 @@ package frontend.observers;
 import java.util.Observer;
 import frontend.center.TurtleMascot;
 
+/**
+ * @author Niklas Sjoquist
+ *
+ */
 public abstract class TurtleObserver implements Observer {
     private TurtleMascot myTurtle;
 
     public TurtleObserver(TurtleMascot turtle) {
             myTurtle = turtle;
     }
-
-    ///////////////////////////////////////////////////////////////
-    // Only subclasses should be able to access the TurtleMascot //
-    ///////////////////////////////////////////////////////////////
+    
+    // Only subclasses should be able to access the TurtleMascot
 
     protected void setPosition(double[] pos) {
             myTurtle.setPosition(pos);

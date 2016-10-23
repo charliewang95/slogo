@@ -1,5 +1,10 @@
 package frontend.coordinates;
 
+/**
+ * Converts layout coordinates to TurtleLand coordinates.
+ * @author Niklas Sjoquist
+ *
+ */
 public class LayoutToTurtleLand extends CoordinateConverter {
 
     public LayoutToTurtleLand (int environmentWidth, int environmentHeight) {
