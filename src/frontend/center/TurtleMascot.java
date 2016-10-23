@@ -2,6 +2,7 @@ package frontend.center;
 
 import java.util.ResourceBundle;
 import java.util.HashMap;
+import java.util.List;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -9,10 +10,13 @@ import java.util.HashMap;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
-
+import frontend.coordinates.CoordinateConverter;
+import frontend.coordinates.TurtleLandToLayout;
+import frontend.coordinates.TurtleToLayout;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.PathElement;
 
 /**
  * @author Niklas Sjoquist
@@ -27,11 +31,12 @@ public class TurtleMascot {
     private double myX, myY;
     private HashMap<String, Image> myAnimalMap;
     private boolean isDown;
+    private Pen myPen;
     
-    private static CoordinateConverter converter;
+    private TurtleToLayout converter;
     
-    public TurtleMascot(CoordinateConverter coordinateConverter) {
-        converter = coordinateConverter;
+    public TurtleMascot(int environmentWidth, int environmentHeight) {
+        converter = new TurtleToLayout(environmentWidth,environmentHeight,WIDTH,HEIGHT);
         
         myImage = new ImageView();
 		myX = 0;
@@ -42,6 +47,7 @@ public class TurtleMascot {
 		myAnimalMap.put("Rocket", new Image(getClass().getClassLoader().getResourceAsStream("rocket.png")));
 		setImage(myAnimalMap.get("Turtle"));
 		isDown = true;
+		myPen = new Pen();
     }
     
     /**
@@ -67,7 +73,7 @@ public class TurtleMascot {
     public void setX(double x) {
         // TODO: implement toroidal TurtleLand
         myX = x;
-        double layoutX = converter.xFromTurtleToLayout(x);
+        double layoutX = converter.convertX(x);
         myImage.setLayoutX(layoutX);
     }
     
@@ -85,7 +91,7 @@ public class TurtleMascot {
     public void setY(double y) {
         // TODO: implement toroidal TurtleLand
         myY = y;
-        double layoutY = converter.yFromTurtleToLayout(y);
+        double layoutY = converter.convertY(y);
         myImage.setLayoutY(layoutY);
     }
     
@@ -176,5 +182,9 @@ public class TurtleMascot {
 
 	public int getHeight() {
 		return HEIGHT;
+	}
+	
+	public List<PathElement> getPenPath() {
+	    return myPen.getPathElements();
 	}
 }
