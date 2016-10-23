@@ -54,6 +54,14 @@ public class TurtleMascot {
     }
     
     /**
+     * @return an array representing the coordinates of the Turtle.
+     */
+    public double[] getPosition() {
+        double[] pos = {getX(), getY()};
+        return pos;
+    }
+    
+    /**
      * @param x - TurtleLand X-coordinate
      */
     public void setX(double x) {
