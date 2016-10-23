@@ -2,6 +2,8 @@ package frontend.bottom;
 
 import java.util.ResourceBundle;
 
+import javax.swing.JOptionPane;
+
 import backend.Interpreter;
 import frontend.Display;
 import javafx.beans.property.SimpleObjectProperty;
@@ -123,7 +125,12 @@ public class Console {
 				myHistory.addString(s);
 				myTextArea.clear();
 				e.consume();
+				try{
 				interpretInput(s);
+				}
+				catch(Exception exception){
+					JOptionPane.showMessageDialog(null, "Your chosen language does not contain the Command you gave. Click OK to continue and try a new Command.");
+				}
 			}
 		}
 	}
