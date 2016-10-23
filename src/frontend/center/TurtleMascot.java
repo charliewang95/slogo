@@ -45,6 +45,15 @@ public class TurtleMascot {
     }
     
     /**
+     * Sets coordinates of the Turtle.
+     * @param pos - an array representing the coordinates of the Turtle (x=pos[0], y=pos[1]).
+     */
+    public void setPosition(double[] pos) {
+        double x = pos[0]; double y = pos[1];
+        setX(x); setY(y);
+    }
+    
+    /**
      * @param x - TurtleLand X-coordinate
      */
     public void setX(double x) {
