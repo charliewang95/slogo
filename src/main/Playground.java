@@ -13,7 +13,7 @@ public class Playground {
 	
 	public Playground(Stage s) {
 		myStage = s;
-		myInterpreter = new Interpreter();
+		myInterpreter = new Interpreter(this);
 	}
 	
 	public void init() {

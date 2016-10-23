@@ -4,14 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.lang.reflect.*;
 
+import main.Playground;
 import frontend.left.ToolBox;
 
 public class Interpreter {
 	
-	public Interpreter(){
-		
+	public Interpreter(Playground myPlay){
+		this.myPlayground = myPlay;
 	}
 
+	private Playground myPlayground;
 	private ProgramParser parse;
 	private Tree commandTree;
 	private List<Node> nodeList;
@@ -20,7 +22,7 @@ public class Interpreter {
 	private List<String> stringList;
 	private int output = 0;
 	private String myLanguage;
-	private Turtle turtle = new Turtle(0,0);
+	private Turtle turtle = new Turtle(0,0, myPlayground);
 
 	public Tree interpretString(String input){
 		parse = new ProgramParser();
