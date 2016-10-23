@@ -113,14 +113,10 @@ public class TurtleLand {
 	    //List<PathElement> pathList = myTurtle.getPenPath();
 	    
 	    gcc.beginPath();
-	    System.out.println("Draw Path");
 	    path.stream().forEach((pe) -> {
-	        System.out.println("Path Element");
 	        if (pe.getClass() == MoveTo.class) {
-	            System.out.println("\tMoveTo");
 	            gcc.moveTo(((MoveTo)pe).getX(), ((MoveTo)pe).getY());
 	        } else if (pe.getClass() == LineTo.class) {
-	            System.out.println("\tLineTo");
 	            gcc.lineTo(((LineTo)pe).getX(), ((LineTo)pe).getY());
 	        }
 	    });
