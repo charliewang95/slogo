@@ -8,7 +8,7 @@ import frontend.center.TurtleMascot;
  * @author Niklas Sjoquist
  *
  */
-public abstract class DirectionObserver extends TurtleObserver {
+public class DirectionObserver extends TurtleObserver {
     private ObservableDirection turtleDirection = null;
 
     public DirectionObserver(TurtleMascot turtle, ObservableDirection direction) {
