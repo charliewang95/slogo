@@ -2,6 +2,7 @@ package frontend.center;
 
 import java.io.File;
 import java.util.List;
+import java.util.Observer;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
@@ -9,6 +10,7 @@ import javax.imageio.ImageIO;
 import frontend.ErrorException;
 import frontend.coordinates.CoordinateConverter;
 import frontend.coordinates.TurtleLandToLayout;
+import frontend.observers.*;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
@@ -80,75 +82,17 @@ public class TurtleLand {
 		// Execute a test path
 		/*List<PathElement> testpath = setTestPath();
 		drawPath(testpath);
-
-		testMoveTurtle();
 		testMoveTurtle();*/
+		
 		myPane.getChildren().add(myBackground);
 		myPane.getChildren().add(myCanvas);
 		myPane.getChildren().add(myTurtleImage);
 	}
-
-	private List<PathElement> setTestPath() {
-		List<PathElement> path = myTurtle.getPenPath();
-		path.add(new MoveTo(converter.convertX(0), converter.convertY(0)));
-		path.add(new LineTo(converter.convertX(50), converter.convertY(100)));
-		path.add(new LineTo(converter.convertX(-100), converter.convertY(-40)));
-		return path;
-	}
-
-	private void testMoveTurtle() {
-		// set position
-		myTurtle.setX(-100);
-		myTurtle.setY(-40);
-
-		// set bearing
-		Point2D startPt = new Point2D(50, 100);
-		Point2D endPt = new Point2D(-100, -40);
-		myTurtle.setDirection(getSegmentBearing(startPt, endPt));
-	}
-
-	private void drawPath(List<PathElement> path) {
-		gcc.setStroke(myPenColor);
-		gcc.setLineWidth(1);
-
-		gcc.beginPath();
-		path.stream().forEach((pe) -> {
-			if (pe.getClass() == MoveTo.class) {
-				gcc.moveTo(((MoveTo) pe).getX(), ((MoveTo) pe).getY());
-			} else if (pe.getClass() == LineTo.class) {
-				gcc.lineTo(((LineTo) pe).getX(), ((LineTo) pe).getY());
-			}
-		});
-		gcc.stroke();
-		gcc.closePath();
-	}
-
-	/**
-	 * Returns the bearing direction (in degrees) from a starting point to and
-	 * ending point.
-	 * 
-	 * @param startingPoint
-	 * @param endingPoint
-	 * @return bearing direction, in degrees, from 0 to 360
-	 */
-	private double getSegmentBearing(Point2D startingPoint, Point2D endingPoint) {
-		Point2D originPoint = new Point2D(endingPoint.getX() - startingPoint.getX(),
-				endingPoint.getY() - startingPoint.getY()); // get origin point
-															// to origin by
-															// subtracting end
-															// from start
-		double bearingRadians = Math.atan2(originPoint.getY(), originPoint.getX()); // get
-																					// bearing
-																					// in
-																					// radians
-		double bearingDegrees = bearingRadians * (180.0 / Math.PI); // convert
-																	// to
-																	// degrees
-		bearingDegrees = (bearingDegrees > 0.0 ? bearingDegrees : (360.0 + bearingDegrees)); // correct
-																								// discontinuity
-		return bearingDegrees;
-	}
         
+	// The following commented methods that draw a path
+	// have been moved to the TurtleObserver class
+	// (left here for testing purposes)
+	
         /*private List<PathElement> setTestPath() {
             List<PathElement> path = myTurtle.getPenPath();
             path.add(new MoveTo(converter.convertX(0),converter.convertY(0)));
@@ -199,11 +143,14 @@ public class TurtleLand {
 	        double bearingDegrees = bearingRadians * (180.0 / Math.PI); // convert to degrees
 	        bearingDegrees = (bearingDegrees > 0.0 ? bearingDegrees : (360.0 + bearingDegrees)); // correct discontinuity
 	        return bearingDegrees;
-<<<<<<< HEAD
 	    }*/
 
 	public Pane getLand() {
 		return myPane;
+	}
+	
+	public GraphicsContext getGraphicsContext() {
+	        return gcc;
 	}
 
 	public void reset() {

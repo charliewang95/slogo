@@ -21,7 +21,7 @@ public class HideTurtle extends Command {
 			return "0"; //might change because that is the expected output
 		}
 		
-		myTurtle.setVisable(false);
+		myTurtle.setVisible(false);
 		
 		return ZERO;
 		

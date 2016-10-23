@@ -22,7 +22,7 @@ public class ShowingP extends Command {
 			return "0"; //might change because that is the expected output
 		}
 		
-		if(myTurtle.isVisable()) {
+		if(myTurtle.isVisible()) {
 			return IS_VISABLE;
 		} else {
 			return IS_HIDING;
