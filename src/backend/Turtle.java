@@ -1,82 +1,103 @@
 package backend;
 
+import java.util.List;
+import java.util.Observer;
+import backend.observables.*;
+import frontend.observers.DirectionObserver;
+import frontend.observers.PenObserver;
+import frontend.observers.PositionObserver;
+import frontend.observers.VisibilityObserver;
 import main.Playground;
 
 public class Turtle {
 
-	private int myX;
+	/*private int myX;
 	private int myY;
 	private boolean penDown;
 	private int direction;
 	private boolean visable;
 	private int xPixFromCenter;
-	private int yPixFromCenter;
+	private int yPixFromCenter;*/
 	private Playground playGround;
 	
-	public Turtle(int xPixFromCenter, int yPixFromCenter, Playground playG) {
-		this.xPixFromCenter = xPixFromCenter;
-		this.yPixFromCenter = yPixFromCenter;
-		myX = 0;
-		myY = 0;
-		penDown = true;
-		direction = 0;
-		visable = true;
-		playGround = playG;
+	// Observables
+	private ObservableDirection myDirection = new ObservableDirection(0);
+	private ObservablePen myPenDown = new ObservablePen(true);
+	private ObservablePosition myPosition = new ObservablePosition(0,0);
+	private ObservableVisibility myVisibility = new ObservableVisibility(true);
+	
+	public Turtle(int x, int y, Playground playground, List<Observer> observers) {
+	        myPosition.setX(x);
+	        myPosition.setY(y);
+	        playGround = playground;
+	        
+	        // Add Observers
+	        for (Observer obs : observers) {
+	            if (obs.getClass() == DirectionObserver.class) {
+	                myDirection.addObserver(obs);
+	            } else if (obs.getClass() == PenObserver.class) {
+	                myPenDown.addObserver(obs);
+	            } else if (obs.getClass() == PositionObserver.class) {
+	                myPosition.addObserver(obs);
+	            } else if (obs.getClass() == VisibilityObserver.class) {
+	                myVisibility.addObserver(obs);
+	            }
+	        }
 	}
 	
 	public void eraseLines() {
 		playGround.clearScreen();
 	}
 	
-	public int getMyX() {
-		return myX;
+	public double getMyX() {
+		//return myX;
+		return myPosition.getX();
 	}
 
-	public void setMyX(int myX) {
+	public void setMyX(double myX) {
 		//needs work with lines
-		this.myX = myX;
+		//this.myX = myX;
+		myPosition.setX(myX);
 	}
 
-	public int getMyY() {
+	public double getMyY() {
 		return myY;
 	}
 
-	public void setMyY(int myY) {
+	public void setMyY(double myY) {
 		//needs work with lines
-		this.myY = myY;
+		//this.myY = myY;
+		myPosition.setY(myY);
 	}
 
 	public boolean isPenDown() {
-		return penDown;
+		//return penDown;
+		return myPenDown.getPenStatus();
 	}
 
 	public void setPenDown(boolean penDown) {
-		this.penDown = penDown;
+		//this.penDown = penDown;
+		myPenDown.setPen(penDown);
 	}
 
-	public int getDirection() {
-		return direction;
+	public double getDirection() {
+		//return direction;
+		return myDirection.getDirection();
 	}
 
-	public void setDirection(int direction) {
-		this.direction = direction;
+	public void setDirection(double direction) {
+		//this.direction = direction;
+		myDirection.setDirection(direction);
 	}
 
 	public boolean isVisable() {
-		return visable;
+		//return visable;
+		return myVisibility.getVisibility();
 	}
 
-	public void setVisable(boolean visable) {
-		this.visable = visable;
+	public void setVisable(boolean visible) {
+		//this.visable = visible;
+		myVisibility.setVisibility(visible);
 	}
-	
-	public int getxPixFromCenter() {
-		return xPixFromCenter;
-	}
-
-	public int getyPixFromCenter() {
-		return yPixFromCenter;
-	}
-	
 	
 }
