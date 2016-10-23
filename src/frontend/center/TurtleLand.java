@@ -88,24 +88,11 @@ public class TurtleLand {
 	    myTurtle.setX(100);
 	    myTurtle.setY(100);
 	    gcc.setStroke(myPenColor);
-	    gcc.setLineWidth(2);
-	    gcc.appendSVGPath("M 0 0 L 100 100 z");
-	    gcc.fill();
-	    gcc.stroke();
-	    
-	    //gcc.strokeLine(centerX, centerY, converter.xFromTurtleLandToLayout(100), converter.yFromTurtleLandToLayout(100));
-	    
-	    /*gcc.beginPath();
+	    gcc.beginPath();
 	    gcc.moveTo(centerX, centerY);
 	    gcc.lineTo(converter.xFromTurtleLandToLayout(100), converter.yFromTurtleLandToLayout(100));
 	    gcc.closePath();
-	    gcc.stroke();*/
-	    
-	    /*gcc.setFill(Color.RED);
-	    gcc.setStroke(Color.BLUE);
-	    gcc.appendSVGPath("M 50 50 L 150 50 L 100 150 z");
-	    gcc.fill();
-	    gcc.stroke();*/
+	    gcc.stroke();
 	}
 
 	public Pane getLand() {
