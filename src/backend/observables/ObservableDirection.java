@@ -14,12 +14,12 @@ public class ObservableDirection extends Observable {
     }
 
     public void setDirection(double degrees) {
-            // TODO: make sure value changed
-            
-            myDirection = degrees;
+            if (degrees != myDirection) {
+                myDirection = degrees;
 
-            setChanged();
-            notifyObservers();
+                setChanged();
+                notifyObservers();
+            }
     }
 
     public double getDirection() {
