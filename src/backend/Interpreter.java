@@ -81,6 +81,9 @@ public class Interpreter {
 				//System.out.println(tempCommand.compute(null));
 				
 			}
+			else if (list.get(i).equals("ListStart") || list.get(i).equals("ListEnd")){
+				tempCommand = new CommandOperator(list.get(i));
+			}
 			else{
 				try {
 					Class<?> cls;
@@ -122,8 +125,9 @@ public class Interpreter {
 				}
 				
 			}
-
-			commandList.add(tempCommand);
+			if (tempCommand != null){
+				commandList.add(tempCommand);
+			}
 		}
 		return commandList;
 
