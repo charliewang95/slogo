@@ -21,6 +21,14 @@ public class Playground {
 		myDisplay.init(myInterpreter);
 	}
 	
+	public void clearScreen() {
+		myDisplay.getTurtleLand().reset();
+	}
+	
+//	public String getCommandError() {
+
+//	}
+	
 	public void interpretInput(String input){
 		
 		try {
