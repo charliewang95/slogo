@@ -113,23 +113,23 @@ public class Console {
 				} else if (word.equals("]")) {
 					bracketCount--;
 					if (bracketCount < 0) {
-						//ErrorException ee = new ErrorException();
+						// ErrorException ee = new ErrorException();
 					}
 				}
 			}
 			System.out.println(bracketCount);
 			if (bracketCount == 0) {
 				String s = myTextArea.getText().replace("\n", " ").replaceAll(" +", " ");
-				System.out.println("checking "+s);
+				System.out.println("checking " + s);
 				myCommands.getValue().add(s);
 				myHistory.addString(s);
 				myTextArea.clear();
 				e.consume();
-				try{
-				interpretInput(s);
-				}
-				catch(Exception exception){
-					JOptionPane.showMessageDialog(null, "Your chosen language does not contain the Command you gave. Click OK to continue and try a new Command.");
+				try {
+					interpretInput(s);
+				} catch (Exception exception) {
+					JOptionPane.showMessageDialog(null,
+							"Your chosen language does not contain the Command you gave. Click OK to continue and try a new Command.");
 				}
 			}
 		}
@@ -144,9 +144,9 @@ public class Console {
 	}
 
 	public void setLanguage(String language) {
-		//myInterpreter.setLanguage(language);
+		// myInterpreter.setLanguage(language);
 	}
-	
+
 	public History getHistory() {
 		return myHistory;
 	}

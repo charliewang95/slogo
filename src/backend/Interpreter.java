@@ -31,7 +31,7 @@ public class Interpreter {
 		output = 0;
 		setLanguage();
 		if (myLanguage == null){
-			myLanguage = "Chinese";
+			myLanguage = "English";
 		}
 		parse.addPatterns("resources.languages/" + myLanguage);
 		parse.addPatterns("resources.languages/Syntax");

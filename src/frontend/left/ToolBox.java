@@ -106,8 +106,8 @@ public class ToolBox {
 
 	public void addComboBox(SimpleObjectProperty<ObservableList<String>> namelist, String refer) {
 		ComboBox<String> cb = new ComboBox<>();
-		cb.setPromptText(namelist.get().get(0));
 		cb.itemsProperty().bind(namelist);
+		cb.setPromptText(namelist.getValue().get(0));
 		GridPane.setConstraints(cb, 0, ++count);
 		gp.getChildren().add(cb);
 		addComboBoxEvent(cb, refer);
@@ -282,15 +282,17 @@ public class ToolBox {
 	public GridPane getTool() {
 		return gp;
 	}
-	
-	public String[] getLanguages(){
+
+	public String[] getLanguages() {
 		File dir = new File("src/resources/languages/");
 		if (dir.isDirectory()) {
-		  languageList = dir.list();
-		  for (int i = 0; i < languageList.length; i++){
-			  // 11 is the required length to eliminate ".properties" from the language options.
-			  languageList[i] = languageList[i].substring(0, languageList[i].length()-11);
-		  }
+			languageList = dir.list();
+			for (int i = 0; i < languageList.length; i++) {
+				languageList[i] = languageList[i].replace(".properties", "");
+			}
+			String tmp = languageList[0];
+			languageList[0]=languageList[1];
+			languageList[1]=tmp;
 		}
 		return languageList;
 	}
