@@ -1,5 +1,10 @@
 package frontend.coordinates;
 
+/**
+ * Converts TurtleLand coordinates of the Turtle to layout coordinates.
+ * @author Niklas Sjoquist
+ *
+ */
 public class TurtleToLayout extends CoordinateConverter {
     private double turtleXoffset, turtleYoffset;
 

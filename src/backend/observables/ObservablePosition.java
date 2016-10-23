@@ -2,6 +2,11 @@ package backend.observables;
 
 import java.util.Observable;
 
+/**
+ * 
+ * @author Niklas Sjoquist
+ *
+ */
 public class ObservablePosition extends Observable {
     private double myX = 0;
     private double myY = 0;

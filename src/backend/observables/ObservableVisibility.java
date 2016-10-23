@@ -2,6 +2,11 @@ package backend.observables;
 
 import java.util.Observable;
 
+/**
+ * Visibility of the Turtle.
+ * @author Niklas Sjoquist
+ *
+ */
 public class ObservableVisibility extends Observable {
     private boolean myVisibility = true;
 

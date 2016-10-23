@@ -4,7 +4,11 @@ import java.util.Observable;
 import backend.observables.ObservableDirection;
 import frontend.center.TurtleMascot;
 
-public abstract class DirectionObserver extends TurtleObserver {
+/**
+ * @author Niklas Sjoquist
+ *
+ */
+public class DirectionObserver extends TurtleObserver {
     private ObservableDirection turtleDirection = null;
 
     public DirectionObserver(TurtleMascot turtle, ObservableDirection direction) {

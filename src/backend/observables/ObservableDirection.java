@@ -2,6 +2,10 @@ package backend.observables;
 
 import java.util.Observable;
 
+/**
+ * @author Niklas Sjoquist
+ *
+ */
 public class ObservableDirection extends Observable {
     private double myDirection = 0;
 

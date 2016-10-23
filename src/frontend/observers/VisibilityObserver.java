@@ -4,6 +4,10 @@ import java.util.Observable;
 import backend.observables.ObservableVisibility;
 import frontend.center.TurtleMascot;
 
+/**
+ * @author Niklas Sjoquist
+ *
+ */
 public class VisibilityObserver extends TurtleObserver {
     private ObservableVisibility turtleVisibility = null;
 
