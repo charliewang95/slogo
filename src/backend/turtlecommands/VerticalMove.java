@@ -22,9 +22,9 @@ public abstract class VerticalMove extends Command {
 		
 		//compute displacement
 		//because direction 0 is north, xDis is sine and yDis is cosine
-		int tDegree = (forward) ? turtle.getDirection() : -1*turtle.getDirection();
-		int xDisplacement = (int) ( pix * Math.sin( tDegree*Math.PI/180 ) );
-		int yDisplacement = (int) ( pix * Math.cos( tDegree*Math.PI/180 ) );
+		double tDegree = (forward) ? turtle.getDirection() : -1*turtle.getDirection();
+		double xDisplacement = ( pix * Math.sin( tDegree*Math.PI/180 ) );
+		double yDisplacement = ( pix * Math.cos( tDegree*Math.PI/180 ) );
 		
 		//move turtle (does not deal with lines or going off the board)
 		turtle.setMyX( turtle.getMyX() + xDisplacement );

@@ -24,7 +24,7 @@ public abstract class SpinMove extends Command {
 		}
 		
 		Integer degMove = getNumCommand(inputs, 0);
-		int newDirection = (clockwise) ? turtle.getDirection()+degMove : turtle.getDirection()-degMove;
+		double newDirection = (clockwise) ? turtle.getDirection()+degMove : turtle.getDirection()-degMove;
 		newDirection %= 360;
 		
 		turtle.setDirection(newDirection);
@@ -40,10 +40,10 @@ public abstract class SpinMove extends Command {
 			return "0";
 		}
 		
-		int oldDirection = turtle.getDirection();
-		int newDirection = ( getNumCommand(inputs, 0) )%360;
+		double oldDirection = turtle.getDirection();
+		double newDirection = ( getNumCommand(inputs, 0) )%360;
 		
-		Integer displacement = getAngleDisplacement(oldDirection, newDirection);
+		Double displacement = getAngleDisplacement(oldDirection, newDirection);
 		turtle.setDirection(newDirection);
 		
 		return displacement.toString();
@@ -57,30 +57,30 @@ public abstract class SpinMove extends Command {
 			return "0";
 		}
 		
-		int oldDirection = turtle.getDirection();
-		int xDis = getNumCommand(inputs, 0) - turtle.getMyX();
-		int yDis = getNumCommand(inputs, 1) - turtle.getMyY();
-		int newDirection = calculateAngle(xDis,yDis);
+		double oldDirection = turtle.getDirection();
+		double xDis = getNumCommand(inputs, 0) - turtle.getMyX();
+		double yDis = getNumCommand(inputs, 1) - turtle.getMyY();
+		double newDirection = calculateAngle(xDis,yDis);
 		
-		Integer displacement = getAngleDisplacement(oldDirection, newDirection);
+		Double displacement = getAngleDisplacement(oldDirection, newDirection);
 		turtle.setDirection(newDirection);
 		
 		return displacement.toString();
 		
 	}
 	
-	private Integer getAngleDisplacement(int a, int b) {
-		int degreesDif = Math.abs(a-b);
+	private Double getAngleDisplacement(double a, double b) {
+	        double degreesDif = Math.abs(a-b);
 		return Math.min(degreesDif, 360-degreesDif);
 	}
 	
-	private int calculateAngle(int x, int y) {
+	private double calculateAngle(double x, double y) {
 		
 		if(x == 0 && y == 0) {
 			return NORTH;
 		}
 		
-		return ( (int) ( 180/Math.PI*Math.atan2(y, x) ) )%360;
+		return ( ( 180/Math.PI*Math.atan2(y, x) ) )%360;
 		
 	}
 

@@ -20,7 +20,7 @@ public class Heading extends Command {
 			return "0";
 		}
 		
-		return ( (Integer) myTurtle.getDirection() ).toString();
+		return ( (Double) myTurtle.getDirection() ).toString();
 		
 	}
 

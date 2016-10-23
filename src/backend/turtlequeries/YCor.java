@@ -20,7 +20,7 @@ public class YCor extends Command {
 			return "0";
 		}
 		
-		return ( (Integer) myTurtle.getMyY() ).toString();
+		return ( (Double) myTurtle.getMyY() ).toString();
 		
 	}
 
