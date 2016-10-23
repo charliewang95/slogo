@@ -3,6 +3,7 @@ package frontend.observers;
 import java.util.Observable;
 import backend.observables.ObservableVisibility;
 import frontend.center.TurtleMascot;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * @author Niklas Sjoquist
@@ -11,8 +12,8 @@ import frontend.center.TurtleMascot;
 public class VisibilityObserver extends TurtleObserver {
     private ObservableVisibility turtleVisibility = null;
 
-    public VisibilityObserver(TurtleMascot turtle, ObservableVisibility visible) {
-            super(turtle);
+    public VisibilityObserver(TurtleMascot turtle, GraphicsContext gcc, ObservableVisibility visible) {
+            super(turtle, gcc);
             turtleVisibility = visible;
     }
 

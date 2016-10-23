@@ -14,12 +14,12 @@ public class ObservablePen extends Observable {
     }
 
     public void setPen(boolean penDown) {
-            // TODO: make sure value changed
+            if (penDown != myPen) {
+                myPen = penDown;
 
-            myPen = penDown;
-
-            setChanged();
-            notifyObservers();
+                setChanged();
+                notifyObservers();
+            }
     }
 
     public boolean getPenStatus() {
