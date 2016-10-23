@@ -1,13 +1,18 @@
 package frontend.center;
 
 import java.io.File;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 
 import frontend.ErrorException;
+import frontend.coordinates.CoordinateConverter;
+import frontend.coordinates.TurtleLandToLayout;
+import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -16,6 +21,9 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.PathElement;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -38,7 +46,7 @@ public class TurtleLand {
 	private GraphicsContext gcb, gcc;
 	private double centerX;
 	private double centerY;
-	private CoordinateConverter converter;
+	private TurtleLandToLayout converter;
 
 	public TurtleLand() {
 		myPane = new Pane();
@@ -48,7 +56,7 @@ public class TurtleLand {
 		myHeight = Integer.parseInt(myResources.getString("CanvasHeight"));
 		myPane.setPrefSize(myWidth, myHeight);
 
-		converter = new CoordinateConverter(myWidth, myHeight, TurtleMascot.WIDTH, TurtleMascot.HEIGHT);
+		converter = new TurtleLandToLayout(myWidth, myHeight);
 
 		centerX = myWidth / 2.0;
 		centerY = myHeight / 2.0;
@@ -62,39 +70,73 @@ public class TurtleLand {
 		gcb.setFill(defaultGround);
 		gcb.fillRect(0, 0, myWidth, myHeight);
 
-		//gcc.setFill(Color.RED);
-		/*
-		 * gcc.fillOval(centerX-10, centerY-10, 20, 20); gcc.setLineWidth(2);
-		 * gcc.setFill(Color.BLUE); gcc.strokeRect(centerX-20, centerY-25, 40,
-		 * 50);
-		 */ // encloses the turtle in the center
-
-		myTurtle = new TurtleMascot(converter);
+		myTurtle = new TurtleMascot(myWidth,myHeight);
 		myTurtleImage = myTurtle.getImage();
 
+		// put turtle in center
 		myTurtle.setX(0);
 		myTurtle.setY(0);
 		
-		right45fd100();
+		// Execute a test path
+		List<PathElement> testpath = setTestPath();
+		drawPath(testpath);
+		testMoveTurtle();
 		
 		myPane.getChildren().add(myBackground);
 		myPane.getChildren().add(myCanvas);
 		myPane.getChildren().add(myTurtleImage);
 	}
+        
+        private List<PathElement> setTestPath() {
+            List<PathElement> path = myTurtle.getPenPath();
+            path.add(new MoveTo(converter.convertX(0),converter.convertY(0)));
+            path.add(new LineTo(converter.convertX(50),converter.convertY(100)));
+            path.add(new LineTo(converter.convertX(-100),converter.convertY(-40)));
+            return path;
+        }
+        
+        private void testMoveTurtle() {
+            // set position
+            myTurtle.setX(-100);
+            myTurtle.setY(-40);
+            
+            // set bearing
+            Point2D startPt = new Point2D(50,100);
+            Point2D endPt = new Point2D(-100,-40);
+            myTurtle.setDirection(getSegmentBearing(startPt,endPt));
+        }
 	
-	private void right45fd100() {
-	    myTurtle.setDirection(45);
-	    myTurtle.setX(100);
-	    myTurtle.setY(100);
-	    gcc.setLineWidth(2);
+	private void drawPath(List<PathElement> path) {
 	    gcc.setStroke(myPenColor);
-	    gcc.strokeLine(centerX, centerY, converter.xFromTurtleLandToLayout(100), converter.yFromTurtleLandToLayout(100));
+	    gcc.setLineWidth(1);
 	    
-	    /*gcc.beginPath();
-	    gcc.moveTo(centerX, centerY);
-	    gcc.lineTo(converter.xFromTurtleLandToLayout(100), converter.yFromTurtleLandToLayout(100));
+	    //List<PathElement> pathList = myTurtle.getPenPath();
+	    
+	    gcc.beginPath();
+	    path.stream().forEach((pe) -> {
+	        if (pe.getClass() == MoveTo.class) {
+	            gcc.moveTo(((MoveTo)pe).getX(), ((MoveTo)pe).getY());
+	        } else if (pe.getClass() == LineTo.class) {
+	            gcc.lineTo(((LineTo)pe).getX(), ((LineTo)pe).getY());
+	        }
+	    });
+	    gcc.stroke();
 	    gcc.closePath();
-	    gcc.stroke();*/
+	}
+	
+	/**
+	 * Returns the bearing direction (in degrees) from a starting point to and ending point.
+	 * 
+	 * @param startingPoint
+	 * @param endingPoint
+	 * @return bearing direction, in degrees, from 0 to 360
+	 */
+	private double getSegmentBearing(Point2D startingPoint, Point2D endingPoint) {
+	    Point2D originPoint = new Point2D(endingPoint.getX() - startingPoint.getX(), endingPoint.getY() - startingPoint.getY()); // get origin point to origin by subtracting end from start
+	    double bearingRadians = Math.atan2(originPoint.getY(), originPoint.getX()); // get bearing in radians
+	    double bearingDegrees = bearingRadians * (180.0 / Math.PI); // convert to degrees
+	    bearingDegrees = (bearingDegrees > 0.0 ? bearingDegrees : (360.0 + bearingDegrees)); // correct discontinuity
+	    return bearingDegrees;
 	}
 
 	public Pane getLand() {
