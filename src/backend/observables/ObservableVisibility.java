@@ -15,12 +15,12 @@ public class ObservableVisibility extends Observable {
     }
 
     public void setVisibility(boolean value) {
-            // TODO: make sure value changed
+            if (value != myVisibility) {
+                myVisibility = value;
 
-            myVisibility = value;
-
-            setChanged();
-            notifyObservers();
+                setChanged();
+                notifyObservers();
+            }
     }
 
     public boolean getVisibility() {

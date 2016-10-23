@@ -22,40 +22,20 @@ public class ObservablePosition extends Observable {
     }
 
     public void setX(double x) {
-            // TODO: make sure value changed
-            // TODO: use helper method
-            
-            myX = x;
-
-            setChanged();
-            notifyObservers();
-    }
-
-    private void setX(double x, boolean notifyFlag) {
-            myX = x;
-
-            setChanged();
-            if (notifyFlag) {
-                    notifyObservers();
+            if (x != myX) {
+                myX = x;
+                
+                setChanged();
+                notifyObservers();
             }
     }
 
     public void setY(double y) {
-            // TODO: make sure value changed
-            // TODO: use helper method
-            
-            myY = y;
+            if (y != myY) {
+                myY = y;
 
-            setChanged();
-            notifyObservers();
-    }
-
-    private void setY(double y, boolean notifyFlag) {
-            myY = y;
-
-            setChanged();
-            if (notifyFlag) {
-                    notifyObservers();
+                setChanged();
+                notifyObservers();
             }
     }
 
