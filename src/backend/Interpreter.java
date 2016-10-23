@@ -5,7 +5,6 @@ import java.util.List;
 import java.lang.reflect.*;
 
 import frontend.left.ToolBox;
-import backend.turtlecommands.*;
 
 public class Interpreter {
 	
@@ -13,7 +12,7 @@ public class Interpreter {
 		
 	}
 
-	private ProgramParser parse = new ProgramParser();
+	private ProgramParser parse;
 	private Tree commandTree;
 	private List<Node> nodeList;
 	private List<Command> commandList;
@@ -23,12 +22,13 @@ public class Interpreter {
 	private String myLanguage;
 
 	public Tree interpretString(String input){
-
+		parse = new ProgramParser();
 		List<String> stringList = separateStrings(input);
 		List<String> parsedList = new ArrayList<String>();
 		output = 0;
+		setLanguage();
 		if (myLanguage == null){
-			myLanguage = "English";
+			myLanguage = "Chinese";
 		}
 		parse.addPatterns("resources.languages/" + myLanguage);
 		parse.addPatterns("resources.languages/Syntax");
@@ -82,9 +82,18 @@ public class Interpreter {
 				 * this is where we need reflection
 				 */
 				try {
-					Class<?> cls = Class.forName("backend.turtlecommands." + list.get(i));
-					Constructor<?> cst = cls.getConstructor(Turtle.class);
-					Object instance = cst.newInstance(new Turtle(0,0));
+					Class<?> cls;
+					Constructor<?> cst;
+					Object instance;
+					/*
+					 * 
+					 * NEEDS WORK HERE
+					 * 
+					 */
+					System.out.println(list.get(i));
+					cls = Class.forName("backend." + getType(list.get(i))+"." + list.get(i));
+					cst = cls.getConstructor(Turtle.class);
+					instance = cst.newInstance(new Turtle(0,0));
 					tempCommand = (Command) instance;
 					
 					// reflection issues?```
@@ -202,8 +211,83 @@ public class Interpreter {
 		public String returnValue;
 	}
 	
-	public void setLanguage(String language){
-		myLanguage = language;
+
+	public enum Commands{
+			Forward (Type.turtlecommands), 
+			Backward (Type.turtlecommands), 
+			ClearScreen (Type.turtlecommands), 
+			HideTurtle (Type.turtlecommands), 
+			ShowTurtle (Type.turtlecommands), 
+			Left (Type.turtlecommands), 
+			Right (Type.turtlecommands), 
+			Home (Type.turtlecommands), 
+			PenUp (Type.turtlecommands), 
+			PenDown (Type.turtlecommands), 
+			PositionMove (Type.turtlecommands),
+			SetHeading (Type.turtlecommands), 
+			SetXY (Type.turtlecommands), 
+			Towards (Type.turtlecommands),
+			Heading (Type.turtlequeries),
+			PenDownP (Type.turtlequeries),
+			ShowingP (Type.turtlequeries),
+			XCor (Type.turtlequeries),
+			YCor (Type.turtlequeries),
+			And (Type.booleanoperations),
+			Equal (Type.booleanoperations),
+			GreaterThan (Type.booleanoperations),
+			LessThan (Type.booleanoperations),
+			Not (Type.booleanoperations),
+			NotEqual (Type.booleanoperations),
+			Or (Type.booleanoperations),
+			ATan (Type.mathoperations),
+			Cos (Type.mathoperations),
+			Difference (Type.mathoperations),
+			Log (Type.mathoperations),
+			Minus (Type.mathoperations),
+			PI (Type.mathoperations),
+			Pow (Type.mathoperations),
+			Product (Type.mathoperations),
+			Quotient (Type.mathoperations),
+			Random (Type.mathoperations),
+			Remainder (Type.mathoperations),
+			Sin (Type.mathoperations),
+			Sum (Type.mathoperations),
+			Tan (Type.mathoperations);
+			
+			private Type type;
+			
+			Commands(Type type){
+				this.type = type;
+			}
+			
+			public boolean isInGroup(Type type){
+				return (this.type == type);
+			}
+			
+			
+			
+			public enum Type {
+				turtlecommands,
+				turtlequeries,
+				booleanoperations,
+				mathoperations,
+				othercommands;
+				
+			}
+	}
+	public String getType(String input){
+		for (Commands comm : Commands.values()){
+			if (comm.toString().equals(input)){
+				return comm.type.toString();
+			}
+		}
+		return null;
+	}
+
+	
+	
+	public void setLanguage(){
+		myLanguage = ToolBox.myLanguage;
 	}
 
 }

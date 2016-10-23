@@ -49,6 +49,7 @@ public class ToolBox {
 	private Display myDisplay;
 	private ResourceBundle myResources;
 	private int count = 0;
+	public static String myLanguage;
 
 	public ToolBox(Display display) {
 		myDisplay = display;
@@ -225,6 +226,7 @@ public class ToolBox {
 
 	private void setLanguageEvent(String value) {
 		myDisplay.getConsole().setLanguage(value);
+		myLanguage = value;
 	}
 
 	private void setResetEvent() {
@@ -286,6 +288,7 @@ public class ToolBox {
 		if (dir.isDirectory()) {
 		  languageList = dir.list();
 		  for (int i = 0; i < languageList.length; i++){
+			  // 11 is the required length to eliminate ".properties" from the language options.
 			  languageList[i] = languageList[i].substring(0, languageList[i].length()-11);
 		  }
 		}
