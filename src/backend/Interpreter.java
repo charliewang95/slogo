@@ -20,6 +20,7 @@ public class Interpreter {
 	private List<String> stringList;
 	private int output = 0;
 	private String myLanguage;
+	private Turtle turtle = new Turtle(0,0);
 
 	public Tree interpretString(String input){
 		parse = new ProgramParser();
@@ -93,7 +94,7 @@ public class Interpreter {
 					System.out.println(list.get(i));
 					cls = Class.forName("backend." + getType(list.get(i))+"." + list.get(i));
 					cst = cls.getConstructor(Turtle.class);
-					instance = cst.newInstance(new Turtle(0,0));
+					instance = cst.newInstance(turtle);
 					tempCommand = (Command) instance;
 					
 					// reflection issues?```
