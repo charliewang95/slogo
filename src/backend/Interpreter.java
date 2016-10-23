@@ -81,9 +81,6 @@ public class Interpreter {
 				
 			}
 			else{
-				/*
-				 * this is where we need reflection
-				 */
 				try {
 					Class<?> cls;
 					Constructor<?> cst;
@@ -255,7 +252,8 @@ public class Interpreter {
 			Remainder (Type.mathoperations),
 			Sin (Type.mathoperations),
 			Sum (Type.mathoperations),
-			Tan (Type.mathoperations);
+			Tan (Type.mathoperations),
+			MakeVariable(Type.variables);
 			
 			private Type type;
 			
@@ -274,7 +272,8 @@ public class Interpreter {
 				turtlequeries,
 				booleanoperations,
 				mathoperations,
-				othercommands;
+				othercommands,
+				variables;
 				
 			}
 	}
