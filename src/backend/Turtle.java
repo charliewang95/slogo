@@ -61,7 +61,8 @@ public class Turtle {
 	}
 
 	public double getMyY() {
-		return myY;
+		//return myY;
+	        return myPosition.getY();
 	}
 
 	public void setMyY(double myY) {
