@@ -86,12 +86,10 @@ public class TurtleLand {
 =======
 		testMoveTurtle();*/
 		
->>>>>>> a171d56d081244061e2f6190e928c4a7fcd1c6e5
 		myPane.getChildren().add(myBackground);
 		myPane.getChildren().add(myCanvas);
 		myPane.getChildren().add(myTurtleImage);
 	}
-<<<<<<< HEAD
 
 	private List<PathElement> setTestPath() {
 		List<PathElement> path = myTurtle.getPenPath();
@@ -155,7 +153,6 @@ public class TurtleLand {
 																								// discontinuity
 		return bearingDegrees;
 	}
-=======
         
         /*private List<PathElement> setTestPath() {
             List<PathElement> path = myTurtle.getPenPath();
@@ -208,7 +205,6 @@ public class TurtleLand {
 	        bearingDegrees = (bearingDegrees > 0.0 ? bearingDegrees : (360.0 + bearingDegrees)); // correct discontinuity
 	        return bearingDegrees;
 	    }*/
->>>>>>> a171d56d081244061e2f6190e928c4a7fcd1c6e5
 
 	public Pane getLand() {
 		return myPane;

@@ -25,9 +25,9 @@ public class Playground {
 		myDisplay.getTurtleLand().reset();
 	}
 	
-	public String getCommandError() {
-		myInterpreter.getCommandError();
-	}
+//	public String getCommandError() {
+////		myInterpreter.getCommandError();
+//	}
 	
 	public void interpretInput(String input){
 		
