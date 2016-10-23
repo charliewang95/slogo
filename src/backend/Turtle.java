@@ -1,5 +1,7 @@
 package backend;
 
+import main.Playground;
+
 public class Turtle {
 
 	private int myX;
@@ -9,8 +11,9 @@ public class Turtle {
 	private boolean visable;
 	private int xPixFromCenter;
 	private int yPixFromCenter;
+	private Playground playGround;
 	
-	public Turtle(int xPixFromCenter, int yPixFromCenter) {
+	public Turtle(int xPixFromCenter, int yPixFromCenter, Playground playG) {
 		this.xPixFromCenter = xPixFromCenter;
 		this.yPixFromCenter = yPixFromCenter;
 		myX = 0;
@@ -18,10 +21,11 @@ public class Turtle {
 		penDown = true;
 		direction = 0;
 		visable = true;
+		playGround = playG;
 	}
 	
 	public void eraseLines() {
-		//erase all lines drawn
+		playGround.clearScreen();
 	}
 	
 	public int getMyX() {
