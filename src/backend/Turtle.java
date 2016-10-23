@@ -1,5 +1,7 @@
 package backend;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Observer;
 import backend.observables.*;
@@ -7,6 +9,12 @@ import frontend.observers.DirectionObserver;
 import frontend.observers.PenObserver;
 import frontend.observers.PositionObserver;
 import frontend.observers.VisibilityObserver;
+import javafx.beans.Observable;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.ListPropertyBase;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.ModifiableObservableListBase;
+import javafx.collections.ObservableList;
 import main.Playground;
 
 public class Turtle {
@@ -26,23 +34,26 @@ public class Turtle {
 	private ObservablePosition myPosition = new ObservablePosition(0,0);
 	private ObservableVisibility myVisibility = new ObservableVisibility(true);
 	
-	public Turtle(int x, int y, Playground playground, List<Observer> observers) {
+	public Turtle(double x, double y, Playground playground) {
 	        myPosition.setX(x);
 	        myPosition.setY(y);
 	        playGround = playground;
-	        
-	        // Add Observers
-	        for (Observer obs : observers) {
-	            if (obs.getClass() == DirectionObserver.class) {
-	                myDirection.addObserver(obs);
-	            } else if (obs.getClass() == PenObserver.class) {
-	                myPenDown.addObserver(obs);
-	            } else if (obs.getClass() == PositionObserver.class) {
-	                myPosition.addObserver(obs);
-	            } else if (obs.getClass() == VisibilityObserver.class) {
-	                myVisibility.addObserver(obs);
-	            }
-	        }
+	}
+	
+	public void observeDirection(DirectionObserver o) {
+	    myDirection.addObserver(o);
+	}
+	
+	public void observePen(PenObserver o) {
+	    myPenDown.addObserver(o);
+	}
+	
+	public void observePosition(PositionObserver o) {
+	    myPosition.addObserver(o);
+	}
+	
+	public void observeVisibility(VisibilityObserver o) {
+	    myVisibility.addObserver(o);
 	}
 	
 	public void eraseLines() {
@@ -91,14 +102,30 @@ public class Turtle {
 		myDirection.setDirection(direction);
 	}
 
-	public boolean isVisable() {
+	public boolean isVisible() {
 		//return visable;
 		return myVisibility.getVisibility();
 	}
 
-	public void setVisable(boolean visible) {
+	public void setVisible(boolean visible) {
 		//this.visable = visible;
 		myVisibility.setVisibility(visible);
+	}
+	
+	public ObservableDirection getDirObs() {
+	        return myDirection;
+	}
+	
+	public ObservablePen getPenObs() {
+	        return myPenDown;
+	}
+	
+	public ObservablePosition getPosObs() {
+	        return myPosition;
+	}
+	
+	public ObservableVisibility getVisObs() {
+	        return myVisibility;
 	}
 	
 }

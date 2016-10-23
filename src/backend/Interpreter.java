@@ -9,8 +9,9 @@ import frontend.left.ToolBox;
 
 public class Interpreter {
 	
-	public Interpreter(Playground myPlay){
+	public Interpreter(Playground myPlay, Turtle turtle){
 		this.myPlayground = myPlay;
+		this.turtle = turtle;
 	}
 
 	private Playground myPlayground;
@@ -22,7 +23,7 @@ public class Interpreter {
 	private List<String> stringList;
 	private int output = 0;
 	private String myLanguage;
-	private Turtle turtle = new Turtle(0,0, myPlayground);
+	private Turtle turtle;
 
 	public Tree interpretString(String input){
 		parse = new ProgramParser();

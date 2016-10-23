@@ -1,5 +1,8 @@
 package frontend;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Observer;
 import java.util.ResourceBundle;
 
 import backend.Interpreter;

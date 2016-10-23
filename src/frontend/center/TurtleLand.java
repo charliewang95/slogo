@@ -2,6 +2,7 @@ package frontend.center;
 
 import java.io.File;
 import java.util.List;
+import java.util.Observer;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
@@ -9,6 +10,7 @@ import javax.imageio.ImageIO;
 import frontend.ErrorException;
 import frontend.coordinates.CoordinateConverter;
 import frontend.coordinates.TurtleLandToLayout;
+import frontend.observers.*;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
@@ -80,9 +82,8 @@ public class TurtleLand {
 		// Execute a test path
 		/*List<PathElement> testpath = setTestPath();
 		drawPath(testpath);
-
-		testMoveTurtle();
 		testMoveTurtle();*/
+		
 		myPane.getChildren().add(myBackground);
 		myPane.getChildren().add(myCanvas);
 		myPane.getChildren().add(myTurtleImage);
@@ -199,11 +200,14 @@ public class TurtleLand {
 	        double bearingDegrees = bearingRadians * (180.0 / Math.PI); // convert to degrees
 	        bearingDegrees = (bearingDegrees > 0.0 ? bearingDegrees : (360.0 + bearingDegrees)); // correct discontinuity
 	        return bearingDegrees;
-<<<<<<< HEAD
 	    }*/
 
 	public Pane getLand() {
 		return myPane;
+	}
+	
+	public GraphicsContext getGraphicsContext() {
+	        return gcc;
 	}
 
 	public void reset() {

@@ -21,7 +21,7 @@ public class ShowTurtle extends Command {
 			return "0";
 		}
 		
-		myTurtle.setVisable(true);
+		myTurtle.setVisible(true);
 		
 		return ONE;
 		
