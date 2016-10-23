@@ -26,7 +26,7 @@ public class Playground {
 	}
 	
 //	public String getCommandError() {
-////		myInterpreter.getCommandError();
+
 //	}
 	
 	public void interpretInput(String input){

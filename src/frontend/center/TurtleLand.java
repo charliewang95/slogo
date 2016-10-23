@@ -80,12 +80,9 @@ public class TurtleLand {
 		// Execute a test path
 		/*List<PathElement> testpath = setTestPath();
 		drawPath(testpath);
-<<<<<<< HEAD
-		testMoveTurtle();
 
-=======
+		testMoveTurtle();
 		testMoveTurtle();*/
-		
 		myPane.getChildren().add(myBackground);
 		myPane.getChildren().add(myCanvas);
 		myPane.getChildren().add(myTurtleImage);
@@ -113,8 +110,6 @@ public class TurtleLand {
 	private void drawPath(List<PathElement> path) {
 		gcc.setStroke(myPenColor);
 		gcc.setLineWidth(1);
-
-		// List<PathElement> pathList = myTurtle.getPenPath();
 
 		gcc.beginPath();
 		path.stream().forEach((pe) -> {
@@ -204,6 +199,7 @@ public class TurtleLand {
 	        double bearingDegrees = bearingRadians * (180.0 / Math.PI); // convert to degrees
 	        bearingDegrees = (bearingDegrees > 0.0 ? bearingDegrees : (360.0 + bearingDegrees)); // correct discontinuity
 	        return bearingDegrees;
+<<<<<<< HEAD
 	    }*/
 
 	public Pane getLand() {
