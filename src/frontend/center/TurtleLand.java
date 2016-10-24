@@ -72,7 +72,7 @@ public class TurtleLand {
 		gcb.setFill(defaultGround);
 		gcb.fillRect(0, 0, myWidth, myHeight);
 
-		myTurtle = new TurtleMascot(myWidth, myHeight);
+		myTurtle = new TurtleMascot(myWidth, myHeight, converter);
 		myTurtleImage = myTurtle.getImage();
 
 		// put turtle in center
@@ -193,5 +193,13 @@ public class TurtleLand {
 		} catch (Exception e) {
 			// TODO:
 		}
+	}
+	
+	public int getWidth() {
+	    return myWidth;
+	}
+	
+	public int getHeight() {
+	    return myHeight;
 	}
 }
