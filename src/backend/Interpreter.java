@@ -163,7 +163,7 @@ public class Interpreter {
 			nodeList.get(i).parent = currNode;
 			currNode.children.add(nodeList.get(i));
 
-			if (nodeList.get(i).type.equals("Forward")){
+			if (nodeList.get(i).type.equals("TurtleCommand")){
 				currNode = nodeList.get(i);
 			}
 		}
@@ -207,6 +207,7 @@ public class Interpreter {
 		}
 		else{
 			System.out.println("else");
+
 			updateTurtle(nodeCommandMap.get(myNode), null);
 		}
 		System.out.println(output);
@@ -214,7 +215,7 @@ public class Interpreter {
 	}
 
 	private void updateTurtle(Command command, ArrayList<Command> list) {
-
+		
 		System.out.println(command.compute(list));
 
 	}
@@ -248,7 +249,7 @@ public class Interpreter {
 		PenDown (Type.turtlecommands), 
 		PositionMove (Type.turtlecommands),
 		SetHeading (Type.turtlecommands), 
-		SetXY (Type.turtlecommands), 
+		SetPosition (Type.turtlecommands), 
 		Towards (Type.turtlecommands),
 		Heading (Type.turtlequeries),
 		IsPenDown (Type.turtlequeries),

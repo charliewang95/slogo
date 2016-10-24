@@ -17,9 +17,9 @@ public class ShowTurtle extends Command {
 
 	public String compute(ArrayList<Command> inputs) {
 		
-		if(! checkNoInputs(inputs) ) {
-			return "0";
-		}
+//		if(! checkNoInputs(inputs) ) {
+//			return "0";
+//		}
 		
 		myTurtle.setVisible(true);
 		

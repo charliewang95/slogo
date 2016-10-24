@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import backend.Command;
 import backend.Turtle;
 
-public class SetXY extends PositionMove {
+public class SetPosition extends PositionMove {
 	
 	private Turtle myTurtle;
 
-	public SetXY(Turtle t) {
+	public SetPosition(Turtle t) {
 		super();
 		myTurtle = t;
 	}
