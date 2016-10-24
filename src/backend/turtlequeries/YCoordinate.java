@@ -19,7 +19,7 @@ public class YCoordinate extends Command {
 //		if(! checkNoInputs(inputs) ) {
 //			return "0";
 //		}
-		
+		System.out.println(myTurtle.getMyY());
 		return ( (Double) myTurtle.getMyY() ).toString();
 		
 	}

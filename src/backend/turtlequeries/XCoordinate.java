@@ -17,9 +17,11 @@ public class XCoordinate extends Command {
 	public String compute(ArrayList<Command> inputs) {
 		
 //		if(! checkNoInputs(inputs) ) {
+//			System.out.println("FAILURE");
 //			return "0";
 //		}
-		
+
+		System.out.println(myTurtle.getMyX());
 		return ( (Double) myTurtle.getMyX() ).toString();
 		
 	}

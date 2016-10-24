@@ -208,6 +208,9 @@ public class Interpreter {
 				
 			}
 		}
+		if (myNode.type.equals("TurtleQuery")){
+			updateTurtle(nodeCommandMap.get(myNode), null);
+		}
 		System.out.println(output);
 		return output;
 	}
