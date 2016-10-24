@@ -1,6 +1,7 @@
 package backend;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.lang.reflect.*;
 
@@ -24,15 +25,15 @@ public class Interpreter {
 	private int output = 0;
 	private String myLanguage;
 	private Turtle turtle;
+	private HashMap<Node, Command> nodeCommandMap;
 
 	public Tree interpretString(String input){
 		parse = new ProgramParser();
 		List<String> stringList = separateStrings(input);
 		List<String> parsedList = new ArrayList<String>();
 		output = 0;
-		setLanguage();
 		if (myLanguage == null){
-			myLanguage = "Chinese";
+			myLanguage = "English";
 		}
 		parse.addPatterns("resources.languages/" + myLanguage);
 		parse.addPatterns("resources.languages/Syntax");
@@ -89,15 +90,18 @@ public class Interpreter {
 					Class<?> cls;
 					Constructor<?> cst;
 					Object instance;
-					/*
-					 * 
-					 * NEEDS WORK HERE
-					 * 
-					 */
 					System.out.println(list.get(i));
 					cls = Class.forName("backend." + getType(list.get(i))+"." + list.get(i));
+					/*
+					 * refactor this later
+					 */
+					if (getType(list.get(i)).equals("turtlecommands")){		
 					cst = cls.getConstructor(Turtle.class);
 					instance = cst.newInstance(turtle);
+					}
+					else{
+						instance = cls.newInstance();
+					}
 					tempCommand = (Command) instance;
 					
 					// reflection issues?```
@@ -134,6 +138,7 @@ public class Interpreter {
 	}
 
 	public Tree createCommandTree(List<Command> commandList){
+		nodeCommandMap = new HashMap<Node, Command>();
 		commandTree = new Tree();
 		nodeList = new ArrayList<Node>();
 		for (int i = 0; i < commandList.size(); i++){
@@ -146,13 +151,13 @@ public class Interpreter {
 			}
 			tempNode.children = new ArrayList<Node>();
 			nodeList.add(tempNode);
+			nodeCommandMap.put(tempNode, currCommand);
 		}
 		// if tempCommand fits in a certain type, assign it to that type. If it doesn't fit in a type and is a bracket
 		// start a new branch?
 
 		commandTree.root = nodeList.get(0);
 		Node currNode = commandTree.root;
-		//		nodeList.remove(nodeList.get(0));
 
 		for (int i = 1; i < nodeList.size(); i++){
 			nodeList.get(i).parent = currNode;
@@ -168,17 +173,18 @@ public class Interpreter {
 	}
 
 	public int parseTree(Node n){
+		
+		System.out.println(nodeCommandMap.keySet());
+		System.out.println(nodeCommandMap.values());
 		Node myNode = n;
 		if (myNode.children.size()>0){
 			for (int i = myNode.children.size() - 1; i>=0; i--){
 				Node child = myNode.children.get(i);
 				if (child.type.equals("Constant")){
 					
-					System.out.println("Child type is a constant");
-					System.out.println(child.returnValue);
 					output += Integer.parseInt(child.value);
 					child.parent.returnValue += output;
-					System.out.println(child.parent.type);
+				
 				}
 				else{
 					if (child.returnValue == null){
@@ -187,7 +193,12 @@ public class Interpreter {
 					else{
 						output += Integer.parseInt(child.returnValue);
 					}
-				};
+				}
+				ArrayList<Command> tempList = new ArrayList<Command>();
+				for (int j = 0; j < myNode.children.size(); j++){
+					tempList.add(nodeCommandMap.get(myNode.children.get(j)));
+				}
+				updateTurtle(nodeCommandMap.get(myNode), tempList);
 				/**
 				 * 
 				 * WE WILL NEED AN UPDATE TURTLE METHOD HERE TO DRAW OUT EVERY STEP
@@ -199,6 +210,12 @@ public class Interpreter {
 		}
 		System.out.println(output);
 		return output;
+	}
+
+	private void updateTurtle(Command command, ArrayList<Command> list) {
+		
+		command.compute(list);
+		
 	}
 
 	public class Tree{
@@ -245,7 +262,7 @@ public class Interpreter {
 			NotEqual (Type.booleanoperations),
 			Or (Type.booleanoperations),
 			ATan (Type.mathoperations),
-			Cos (Type.mathoperations),
+			Cosine (Type.mathoperations),
 			Difference (Type.mathoperations),
 			Log (Type.mathoperations),
 			Minus (Type.mathoperations),
@@ -255,7 +272,7 @@ public class Interpreter {
 			Quotient (Type.mathoperations),
 			Random (Type.mathoperations),
 			Remainder (Type.mathoperations),
-			Sin (Type.mathoperations),
+			Sine (Type.mathoperations),
 			Sum (Type.mathoperations),
 			Tan (Type.mathoperations),
 			MakeVariable(Type.variables);
@@ -293,8 +310,8 @@ public class Interpreter {
 
 	
 	
-	public void setLanguage(){
-		myLanguage = ToolBox.myLanguage;
+	public void setLanguage(String language){
+		myLanguage = language;
 	}
 
 }

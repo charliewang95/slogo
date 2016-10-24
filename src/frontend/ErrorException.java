@@ -7,6 +7,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextInputDialog;
 
 /**
  * @author Charlie Wang
@@ -47,24 +48,35 @@ public class ErrorException {
 	 *            e.g. "Seek Help Online"
 	 * @param option2
 	 *            e.g. "Define New Commands"
+	 * @param command
 	 */
-	public ErrorException(Display display, String message, String option1, String option2) {
+	public ErrorException(Display display, String message, String option1, String option2, String command) {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("ErrorTitle");
+		alert.setTitle(myResources.getString("ErrorTitle"));
 		alert.setHeaderText(null);
 		alert.setContentText(message);
 
 		ButtonType buttonType1 = new ButtonType(option1);
 		ButtonType buttonType2 = new ButtonType(option2);
 		ButtonType buttonType0 = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+		alert.getButtonTypes().setAll(buttonType1, buttonType2, buttonType0);
 		
 		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == buttonType1){
-		    display.getTool().setOnlineHelpEvent();
+		if (result.get() == buttonType1) {
+			display.getTool().setOnlineHelpEvent();
 		} else if (result.get() == buttonType2) {
-		    // DEFINE new commands
+			TextInputDialog dialog = new TextInputDialog(myResources.getString("NewCommandPrompt"));
+			dialog.setTitle(myResources.getString("NewCommandTitle"));
+			dialog.setHeaderText(myResources.getString("NewCommand") + command);
+			dialog.setContentText(myResources.getString("NewCommandHint"));
+			Optional<String> newCommand = dialog.showAndWait();
+			if (newCommand.isPresent()){
+			    System.out.println(newCommand.get());
+			} else  {
+				ErrorException ee = new ErrorException(message);
+			}
 		} else {
-		    //
+			//
 		}
 	}
 }
