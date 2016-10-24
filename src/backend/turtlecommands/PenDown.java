@@ -17,10 +17,10 @@ public class PenDown extends Command {
 
 	public String compute(ArrayList<Command> inputs) {
 		
-		if(! checkNoInputs(inputs) ) {
-			return "0";
-		}
-		System.out.println("MADE IT");
+//		if(! checkNoInputs(inputs) ) {
+//			return "0";
+//		}
+		
 		myTurtle.setPenDown(true);
 		
 		return ONE;

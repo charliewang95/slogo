@@ -7,7 +7,7 @@ import backend.Turtle;
 
 public class NotEqual extends Command{
 
-	public NotEqual(String type, int inputs) {
+	public NotEqual(Turtle t) {
 		super("BooleanOperation", 2);
 		// TODO Auto-generated constructor stub
 	}
@@ -23,6 +23,6 @@ public class NotEqual extends Command{
 	}
 
 	private boolean notEqual(ArrayList<Command> inputs){
-		return (Integer.parseInt(inputs.get(0).compute(null)) != Integer.parseInt(inputs.get(1).compute(null)));
+		return (Double.parseDouble(inputs.get(0).compute(null)) != Double.parseDouble(inputs.get(1).compute(null)));
 	}
 }

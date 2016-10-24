@@ -15,9 +15,9 @@ public class Home extends PositionMove {
 	}
 	
 	public String compute(ArrayList<Command> inputs) {
-		if(! checkNoInputs(inputs) ) {
-			return "0";
-		}
+//		if(! checkNoInputs(inputs) ) {
+//			return "0";
+//		}
 		
 		return setPosition(0, 0, myTurtle);
 		

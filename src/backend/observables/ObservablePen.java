@@ -16,7 +16,7 @@ public class ObservablePen extends Observable {
     public void setPen(boolean penDown) {
             if (penDown != myPen) {
                 myPen = penDown;
-
+                System.out.println(myPen);
                 setChanged();
                 notifyObservers();
             }

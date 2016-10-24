@@ -26,6 +26,7 @@ public class Interpreter {
 	private String myLanguage;
 	private Turtle turtle;
 	private HashMap<Node, Command> nodeCommandMap;
+	private Double store = 0.0;
 
 	public Tree interpretString(String input){
 		parse = new ProgramParser();
@@ -39,7 +40,6 @@ public class Interpreter {
 		parse.addPatterns("resources.languages/Syntax");
 		for (int i = 0; i < stringList.size(); i++){
 			parsedList.add(parse.getSymbol(stringList.get(i)));
-			System.out.println(parsedList);
 		}
 		createCommandTree(createCommandList(parsedList));
 
@@ -79,7 +79,6 @@ public class Interpreter {
 
 			if (list.get(i).equals("Constant")){
 				tempCommand = new CommandNumber(Integer.parseInt(stringList.get(i)));
-				//System.out.println(tempCommand.compute(null));
 
 			}
 			else if (list.get(i).equals("ListStart") || list.get(i).equals("ListEnd")){
@@ -90,12 +89,11 @@ public class Interpreter {
 					Class<?> cls;
 					Constructor<?> cst;
 					Object instance;
-					System.out.println(list.get(i));
 					cls = Class.forName("backend." + getType(list.get(i))+"." + list.get(i));
 					/*
 					 * refactor this later
 					 */
-					if (getType(list.get(i)).equals("turtlecommands")||getType(list.get(i)).equals("turtlequeries")){		
+					if (getType(list.get(i)).equals("turtlecommands")||getType(list.get(i)).equals("turtlequeries")||getType(list.get(i)).equals("booleanoperations")){		
 						cst = cls.getConstructor(Turtle.class);
 						instance = cst.newInstance(turtle);
 					}
@@ -162,8 +160,7 @@ public class Interpreter {
 		for (int i = 1; i < nodeList.size(); i++){
 			nodeList.get(i).parent = currNode;
 			currNode.children.add(nodeList.get(i));
-
-			if (nodeList.get(i).type.equals("Forward")){
+			if (!nodeList.get(i).type.equals("Constant")){
 				currNode = nodeList.get(i);
 			}
 		}
@@ -172,50 +169,44 @@ public class Interpreter {
 
 	}
 
-	public int parseTree(Node n){
-
-		System.out.println(nodeCommandMap.keySet());
-		System.out.println(nodeCommandMap.values());
+	public Double parseTree(Node n){
+//		Double store = 0.0;
 		Node myNode = n;
 		if (myNode.children.size()>0){
 			for (int i = myNode.children.size() - 1; i>=0; i--){
 				Node child = myNode.children.get(i);
 				if (child.type.equals("Constant")){
 
-					output += Integer.parseInt(child.value);
-					child.parent.returnValue += output;
-
 				}
 				else{
 					if (child.returnValue == null){
-						parseTree(child);
-					}
-					else{
-						output += Integer.parseInt(child.returnValue);
+						Command x = new CommandNumber(parseTree(child));
+						Node child2 = new Node(x);
+						child2.returnValue = (x.compute(null));
+						child2.type = child2.returnValue;
+						child2.value = child2.returnValue;
+						myNode.children.remove(child);
+						myNode.children.add(child2);
+						nodeCommandMap.put(child2, x);
 					}
 				}
 				ArrayList<Command> tempList = new ArrayList<Command>();
 				for (int j = 0; j < myNode.children.size(); j++){
-					/*
-					 * check if node child has children, if no then continue, if yes then make a new instance of this?
-					 */
 					tempList.add(nodeCommandMap.get(myNode.children.get(j)));
 				}
-				updateTurtle(nodeCommandMap.get(myNode), tempList);
+				store = updateTurtle(nodeCommandMap.get(myNode), tempList);
 
 			}
 		}
 		else{
-			System.out.println("else");
-			updateTurtle(nodeCommandMap.get(myNode), null);
+			store = updateTurtle(nodeCommandMap.get(myNode), null);
 		}
-		System.out.println(output);
-		return output;
+		return store;
 	}
 
-	private void updateTurtle(Command command, ArrayList<Command> list) {
+	private Double updateTurtle(Command command, ArrayList<Command> list) {
 
-		System.out.println(command.compute(list));
+		return Double.parseDouble(command.compute(list));
 
 	}
 
@@ -248,7 +239,7 @@ public class Interpreter {
 		PenDown (Type.turtlecommands), 
 		PositionMove (Type.turtlecommands),
 		SetHeading (Type.turtlecommands), 
-		SetXY (Type.turtlecommands), 
+		SetPosition (Type.turtlecommands), 
 		Towards (Type.turtlecommands),
 		Heading (Type.turtlequeries),
 		IsPenDown (Type.turtlequeries),
@@ -262,20 +253,20 @@ public class Interpreter {
 		Not (Type.booleanoperations),
 		NotEqual (Type.booleanoperations),
 		Or (Type.booleanoperations),
-		ATan (Type.mathoperations),
+		ArcTangent (Type.mathoperations),
 		Cosine (Type.mathoperations),
 		Difference (Type.mathoperations),
-		Log (Type.mathoperations),
+		NaturalLog (Type.mathoperations),
 		Minus (Type.mathoperations),
-		PI (Type.mathoperations),
-		Pow (Type.mathoperations),
+		Pi (Type.mathoperations),
+		Power (Type.mathoperations),
 		Product (Type.mathoperations),
 		Quotient (Type.mathoperations),
 		Random (Type.mathoperations),
 		Remainder (Type.mathoperations),
 		Sine (Type.mathoperations),
 		Sum (Type.mathoperations),
-		Tan (Type.mathoperations),
+		Tangent (Type.mathoperations),
 		MakeVariable(Type.variables);
 
 		private Type type;

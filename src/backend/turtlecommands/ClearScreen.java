@@ -15,9 +15,9 @@ public class ClearScreen extends PositionMove {
 	}
 	
 	public String compute(ArrayList<Command> inputs) {
-		if(! checkNoInputs(inputs) ) {
-			return "0";
-		}
+//		if(! checkNoInputs(inputs) ) {
+//			return "0";
+//		}
 		
 		String output = setPosition(0, 0, myTurtle);
 		myTurtle.eraseLines(); //needs to be implemented

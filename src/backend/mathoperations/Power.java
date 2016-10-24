@@ -3,9 +3,9 @@ package backend.mathoperations;
 import java.util.ArrayList;
 import backend.Command;
 
-public class Pow extends Command {
+public class Power extends Command {
 
-	public Pow() {
+	public Power() {
 		super("MathOperation", 2);
 	}
 	

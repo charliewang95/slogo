@@ -16,13 +16,12 @@ public class PenUp extends Command {
 	}
 
 	public String compute(ArrayList<Command> inputs) {
-		
-		if(! checkNoInputs(inputs) ) {
-			return "0"; //might change because that is the expected output
-		}
-		
+//		if(! checkNoInputs(inputs) ) {
+//			System.out.println("fail?");
+//			return "0"; //might change because that is the expected output
+//		}
 		myTurtle.setPenDown(false);
-		
+
 		return ZERO;
 		
 	}

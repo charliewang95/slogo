@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import backend.Command;
 import backend.Turtle;
 
-public class Towards extends SpinMove {
+public class SetTowards extends SpinMove {
 	
 	private Turtle myTurtle;
 	
-	public Towards(Turtle t) {
+	public SetTowards(Turtle t) {
 		super();
 		myTurtle = t;
 	}
