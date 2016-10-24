@@ -3,9 +3,9 @@ package backend.mathoperations;
 import java.util.ArrayList;
 import backend.Command;
 
-public class Sin extends Command {
+public class Sine extends Command {
 
-	public Sin() {
+	public Sine() {
 		super("MathOperation", 1);
 	}
 	
