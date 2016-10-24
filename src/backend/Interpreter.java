@@ -32,9 +32,8 @@ public class Interpreter {
 		List<String> stringList = separateStrings(input);
 		List<String> parsedList = new ArrayList<String>();
 		output = 0;
-		setLanguage();
 		if (myLanguage == null){
-			myLanguage = "Chinese";
+			myLanguage = "English";
 		}
 		parse.addPatterns("resources.languages/" + myLanguage);
 		parse.addPatterns("resources.languages/Syntax");
@@ -311,8 +310,8 @@ public class Interpreter {
 
 	
 	
-	public void setLanguage(){
-		myLanguage = ToolBox.myLanguage;
+	public void setLanguage(String language){
+		myLanguage = language;
 	}
 
 }

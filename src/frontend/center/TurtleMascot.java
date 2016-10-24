@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
+
+import frontend.ErrorException;
 import frontend.coordinates.CoordinateConverter;
 import frontend.coordinates.TurtleLandToLayout;
 import frontend.coordinates.TurtleToLayout;
@@ -24,96 +26,121 @@ import javafx.scene.shape.PathElement;
  * @modifier Charlie Wang
  */
 public class TurtleMascot {
-    public static final int WIDTH = 50;
-    public static final int HEIGHT = 50;
-    
-    private ImageView myImage;
-    private double myX, myY;
-    private HashMap<String, Image> myAnimalMap;
-    private boolean isDown;
-    private Pen myPen;
-    
-    private TurtleToLayout converter;
-    
-    public TurtleMascot(int environmentWidth, int environmentHeight) {
-        converter = new TurtleToLayout(environmentWidth,environmentHeight,WIDTH,HEIGHT);
-        
-        myImage = new ImageView();
+	public static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
+	public static final int WIDTH = 50;
+	public static final int HEIGHT = 50;
+
+	private ImageView myImage;
+	private ResourceBundle myResources;
+	private double myX, myY;
+	private HashMap<String, Image> myAnimalMap;
+	private boolean isDown;
+	private Pen myPen;
+
+	private TurtleToLayout converter;
+
+	public TurtleMascot(int environmentWidth, int environmentHeight) {
+		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Common");
+
+		converter = new TurtleToLayout(environmentWidth, environmentHeight, WIDTH, HEIGHT);
+
+		myImage = new ImageView();
 		myX = 0;
 		myY = 0;
 		myAnimalMap = new HashMap<String, Image>();
-		myAnimalMap.put("Turtle", new Image(getClass().getClassLoader().getResourceAsStream("turtlemascot.png")));
-		myAnimalMap.put("Elephant", new Image(getClass().getClassLoader().getResourceAsStream("elephantmascot.png")));
-		myAnimalMap.put("Rocket", new Image(getClass().getClassLoader().getResourceAsStream("rocket.png")));
+		try {
+			myAnimalMap.put("Turtle", new Image(getClass().getClassLoader().getResourceAsStream("turtlemascot.png")));
+		} catch (Exception e) {
+			ErrorException ee = new ErrorException(myResources.getString("NoDefaultImageError") + " (Turtle)");
+		}
+		try {
+			myAnimalMap.put("Elephant",
+					new Image(getClass().getClassLoader().getResourceAsStream("elephantmascot.png")));
+		} catch (Exception e) {
+			ErrorException ee = new ErrorException(myResources.getString("NoDefaultImageError") + " (Elephant)");
+		}
+		try {
+			myAnimalMap.put("Rocket", new Image(getClass().getClassLoader().getResourceAsStream("rocket.png")));
+		} catch (Exception e) {
+			ErrorException ee = new ErrorException(myResources.getString("NoDefaultImageError") + " (Rocket)");
+		}
+
 		setImage(myAnimalMap.get("Turtle"));
 		isDown = true;
 		myPen = new Pen();
-    }
-    
-    /**
-     * Sets coordinates of the Turtle.
-     * @param pos - an array representing the coordinates of the Turtle (x=pos[0], y=pos[1]).
-     */
-    public void setPosition(double[] pos) {
-        double x = pos[0]; double y = pos[1];
-        setX(x); setY(y);
-    }
-    
-    /**
-     * @return an array representing the coordinates of the Turtle.
-     */
-    public double[] getPosition() {
-        double[] pos = {getX(), getY()};
-        return pos;
-    }
-    
-    /**
-     * @param x - TurtleLand X-coordinate
-     */
-    public void setX(double x) {
-        // TODO: implement toroidal TurtleLand
-        myX = x;
-        double layoutX = converter.convertX(x);
-        myImage.setLayoutX(layoutX);
-    }
-    
-    /**
-     * @return TurtleLand X-coordinate
-     */
-    public double getX() {
-        return myX;
-        //return myImage.getLayoutX(); //returns the layout X-coord
-    }
-    
-    /**
-     * @param y - TurtleLand Y-coordinate
-     */
-    public void setY(double y) {
-        // TODO: implement toroidal TurtleLand
-        myY = y;
-        double layoutY = converter.convertY(y);
-        myImage.setLayoutY(layoutY);
-    }
-    
-    /**
-     * @return TurtleLand Y-coordinate
-     */
-    public double getY() {
-        return myY;
-        //return myImage.getLayoutY(); //returns the layout Y-coord
-    }
-    
-    public double getDirection() {
-        return myImage.getRotate();
-    }
-    
-    /**
-     * @param direction - an angle, in degrees, 
-     *                    from 0 (inclusive) to 360 (exclusive)
-     */
-    public void setDirection(double direction) {
-        myImage.setRotate(direction);
-    }
+	}
+
+	/**
+	 * Sets coordinates of the Turtle.
+	 * 
+	 * @param pos
+	 *            - an array representing the coordinates of the Turtle
+	 *            (x=pos[0], y=pos[1]).
+	 */
+	public void setPosition(double[] pos) {
+		double x = pos[0];
+		double y = pos[1];
+		setX(x);
+		setY(y);
+	}
+
+	/**
+	 * @return an array representing the coordinates of the Turtle.
+	 */
+	public double[] getPosition() {
+		double[] pos = { getX(), getY() };
+		return pos;
+	}
+
+	/**
+	 * @param x
+	 *            - TurtleLand X-coordinate
+	 */
+	public void setX(double x) {
+		// TODO: implement toroidal TurtleLand
+		myX = x;
+		double layoutX = converter.convertX(x);
+		myImage.setLayoutX(layoutX);
+	}
+
+	/**
+	 * @return TurtleLand X-coordinate
+	 */
+	public double getX() {
+		return myX;
+		// return myImage.getLayoutX(); //returns the layout X-coord
+	}
+
+	/**
+	 * @param y
+	 *            - TurtleLand Y-coordinate
+	 */
+	public void setY(double y) {
+		// TODO: implement toroidal TurtleLand
+		myY = y;
+		double layoutY = converter.convertY(y);
+		myImage.setLayoutY(layoutY);
+	}
+
+	/**
+	 * @return TurtleLand Y-coordinate
+	 */
+	public double getY() {
+		return myY;
+		// return myImage.getLayoutY(); //returns the layout Y-coord
+	}
+
+	public double getDirection() {
+		return myImage.getRotate();
+	}
+
+	/**
+	 * @param direction
+	 *            - an angle, in degrees, from 0 (inclusive) to 360 (exclusive)
+	 */
+	public void setDirection(double direction) {
+		myImage.setRotate(direction);
+	}
 
 	/**
 	 * Convert a file to a image and save it to the map
@@ -125,9 +152,7 @@ public class TurtleMascot {
 			addAnimal(name, image);
 			setImage(image);
 		} catch (IOException ex) {
-			// TODO
-			// Logger.getLogger(JavaFXPixel.class.getName()).log(Level.SEVERE,
-			// null, ex);
+			ErrorException ee = new ErrorException(myResources.getString("FileNotImageError"));
 		}
 	}
 
@@ -143,10 +168,14 @@ public class TurtleMascot {
 			myImage.setFitWidth(WIDTH);
 			myImage.setFitHeight(HEIGHT);
 		} catch (Exception e) {
-			//TODO
+			ErrorException ee = new ErrorException(myResources.getString("FileNotImageError"));
 		}
 	}
 
+	public void setVisible() {
+		myImage.setVisible(false);
+	}
+	
 	/**
 	 * Returns the ImageView of the Sprite
 	 * 
@@ -183,8 +212,8 @@ public class TurtleMascot {
 	public int getHeight() {
 		return HEIGHT;
 	}
-	
+
 	public List<PathElement> getPenPath() {
-	    return myPen.getPathElements();
+		return myPen.getPathElements();
 	}
 }
