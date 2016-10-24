@@ -12,8 +12,8 @@ import javafx.scene.canvas.GraphicsContext;
 public class DirectionObserver extends TurtleObserver {
     private ObservableDirection turtleDirection = null;
 
-    public DirectionObserver(TurtleMascot turtle, GraphicsContext gcc, ObservableDirection direction) {
-            super(turtle,gcc);
+    public DirectionObserver(TurtleMascot turtle, GraphicsContext gcc, int width, int height, ObservableDirection direction) {
+            super(turtle,gcc,width,height);
             turtleDirection = direction;
     }
 

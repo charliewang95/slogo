@@ -3,6 +3,7 @@ package frontend.observers;
 import java.util.List;
 import java.util.Observer;
 import frontend.center.TurtleMascot;
+import frontend.coordinates.TurtleLandToLayout;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.LineTo;
@@ -16,14 +17,25 @@ import javafx.scene.shape.PathElement;
 public abstract class TurtleObserver implements Observer {
     private TurtleMascot myTurtle;
     private GraphicsContext gc;
+    
+    private TurtleLandToLayout converter;
 
-    public TurtleObserver(TurtleMascot turtle, GraphicsContext gcc) {
+    public TurtleObserver(TurtleMascot turtle, GraphicsContext gcc, int width, int height) {
             myTurtle = turtle;
             gc = gcc;
+            converter = new TurtleLandToLayout(width,height);
     }
     
     // Only subclasses should be able to access the TurtleMascot
-
+    
+    protected double getMascotX() {
+        return myTurtle.getX();
+    }
+    
+    protected double getMascotY() {
+        return myTurtle.getY();
+    }
+    
     protected void setPosition(double[] pos) {
             myTurtle.setPosition(pos);
     }
@@ -41,7 +53,7 @@ public abstract class TurtleObserver implements Observer {
     }
 
     protected void setVisibility(boolean visible) {
-            // TODO: access visibility
+            myTurtle.setVisible(visible);
     }
 
     protected void setPenDown(boolean penDown) {
@@ -62,14 +74,14 @@ public abstract class TurtleObserver implements Observer {
         myTurtle.setX(end.getX());
         myTurtle.setY(end.getY());
         
-        // Update direction
-        //myTurtle.setDirection(getSegmentBearing(start,end));
+        double penX = converter.convertX(end.getX());
+        double penY = converter.convertY(end.getY());
         
         // Update (and draw) path
         if (myTurtle.isDrawing()){
-            addPathElement(new LineTo(end.getX(),end.getY()));
+            addPathElement(new LineTo(penX,penY));
         } else {
-            addPathElement(new MoveTo(end.getX(),end.getY()));
+            addPathElement(new MoveTo(penX,penY));
         }
         drawPath(myTurtle.getPenPath());
     }

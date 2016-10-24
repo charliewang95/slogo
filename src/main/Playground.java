@@ -79,11 +79,14 @@ public class Playground {
 	        TurtleMascot turtle = turtleLand.getTurtle();
 	        GraphicsContext gc = turtleLand.getGraphicsContext();
 	        
+	        int width = turtleLand.getWidth();
+	        int height = turtleLand.getHeight();
+	        
 	        Collection<Observer> observers = new ArrayList<>();
-	        observers.add(new DirectionObserver(turtle,gc,turtleModel.getDirObs()));
-	        observers.add(new PenObserver(turtle,gc,turtleModel.getPenObs()));
-	        observers.add(new PositionObserver(turtle,gc,turtleModel.getPosObs()));
-	        observers.add(new VisibilityObserver(turtle,gc,turtleModel.getVisObs()));
+	        observers.add(new DirectionObserver(turtle,gc,width,height,turtleModel.getDirObs()));
+	        observers.add(new PenObserver(turtle,gc,width,height,turtleModel.getPenObs()));
+	        observers.add(new PositionObserver(turtle,gc,width,height,turtleModel.getPosObs()));
+	        observers.add(new VisibilityObserver(turtle,gc,width,height,turtleModel.getVisObs()));
 	        return observers;
 	}
 	

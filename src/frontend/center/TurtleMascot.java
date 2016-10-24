@@ -40,7 +40,7 @@ public class TurtleMascot {
 
 	private TurtleToLayout converter;
 
-	public TurtleMascot(int environmentWidth, int environmentHeight) {
+	public TurtleMascot(int environmentWidth, int environmentHeight, TurtleLandToLayout tlConverter) {
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Common");
 
 		converter = new TurtleToLayout(environmentWidth, environmentHeight, WIDTH, HEIGHT);
@@ -68,7 +68,7 @@ public class TurtleMascot {
 
 		setImage(myAnimalMap.get("Turtle"));
 		isDown = true;
-		myPen = new Pen(converter.convertX(0), converter.convertY(0));
+		myPen = new Pen(tlConverter, myX, myY);
     }
     
     /**
@@ -167,8 +167,8 @@ public class TurtleMascot {
 		}
 	}
 
-	public void setVisible() {
-		myImage.setVisible(false);
+	public void setVisible(boolean value) {
+		myImage.setVisible(value);
 	}
 	
 	/**

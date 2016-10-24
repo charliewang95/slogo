@@ -3,6 +3,8 @@ package frontend.observers;
 import java.util.Observable;
 import backend.observables.ObservablePosition;
 import frontend.center.TurtleMascot;
+import frontend.coordinates.CoordinateConverter;
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -14,8 +16,8 @@ import javafx.scene.shape.MoveTo;
 public class PositionObserver extends TurtleObserver {
     private ObservablePosition turtlePosition = null;
 
-    public PositionObserver(TurtleMascot turtle, GraphicsContext gcc, ObservablePosition position) {
-            super(turtle,gcc);
+    public PositionObserver(TurtleMascot turtle, GraphicsContext gcc, int width, int height, ObservablePosition position) {
+            super(turtle,gcc,width,height);
             turtlePosition = position;
     }
 
@@ -24,7 +26,13 @@ public class PositionObserver extends TurtleObserver {
                     // Move Turtle to updated position;
                     // Check if pen is down, maybe draw line
                     ObservablePosition pos = (ObservablePosition) obs;
-                    setPosition(pos.getPosition());
+                    
+                    Point2D start = new Point2D(getMascotX(),getMascotY());
+                    Point2D end = new Point2D(pos.getX(),pos.getY());
+                    
+                    moveTurtle(start,end);
+                    
+                    /*setPosition(pos.getPosition());
                     
                     if (getPenStatus()) {
                             // TODO: draw line to new position
@@ -33,7 +41,7 @@ public class PositionObserver extends TurtleObserver {
                     else {
                             // TODO: move path to new position (moveTo) or store a previous position
                             addPathElement(new MoveTo(pos.getX(),pos.getY()));
-                    }
+                    }*/
             }
     }
 }

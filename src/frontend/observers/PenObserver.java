@@ -12,8 +12,8 @@ import javafx.scene.canvas.GraphicsContext;
 public class PenObserver extends TurtleObserver {
     private ObservablePen turtlePen = null;
 
-    public PenObserver(TurtleMascot turtle, GraphicsContext gcc, ObservablePen pen) {
-            super(turtle,gcc);
+    public PenObserver(TurtleMascot turtle, GraphicsContext gcc, int width, int height, ObservablePen pen) {
+            super(turtle,gcc,width,height);
             turtlePen = pen;
     }
 
