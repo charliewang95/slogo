@@ -38,7 +38,6 @@ import javafx.scene.shape.Rectangle;
 public class TurtleLand {
 	public static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
 	private Color defaultGround = Color.LIGHTGREEN;
-	private Color myPenColor = Color.BLACK;
 	private Pane myPane;
 	private Canvas myCanvas, myBackground;
 	private TurtleMascot myTurtle;
@@ -179,7 +178,7 @@ public class TurtleLand {
 	}
 
 	public void setPenColor(Color color) {
-		myPenColor = color;
+		myTurtle.setPenColor(color);
 	}
 
 	public void printGround() {
