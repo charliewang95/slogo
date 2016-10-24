@@ -5,7 +5,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
+import javafx.util.Callback;
 
 /**
  * @author Charlie Wang
@@ -15,16 +22,29 @@ public class History {
 	private static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
 
 	private StringBuilder myBuilder;
+	private Console myConsole;
 	private ListView<String> lv;
 	private ResourceBundle myResources;
 
-	public History() {
+	public History(Console console) {
+		myConsole = console;
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Common");
 		lv = new ListView<>();
+		lv.itemsProperty().bind(myConsole.getCommandList());
+		lv.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getClickCount() == 2 && lv.getSelectionModel().getSelectedItem()!=null) {
+					myConsole.interpretInput(lv.getSelectionModel().getSelectedItem());
+				}
+			}
+		});
+
 		lv.setPrefSize(Integer.parseInt(myResources.getString("HistoryWidth")),
 				Integer.parseInt(myResources.getString("HistoryHeight")));
-		//lv.setStyle("-fx-background-color: #8FB9EA");
+
 		myBuilder = new StringBuilder();
+
 	}
 
 	public ListView<String> getHistory() {
