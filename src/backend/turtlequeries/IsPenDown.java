@@ -22,6 +22,7 @@ public class IsPenDown extends Command {
 //			return "0"; //might change because that is the expected output
 //		}
 		
+		System.out.println(myTurtle.isPenDown());
 		if(myTurtle.isPenDown()) {
 			return PEN_IS_DOWN;
 		} else {

@@ -21,7 +21,7 @@ public class IsShowing extends Command {
 //		if(! checkNoInputs(inputs) ) {
 //			return "0"; //might change because that is the expected output
 //		}
-		
+		System.out.println(myTurtle.isVisible());
 		if(myTurtle.isVisible()) {
 			return IS_VISABLE;
 		} else {
