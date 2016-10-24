@@ -2,6 +2,7 @@ package frontend.observers;
 
 import java.util.List;
 import java.util.Observer;
+import frontend.center.Pen;
 import frontend.center.TurtleMascot;
 import frontend.coordinates.TurtleLandToLayout;
 import javafx.geometry.Point2D;
@@ -65,33 +66,30 @@ public abstract class TurtleObserver implements Observer {
         return myTurtle.isDrawing();
     }
     
-    protected void addPathElement(PathElement pe) {
-        List<PathElement> path = myTurtle.getPenPath();
-        path.add(pe);
-    }
-    
     protected void moveTurtle(Point2D start, Point2D end) {
-        // Update position
-        myTurtle.setX(end.getX());
-        myTurtle.setY(end.getY());
+        double x = end.getX();
+        double y = end.getY();
         
-        double penX = converter.convertX(end.getX());
-        double penY = converter.convertY(end.getY());
+        // Update position
+        myTurtle.setX(x);
+        myTurtle.setY(y);
+        
+        Pen pen = myTurtle.getPen();
         
         // Update (and draw) path
         if (myTurtle.isDrawing()){
-            addPathElement(new LineTo(penX,penY));
+            pen.lineTo(x, y);
         } else {
-            addPathElement(new MoveTo(penX,penY));
+            pen.moveTo(x, y);
         }
-        drawPath(myTurtle.getPenPath());
+        drawPath(pen);
     }
     
-    private void drawPath(List<PathElement> path) {
+    private void drawPath(Pen pen) {
         //gcc.setStroke(myPenColor);
         //gcc.setLineWidth(1);
         
-        //List<PathElement> pathList = myTurtle.getPenPath();
+        List<PathElement> path = pen.getPathElements();
         
         gc.beginPath();
         path.stream().forEach((pe) -> {
