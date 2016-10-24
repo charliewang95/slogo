@@ -93,8 +93,16 @@ public class Interpreter {
 					Object instance;
 					System.out.println(list.get(i));
 					cls = Class.forName("backend." + getType(list.get(i))+"." + list.get(i));
+					/*
+					 * refactor this later
+					 */
+					if (getType(list.get(i)).equals("turtlecommands")){		
 					cst = cls.getConstructor(Turtle.class);
 					instance = cst.newInstance(turtle);
+					}
+					else{
+						instance = cls.newInstance();
+					}
 					tempCommand = (Command) instance;
 					
 					// reflection issues?```
@@ -255,7 +263,7 @@ public class Interpreter {
 			NotEqual (Type.booleanoperations),
 			Or (Type.booleanoperations),
 			ATan (Type.mathoperations),
-			Cos (Type.mathoperations),
+			Cosine (Type.mathoperations),
 			Difference (Type.mathoperations),
 			Log (Type.mathoperations),
 			Minus (Type.mathoperations),
@@ -265,7 +273,7 @@ public class Interpreter {
 			Quotient (Type.mathoperations),
 			Random (Type.mathoperations),
 			Remainder (Type.mathoperations),
-			Sin (Type.mathoperations),
+			Sine (Type.mathoperations),
 			Sum (Type.mathoperations),
 			Tan (Type.mathoperations),
 			MakeVariable(Type.variables);

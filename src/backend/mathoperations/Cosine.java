@@ -3,9 +3,9 @@ package backend.mathoperations;
 import java.util.ArrayList;
 import backend.Command;
 
-public class Cos extends Command {
+public class Cosine extends Command {
 
-	public Cos() {
+	public Cosine() {
 		super("MathOperation", 1);
 	}
 	
