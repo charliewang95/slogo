@@ -27,8 +27,8 @@ public abstract class VerticalMove extends Command {
 		double yDisplacement = ( pix * Math.cos( tDegree*Math.PI/180 ) );
 		
 		//move turtle (does not deal with lines or going off the board)
-		turtle.setMyX( turtle.getMyX() + xDisplacement );
-		turtle.setMyY( turtle.getMyY() + yDisplacement );
+		turtle.setMyX( turtle.getMyX() + ((forward) ?  xDisplacement : -1*xDisplacement)  );
+		turtle.setMyY( turtle.getMyY() + ((forward) ? yDisplacement : -1*yDisplacement ));
 		
 		return pix.toString();
 		
