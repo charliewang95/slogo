@@ -95,7 +95,7 @@ public class Interpreter {
 					/*
 					 * refactor this later
 					 */
-					if (getType(list.get(i)).equals("turtlecommands")){		
+					if (getType(list.get(i)).equals("turtlecommands")||getType(list.get(i)).equals("turtlequeries")){		
 					cst = cls.getConstructor(Turtle.class);
 					instance = cst.newInstance(turtle);
 					}
@@ -208,6 +208,9 @@ public class Interpreter {
 				
 			}
 		}
+		if (myNode.type.equals("TurtleQuery")){
+			updateTurtle(nodeCommandMap.get(myNode), null);
+		}
 		System.out.println(output);
 		return output;
 	}
@@ -250,10 +253,10 @@ public class Interpreter {
 			SetXY (Type.turtlecommands), 
 			Towards (Type.turtlecommands),
 			Heading (Type.turtlequeries),
-			PenDownP (Type.turtlequeries),
-			ShowingP (Type.turtlequeries),
-			XCor (Type.turtlequeries),
-			YCor (Type.turtlequeries),
+			IsPenDown (Type.turtlequeries),
+			IsShowing (Type.turtlequeries),
+			XCoordinate (Type.turtlequeries),
+			YCoordinate (Type.turtlequeries),
 			And (Type.booleanoperations),
 			Equal (Type.booleanoperations),
 			GreaterThan (Type.booleanoperations),

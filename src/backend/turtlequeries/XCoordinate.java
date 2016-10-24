@@ -5,21 +5,23 @@ import java.util.ArrayList;
 import backend.Command;
 import backend.Turtle;
 
-public class XCor extends Command {
+public class XCoordinate extends Command {
 	
 	private Turtle myTurtle;
 	
-	public XCor(Turtle t) {
+	public XCoordinate(Turtle t) {
 		super("TurtleQuery", 0);
 		myTurtle = t;
 	}
 
 	public String compute(ArrayList<Command> inputs) {
 		
-		if(! checkNoInputs(inputs) ) {
-			return "0";
-		}
-		
+//		if(! checkNoInputs(inputs) ) {
+//			System.out.println("FAILURE");
+//			return "0";
+//		}
+
+		System.out.println(myTurtle.getMyX());
 		return ( (Double) myTurtle.getMyX() ).toString();
 		
 	}
