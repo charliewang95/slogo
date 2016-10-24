@@ -207,8 +207,8 @@ public class TurtleMascot {
 	public int getHeight() {
 		return HEIGHT;
 	}
-
-	public List<PathElement> getPenPath() {
-		return myPen.getPathElements();
+	
+	public Pen getPen() {
+	        return myPen;
 	}
 }
