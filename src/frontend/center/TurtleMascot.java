@@ -18,6 +18,7 @@ import frontend.coordinates.TurtleToLayout;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.PathElement;
 
@@ -37,6 +38,7 @@ public class TurtleMascot {
 	private HashMap<String, Image> myAnimalMap;
 	private boolean isDown;
 	private Pen myPen;
+	private Color myPenColor;
 
 	private TurtleToLayout converter;
 
@@ -44,7 +46,7 @@ public class TurtleMascot {
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Common");
 
 		converter = new TurtleToLayout(environmentWidth, environmentHeight, WIDTH, HEIGHT);
-
+		myPenColor = Color.BLACK;
 		myImage = new ImageView();
 		myX = 0;
 		myY = 0;
@@ -210,5 +212,13 @@ public class TurtleMascot {
 	
 	public Pen getPen() {
 	        return myPen;
+	}
+	
+	public void setPenColor(Color c) {
+		myPenColor = c;
+	}
+	
+	public Color getPenColor() {
+		return myPenColor;
 	}
 }

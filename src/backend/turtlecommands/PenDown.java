@@ -20,7 +20,7 @@ public class PenDown extends Command {
 		if(! checkNoInputs(inputs) ) {
 			return "0";
 		}
-		
+		System.out.println("MADE IT");
 		myTurtle.setPenDown(true);
 		
 		return ONE;

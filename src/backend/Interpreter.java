@@ -9,7 +9,7 @@ import main.Playground;
 import frontend.left.ToolBox;
 
 public class Interpreter {
-	
+
 	public Interpreter(Playground myPlay, Turtle turtle){
 		this.myPlayground = myPlay;
 		this.turtle = turtle;
@@ -42,9 +42,9 @@ public class Interpreter {
 			System.out.println(parsedList);
 		}
 		createCommandTree(createCommandList(parsedList));
-		
+
 		parseTree(commandTree.root);
-		
+
 		return commandTree;
 
 	}
@@ -80,7 +80,7 @@ public class Interpreter {
 			if (list.get(i).equals("Constant")){
 				tempCommand = new CommandNumber(Integer.parseInt(stringList.get(i)));
 				//System.out.println(tempCommand.compute(null));
-				
+
 			}
 			else if (list.get(i).equals("ListStart") || list.get(i).equals("ListEnd")){
 				tempCommand = new CommandOperator(list.get(i));
@@ -96,14 +96,14 @@ public class Interpreter {
 					 * refactor this later
 					 */
 					if (getType(list.get(i)).equals("turtlecommands")||getType(list.get(i)).equals("turtlequeries")){		
-					cst = cls.getConstructor(Turtle.class);
-					instance = cst.newInstance(turtle);
+						cst = cls.getConstructor(Turtle.class);
+						instance = cst.newInstance(turtle);
 					}
 					else{
 						instance = cls.newInstance();
 					}
 					tempCommand = (Command) instance;
-					
+
 					// reflection issues?```
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -127,7 +127,7 @@ public class Interpreter {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 			}
 			if (tempCommand != null){
 				commandList.add(tempCommand);
@@ -173,7 +173,7 @@ public class Interpreter {
 	}
 
 	public int parseTree(Node n){
-		
+
 		System.out.println(nodeCommandMap.keySet());
 		System.out.println(nodeCommandMap.values());
 		Node myNode = n;
@@ -181,14 +181,14 @@ public class Interpreter {
 			for (int i = myNode.children.size() - 1; i>=0; i--){
 				Node child = myNode.children.get(i);
 				if (child.type.equals("Constant")){
-					
+
 					output += Integer.parseInt(child.value);
 					child.parent.returnValue += output;
-				
+
 				}
 				else{
 					if (child.returnValue == null){
-					parseTree(child);
+						parseTree(child);
 					}
 					else{
 						output += Integer.parseInt(child.returnValue);
@@ -196,19 +196,17 @@ public class Interpreter {
 				}
 				ArrayList<Command> tempList = new ArrayList<Command>();
 				for (int j = 0; j < myNode.children.size(); j++){
+					/*
+					 * check if node child has children, if no then continue, if yes then make a new instance of this?
+					 */
 					tempList.add(nodeCommandMap.get(myNode.children.get(j)));
 				}
 				updateTurtle(nodeCommandMap.get(myNode), tempList);
-				/**
-				 * 
-				 * WE WILL NEED AN UPDATE TURTLE METHOD HERE TO DRAW OUT EVERY STEP
-				 * updateTurtle();
-				 * 
-				 */
-				
+
 			}
 		}
-		if (myNode.type.equals("TurtleQuery")){
+		else{
+			System.out.println("else");
 			updateTurtle(nodeCommandMap.get(myNode), null);
 		}
 		System.out.println(output);
@@ -216,9 +214,9 @@ public class Interpreter {
 	}
 
 	private void updateTurtle(Command command, ArrayList<Command> list) {
-		
-		command.compute(list);
-		
+
+		System.out.println(command.compute(list));
+
 	}
 
 	public class Tree{
@@ -235,72 +233,72 @@ public class Interpreter {
 		public String type;
 		public String returnValue;
 	}
-	
+
 
 	public enum Commands{
-			Forward (Type.turtlecommands), 
-			Backward (Type.turtlecommands), 
-			ClearScreen (Type.turtlecommands), 
-			HideTurtle (Type.turtlecommands), 
-			ShowTurtle (Type.turtlecommands), 
-			Left (Type.turtlecommands), 
-			Right (Type.turtlecommands), 
-			Home (Type.turtlecommands), 
-			PenUp (Type.turtlecommands), 
-			PenDown (Type.turtlecommands), 
-			PositionMove (Type.turtlecommands),
-			SetHeading (Type.turtlecommands), 
-			SetXY (Type.turtlecommands), 
-			Towards (Type.turtlecommands),
-			Heading (Type.turtlequeries),
-			IsPenDown (Type.turtlequeries),
-			IsShowing (Type.turtlequeries),
-			XCoordinate (Type.turtlequeries),
-			YCoordinate (Type.turtlequeries),
-			And (Type.booleanoperations),
-			Equal (Type.booleanoperations),
-			GreaterThan (Type.booleanoperations),
-			LessThan (Type.booleanoperations),
-			Not (Type.booleanoperations),
-			NotEqual (Type.booleanoperations),
-			Or (Type.booleanoperations),
-			ATan (Type.mathoperations),
-			Cosine (Type.mathoperations),
-			Difference (Type.mathoperations),
-			Log (Type.mathoperations),
-			Minus (Type.mathoperations),
-			PI (Type.mathoperations),
-			Pow (Type.mathoperations),
-			Product (Type.mathoperations),
-			Quotient (Type.mathoperations),
-			Random (Type.mathoperations),
-			Remainder (Type.mathoperations),
-			Sine (Type.mathoperations),
-			Sum (Type.mathoperations),
-			Tan (Type.mathoperations),
-			MakeVariable(Type.variables);
-			
-			private Type type;
-			
-			Commands(Type type){
-				this.type = type;
-			}
-			
-			public boolean isInGroup(Type type){
-				return (this.type == type);
-			}
-			
-			
-			
-			public enum Type {
-				turtlecommands,
-				turtlequeries,
-				booleanoperations,
-				mathoperations,
-				othercommands,
-				variables;
-				
-			}
+		Forward (Type.turtlecommands), 
+		Backward (Type.turtlecommands), 
+		ClearScreen (Type.turtlecommands), 
+		HideTurtle (Type.turtlecommands), 
+		ShowTurtle (Type.turtlecommands), 
+		Left (Type.turtlecommands), 
+		Right (Type.turtlecommands), 
+		Home (Type.turtlecommands), 
+		PenUp (Type.turtlecommands), 
+		PenDown (Type.turtlecommands), 
+		PositionMove (Type.turtlecommands),
+		SetHeading (Type.turtlecommands), 
+		SetXY (Type.turtlecommands), 
+		Towards (Type.turtlecommands),
+		Heading (Type.turtlequeries),
+		IsPenDown (Type.turtlequeries),
+		IsShowing (Type.turtlequeries),
+		XCoordinate (Type.turtlequeries),
+		YCoordinate (Type.turtlequeries),
+		And (Type.booleanoperations),
+		Equal (Type.booleanoperations),
+		GreaterThan (Type.booleanoperations),
+		LessThan (Type.booleanoperations),
+		Not (Type.booleanoperations),
+		NotEqual (Type.booleanoperations),
+		Or (Type.booleanoperations),
+		ATan (Type.mathoperations),
+		Cosine (Type.mathoperations),
+		Difference (Type.mathoperations),
+		Log (Type.mathoperations),
+		Minus (Type.mathoperations),
+		PI (Type.mathoperations),
+		Pow (Type.mathoperations),
+		Product (Type.mathoperations),
+		Quotient (Type.mathoperations),
+		Random (Type.mathoperations),
+		Remainder (Type.mathoperations),
+		Sine (Type.mathoperations),
+		Sum (Type.mathoperations),
+		Tan (Type.mathoperations),
+		MakeVariable(Type.variables);
+
+		private Type type;
+
+		Commands(Type type){
+			this.type = type;
+		}
+
+		public boolean isInGroup(Type type){
+			return (this.type == type);
+		}
+
+
+
+		public enum Type {
+			turtlecommands,
+			turtlequeries,
+			booleanoperations,
+			mathoperations,
+			othercommands,
+			variables;
+
+		}
 	}
 	public String getType(String input){
 		for (Commands comm : Commands.values()){
@@ -311,8 +309,8 @@ public class Interpreter {
 		return null;
 	}
 
-	
-	
+
+
 	public void setLanguage(String language){
 		myLanguage = language;
 	}
