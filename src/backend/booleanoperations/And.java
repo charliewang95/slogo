@@ -7,7 +7,7 @@ import backend.Turtle;
 
 public class And extends Command{
 
-	public And(String type, int inputs) {
+	public And(Turtle t) {
 		super("BooleanOperation", 2);
 		// TODO Auto-generated constructor stub
 	}
@@ -23,6 +23,6 @@ public class And extends Command{
 	}
 
 	private boolean and(ArrayList<Command> inputs){
-		return (Integer.parseInt(inputs.get(0).compute(null)) > 0 &&  Integer.parseInt(inputs.get(1).compute(null)) > 0);
+		return (Double.parseDouble(inputs.get(0).compute(null)) > 0.0 &&  Double.parseDouble(inputs.get(1).compute(null)) > 0.0);
 	}
 }

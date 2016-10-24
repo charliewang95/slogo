@@ -16,9 +16,9 @@ public class Heading extends Command {
 
 	public String compute(ArrayList<Command> inputs) {
 		
-		if(! checkNoInputs(inputs) ) {
-			return "0";
-		}
+//		if(! checkNoInputs(inputs) ) {
+//			return "0";
+//		}
 		
 		return ( (Double) myTurtle.getDirection() ).toString();
 		

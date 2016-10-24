@@ -95,7 +95,7 @@ public class Interpreter {
 					/*
 					 * refactor this later
 					 */
-					if (getType(list.get(i)).equals("turtlecommands")||getType(list.get(i)).equals("turtlequeries")){		
+					if (getType(list.get(i)).equals("turtlecommands")||getType(list.get(i)).equals("turtlequeries")||getType(list.get(i)).equals("booleanoperations")){		
 						cst = cls.getConstructor(Turtle.class);
 						instance = cst.newInstance(turtle);
 					}
