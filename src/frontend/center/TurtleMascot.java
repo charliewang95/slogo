@@ -16,6 +16,7 @@ import frontend.coordinates.TurtleToLayout;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.PathElement;
 
 /**
@@ -47,7 +48,7 @@ public class TurtleMascot {
 		myAnimalMap.put("Rocket", new Image(getClass().getClassLoader().getResourceAsStream("rocket.png")));
 		setImage(myAnimalMap.get("Turtle"));
 		isDown = true;
-		myPen = new Pen();
+		myPen = new Pen(converter.convertX(0), converter.convertY(0));
     }
     
     /**
