@@ -144,7 +144,7 @@ public class Console {
 	}
 
 	public void setLanguage(String language) {
-		// myInterpreter.setLanguage(language);
+		myInterpreter.setLanguage(language);
 	}
 
 	public History getHistory() {

@@ -29,7 +29,6 @@ public class Interpreter {
 		List<String> stringList = separateStrings(input);
 		List<String> parsedList = new ArrayList<String>();
 		output = 0;
-		setLanguage();
 		if (myLanguage == null){
 			myLanguage = "English";
 		}
@@ -288,8 +287,8 @@ public class Interpreter {
 
 	
 	
-	public void setLanguage(){
-		myLanguage = ToolBox.myLanguage;
+	public void setLanguage(String language){
+		myLanguage = language;
 	}
 
 }

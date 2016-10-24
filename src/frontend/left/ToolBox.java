@@ -49,7 +49,7 @@ public class ToolBox {
 	private Display myDisplay;
 	private ResourceBundle myResources;
 	private int count = 0;
-	public static String myLanguage;
+	private String myLanguage;
 
 	public ToolBox(Display display) {
 		myDisplay = display;
@@ -179,7 +179,9 @@ public class ToolBox {
 				try {
 					setTurtleEvent(box, box.getValue());
 				} catch (Exception e) {
-					ErrorException ee = new ErrorException(myResources.getString("NoOptionError"));
+					//ErrorException ee = new ErrorException(myResources.getString("NoOptionError"));
+					ErrorException ee = new ErrorException(myDisplay, "aha", "Seek Help Online", "Define New Command", "fr 50");
+					
 				}
 			} else if (refer.equals("SetLanguage")) {
 				try {
@@ -219,7 +221,7 @@ public class ToolBox {
 			try {
 				myDisplay.getTurtleLand().changeTurtle(value);
 			} catch (Exception e) {
-				ErrorException ee = new ErrorException(myResources.getString("NoImageError"));
+				ErrorException ee = new ErrorException(myDisplay, "aha", "Seek Help Online", "Define New Command", "fr 50");
 			}
 		}
 	}
