@@ -162,8 +162,7 @@ public class Interpreter {
 		for (int i = 1; i < nodeList.size(); i++){
 			nodeList.get(i).parent = currNode;
 			currNode.children.add(nodeList.get(i));
-
-			if (nodeList.get(i).type.equals("TurtleCommand")){
+			if (!nodeList.get(i).type.equals("Constant")){
 				currNode = nodeList.get(i);
 			}
 		}
@@ -174,8 +173,6 @@ public class Interpreter {
 
 	public int parseTree(Node n){
 
-		System.out.println(nodeCommandMap.keySet());
-		System.out.println(nodeCommandMap.values());
 		Node myNode = n;
 		if (myNode.children.size()>0){
 			for (int i = myNode.children.size() - 1; i>=0; i--){
@@ -183,12 +180,13 @@ public class Interpreter {
 				if (child.type.equals("Constant")){
 
 					output += Integer.parseInt(child.value);
-					child.parent.returnValue += output;
+					child.parent.returnValue += Integer.parseInt(child.value);
 
 				}
 				else{
 					if (child.returnValue == null){
 						parseTree(child);
+						output += Integer.parseInt(child.returnValue);
 					}
 					else{
 						output += Integer.parseInt(child.returnValue);
@@ -210,7 +208,7 @@ public class Interpreter {
 
 			updateTurtle(nodeCommandMap.get(myNode), null);
 		}
-		System.out.println(output);
+//		System.out.println(myNode.returnValue);
 		return output;
 	}
 
@@ -263,20 +261,20 @@ public class Interpreter {
 		Not (Type.booleanoperations),
 		NotEqual (Type.booleanoperations),
 		Or (Type.booleanoperations),
-		ATan (Type.mathoperations),
+		ArcTangent (Type.mathoperations),
 		Cosine (Type.mathoperations),
 		Difference (Type.mathoperations),
-		Log (Type.mathoperations),
+		NaturalLog (Type.mathoperations),
 		Minus (Type.mathoperations),
-		PI (Type.mathoperations),
-		Pow (Type.mathoperations),
+		Pi (Type.mathoperations),
+		Power (Type.mathoperations),
 		Product (Type.mathoperations),
 		Quotient (Type.mathoperations),
 		Random (Type.mathoperations),
 		Remainder (Type.mathoperations),
 		Sine (Type.mathoperations),
 		Sum (Type.mathoperations),
-		Tan (Type.mathoperations),
+		Tangent (Type.mathoperations),
 		MakeVariable(Type.variables);
 
 		private Type type;

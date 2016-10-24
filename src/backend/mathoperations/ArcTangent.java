@@ -1,22 +1,23 @@
 package backend.mathoperations;
 
 import java.util.ArrayList;
+
 import backend.Command;
 
-public class Log extends Command {
+public class ArcTangent extends Command {
 
-	public Log() {
+	public ArcTangent() {
 		super("MathOperation", 1);
 	}
-	
+
 	public String compute(ArrayList<Command> inputs) {
 		if(! checkOneNumberInput(inputs) ) {
 			return "0";
 		}
 		
-		Double log = Math.log( getNumCommandDouble(inputs, 0) );
+		Double atan = Math.atan( Math.PI / 180 * getNumCommandDouble(inputs, 0) );
 		
-		return log.toString();
+		return atan.toString();
 		
 	}
 	

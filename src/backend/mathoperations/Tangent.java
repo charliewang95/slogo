@@ -3,11 +3,11 @@ package backend.mathoperations;
 import java.util.ArrayList;
 import backend.Command;
 
-public class Tan extends Command {
+public class Tangent extends Command {
 	
 	private final String LARGE_NUMBER = "10000000000000000";
 
-	public Tan() {
+	public Tangent() {
 		super("MathOperation", 1);
 	}
 	
