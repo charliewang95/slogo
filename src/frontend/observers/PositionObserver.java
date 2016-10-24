@@ -26,22 +26,10 @@ public class PositionObserver extends TurtleObserver {
                     // Move Turtle to updated position;
                     // Check if pen is down, maybe draw line
                     ObservablePosition pos = (ObservablePosition) obs;
-                    
                     Point2D start = new Point2D(getMascotX(),getMascotY());
                     Point2D end = new Point2D(pos.getX(),pos.getY());
                     
                     moveTurtle(start,end);
-                    
-                    /*setPosition(pos.getPosition());
-                    
-                    if (getPenStatus()) {
-                            // TODO: draw line to new position
-                            addPathElement(new LineTo(pos.getX(),pos.getY()));
-                    }
-                    else {
-                            // TODO: move path to new position (moveTo) or store a previous position
-                            addPathElement(new MoveTo(pos.getX(),pos.getY()));
-                    }*/
             }
     }
 }

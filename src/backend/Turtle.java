@@ -15,6 +15,7 @@ import javafx.beans.property.ListPropertyBase;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.ModifiableObservableListBase;
 import javafx.collections.ObservableList;
+import javafx.geometry.Point2D;
 import main.Playground;
 
 public class Turtle {
@@ -50,6 +51,14 @@ public class Turtle {
 	
 	public void eraseLines() {
 		playGround.clearScreen();
+	}
+	
+	public Point2D getMyPos() {
+	        return new Point2D(getMyX(),getMyY());
+	}
+	
+	public void setMyPos(double x, double y) {
+	        myPosition.setPosition(x, y);
 	}
 	
 	public double getMyX() {
