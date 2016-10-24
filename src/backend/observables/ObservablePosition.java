@@ -17,25 +17,38 @@ public class ObservablePosition extends Observable {
     }
 
     public void setPosition(double x, double y) {
-            setX(x);
-            setY(y);
+            setX(x,false);
+            setY(y,false);
+            // wait until both x,y have changed to notify
+            setChanged();
+            notifyObservers();
     }
 
     public void setX(double x) {
+            setX(x,true);
+    }
+    
+    public void setX(double x, boolean notify) {
             if (x != myX) {
                 myX = x;
-                
-                setChanged();
-                notifyObservers();
+                if (notify) {
+                    setChanged();
+                    notifyObservers();
+                }
             }
     }
-
+    
     public void setY(double y) {
+            setY(y,true);
+    }
+
+    public void setY(double y, boolean notify) {
             if (y != myY) {
                 myY = y;
-
-                setChanged();
-                notifyObservers();
+                if (notify) {
+                    setChanged();
+                    notifyObservers();
+                }
             }
     }
 

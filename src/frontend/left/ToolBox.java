@@ -38,6 +38,7 @@ public class ToolBox {
 	private static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
 	private static final Color DEFAULTPENCOLOR = Color.BLACK;
 	private static final Color DEFAULTBACKGROUNDCOLOR = Color.LIGHTGREEN;
+	private static final String DEFAULT_LANGUAGE = "English";
 	private String[] turtleList = { "Turtle", "Elephant", "Rocket" };
 
 	private String[] languageList;
@@ -100,11 +101,10 @@ public class ToolBox {
 
 		// set command language
 		addToolLabel("SetLanguage");
-		addComboBox(myLanguageList, "SetLanguage");
-
+		addComboBox(myLanguageList, "SetLanguage", DEFAULT_LANGUAGE);
 	}
 
-	public void addComboBox(SimpleObjectProperty<ObservableList<String>> namelist, String refer) {
+	public ComboBox<String> addComboBox(SimpleObjectProperty<ObservableList<String>> namelist, String refer) {
 		ComboBox<String> cb = new ComboBox<>();
 		cb.itemsProperty().bind(namelist);
 		cb.setPromptText(namelist.getValue().get(0));
@@ -112,6 +112,12 @@ public class ToolBox {
 		gp.getChildren().add(cb);
 		addComboBoxEvent(cb, refer);
 		GridPane.setMargin(cb, new Insets(0, 0, 15, 15));
+		return cb;
+	}
+	
+	public void addComboBox(SimpleObjectProperty<ObservableList<String>> namelist, String refer, String defaultVal) {
+	        ComboBox<String> cb = addComboBox(namelist,refer);
+	        cb.setValue(defaultVal);
 	}
 
 	public void addToolLabel(String refer) {

@@ -18,6 +18,7 @@ import frontend.coordinates.TurtleToLayout;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.PathElement;
 
 /**
@@ -39,7 +40,7 @@ public class TurtleMascot {
 
 	private TurtleToLayout converter;
 
-	public TurtleMascot(int environmentWidth, int environmentHeight) {
+	public TurtleMascot(int environmentWidth, int environmentHeight, TurtleLandToLayout tlConverter) {
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Common");
 
 		converter = new TurtleToLayout(environmentWidth, environmentHeight, WIDTH, HEIGHT);
@@ -67,80 +68,74 @@ public class TurtleMascot {
 
 		setImage(myAnimalMap.get("Turtle"));
 		isDown = true;
-		myPen = new Pen();
-	}
+		myPen = new Pen(tlConverter, myX, myY);
+    }
+    
+    /**
+     * Sets coordinates of the Turtle.
+     * @param pos - an array representing the coordinates of the Turtle (x=pos[0], y=pos[1]).
+     */
+    public void setPosition(double[] pos) {
+        double x = pos[0]; double y = pos[1];
+        setX(x); setY(y);
+    }
+    
+    /**
+     * @return an array representing the coordinates of the Turtle.
+     */
+    public double[] getPosition() {
+        double[] pos = {getX(), getY()};
+        return pos;
+    }
+    
+    /**
+     * @param x - TurtleLand X-coordinate
+     */
+    public void setX(double x) {
+        // TODO: implement toroidal TurtleLand
+        myX = x;
+        double layoutX = converter.convertX(x);
+        myImage.setLayoutX(layoutX);
+    }
+    
+    /**
+     * @return TurtleLand X-coordinate
+     */
+    public double getX() {
+        return myX;
+        //return myImage.getLayoutX(); //returns the layout X-coord
+    }
+    
+    /**
+     * @param y - TurtleLand Y-coordinate
+     */
+    public void setY(double y) {
+        // TODO: implement toroidal TurtleLand
+        myY = y;
+        double layoutY = converter.convertY(y);
+        myImage.setLayoutY(layoutY);
+    }
+    
+    /**
+     * @return TurtleLand Y-coordinate
+     */
+    public double getY() {
+        return myY;
+        //return myImage.getLayoutY(); //returns the layout Y-coord
+    }
+    
+    public double getDirection() {
+        return myImage.getRotate();
+    }
+    
+    /**
+     * @param direction - an angle, in degrees, 
+     *                    from 0 (inclusive) to 360 (exclusive)
+     */
+    public void setDirection(double direction) {
+        myImage.setRotate(direction);
+    }
 
-	/**
-	 * Sets coordinates of the Turtle.
-	 * 
-	 * @param pos
-	 *            - an array representing the coordinates of the Turtle
-	 *            (x=pos[0], y=pos[1]).
-	 */
-	public void setPosition(double[] pos) {
-		double x = pos[0];
-		double y = pos[1];
-		setX(x);
-		setY(y);
-	}
-
-	/**
-	 * @return an array representing the coordinates of the Turtle.
-	 */
-	public double[] getPosition() {
-		double[] pos = { getX(), getY() };
-		return pos;
-	}
-
-	/**
-	 * @param x
-	 *            - TurtleLand X-coordinate
-	 */
-	public void setX(double x) {
-		// TODO: implement toroidal TurtleLand
-		myX = x;
-		double layoutX = converter.convertX(x);
-		myImage.setLayoutX(layoutX);
-	}
-
-	/**
-	 * @return TurtleLand X-coordinate
-	 */
-	public double getX() {
-		return myX;
-		// return myImage.getLayoutX(); //returns the layout X-coord
-	}
-
-	/**
-	 * @param y
-	 *            - TurtleLand Y-coordinate
-	 */
-	public void setY(double y) {
-		// TODO: implement toroidal TurtleLand
-		myY = y;
-		double layoutY = converter.convertY(y);
-		myImage.setLayoutY(layoutY);
-	}
-
-	/**
-	 * @return TurtleLand Y-coordinate
-	 */
-	public double getY() {
-		return myY;
-		// return myImage.getLayoutY(); //returns the layout Y-coord
-	}
-
-	public double getDirection() {
-		return myImage.getRotate();
-	}
-
-	/**
-	 * @param direction
-	 *            - an angle, in degrees, from 0 (inclusive) to 360 (exclusive)
-	 */
-	public void setDirection(double direction) {
-		myImage.setRotate(direction);
-	}
 
 	/**
 	 * Convert a file to a image and save it to the map
@@ -172,8 +167,8 @@ public class TurtleMascot {
 		}
 	}
 
-	public void setVisible() {
-		myImage.setVisible(false);
+	public void setVisible(boolean value) {
+		myImage.setVisible(value);
 	}
 	
 	/**

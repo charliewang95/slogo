@@ -12,15 +12,15 @@ import javafx.scene.canvas.GraphicsContext;
 public class VisibilityObserver extends TurtleObserver {
     private ObservableVisibility turtleVisibility = null;
 
-    public VisibilityObserver(TurtleMascot turtle, GraphicsContext gcc, ObservableVisibility visible) {
-            super(turtle, gcc);
+    public VisibilityObserver(TurtleMascot turtle, GraphicsContext gcc, int width, int height, ObservableVisibility visible) {
+            super(turtle, gcc,width,height);
             turtleVisibility = visible;
     }
 
     public void update(Observable obs, Object obj) {
             if (obs == turtleVisibility) {
-                    // TODO: Show/Hide Turtle
-                    //      may need to track oldX,oldY when we show Turtle after hiding??
+                ObservableVisibility vis = (ObservableVisibility) obs;
+                setVisibility(vis.getVisibility());
             }
     }
 }
