@@ -45,8 +45,8 @@ public class Console {
 		myDisplay = display;
 		myLeftArea = new VBox();
 		myMidArea = new VBox();
-		myHistory = new History();
 		myCommands = new SimpleObjectProperty<>(FXCollections.observableArrayList());
+		myHistory = new History(this);
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Common");
 
 		myHBox = new HBox();
@@ -98,8 +98,6 @@ public class Console {
 
 		myHBox.getChildren().add(myMidArea);
 		myMidArea.getChildren().add(label2);
-
-		myHistory.getHistory().itemsProperty().bind(myCommands);
 		myHBox.getChildren().add(myHistory.getHistory());
 	}
 
