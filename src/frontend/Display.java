@@ -11,12 +11,14 @@ import frontend.bottom.History;
 import frontend.center.TurtleLand;
 import frontend.left.ToolBox;
 import frontend.right.Variable;
+import javafx.animation.KeyFrame;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
@@ -25,13 +27,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import main.Playground;
 
 /**
  * @author Charlie Wang
  */
 public class Display {
 	private static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
-
+	private static final int MILLISECOND_DELAY = 1000;
+	private static final int SECOND_DELAY = 1;
 	private Interpreter myInterpreter;
 	private BorderPane myBorderPane;
 	private Console myConsole;
@@ -54,11 +59,22 @@ public class Display {
 		myWidth = Integer.parseInt(myResources.getString("Width"));
 		myHeight = Integer.parseInt(myResources.getString("Height"));
 		myScene = new Scene(myRoot, myWidth, myHeight);
+		myScene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
+	}
+
+	
+	
+	private void handleKeyInput(KeyCode code) {
+		if (code == KeyCode.TAB) {
+			myTurtleLand.toggleParameters();
+		}
 	}
 
 	public void init(Interpreter inter) {
+		// KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e
+		// -> step(SECOND_DELAY));
 		myInterpreter = inter;
-		
+
 		myBorderPane = new BorderPane();
 		myBorderPane.setPrefSize(myWidth, myHeight);
 		myBorderPane.setStyle("-fx-background-color: linear-gradient(from 5% 5% to 95% 95%, #C1D6F6, #76ACFE)");
@@ -76,10 +92,10 @@ public class Display {
 		myBorderPane.setRight(myVariable.getVariable());
 
 		// set up canvas
-		myTurtleLand = new TurtleLand();
+		myTurtleLand = new TurtleLand(this);
 		BorderPane.setMargin(myTurtleLand.getLand(), new Insets(20, 20, 20, 20));
 		myBorderPane.setCenter(myTurtleLand.getLand());
-		
+
 		// put everything there on the board
 		display();
 	}
@@ -111,7 +127,7 @@ public class Display {
 	public ToolBox getTool() {
 		return myTool;
 	}
-	
+
 	public TurtleLand getTurtleLand() {
 		return myTurtleLand;
 	}

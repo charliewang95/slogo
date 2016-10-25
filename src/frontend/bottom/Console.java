@@ -104,7 +104,7 @@ public class Console {
 	private void checkInput(Event e) {
 		bracketCount = 0;
 		if ((myTextArea.getText().trim() != null && !myTextArea.getText().trim().isEmpty())) {
-			String[] words = myTextArea.getText().trim().replace("\n", " ").split(" ");
+			String[] words = myTextArea.getText().trim().replace("\t", "").replace("\n", " ").split(" ");
 			for (String word : words) {
 				if (word.equals("[")) {
 					bracketCount++;
@@ -117,7 +117,7 @@ public class Console {
 			}
 			System.out.println(bracketCount);
 			if (bracketCount == 0) {
-				String s = myTextArea.getText().replace("\n", " ").replaceAll(" +", " ");
+				String s = myTextArea.getText().trim().replace("\t", "").replace("\n", " ").replaceAll(" +", " ");
 				System.out.println("checking " + s);
 				myCommands.getValue().add(s);
 				myHistory.addString(s);
@@ -125,6 +125,7 @@ public class Console {
 				e.consume();
 				try {
 					interpretInput(s);
+					myDisplay.getTurtleLand().updateText();
 				} catch (Exception exception) {
 					JOptionPane.showMessageDialog(null,
 							"Your chosen language does not contain the Command you gave. Click OK to continue and try a new Command.");

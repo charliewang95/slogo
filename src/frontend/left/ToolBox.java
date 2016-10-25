@@ -230,9 +230,9 @@ public class ToolBox {
 				newName = result.get();
 			}
 
-			myTurtleList.getValue().remove(myResources.getString("AddAnother"));
 			myTurtleList.getValue().add(newName);
-			myTurtleList.getValue().add(myResources.getString("AddAnother"));
+			myTurtleList.getValue().set(myTurtleList.getValue().size()-2, newName);
+			myTurtleList.getValue().set(myTurtleList.getValue().size()-1, "AddAnother");
 			myDisplay.getTurtleLand().changeTurtle(newName, newImage);
 		} else {
 			try {

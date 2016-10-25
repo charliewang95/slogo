@@ -1,4 +1,0 @@
-sum 50 50 
-fd sum 50 50
-lt 50
-fd sum 20 30
