@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
@@ -24,11 +25,14 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import main.Playground;
 
 /**
  * @author Charlie Wang
@@ -67,7 +71,7 @@ public class ToolBox {
 		gp.setHgap(0);
 
 		// tool box title
-		Label title = new Label("         " + myResources.getString("ToolTitle"));
+		Label title = new Label("      " + myResources.getString("ToolTitle"));
 		title.setTextFill(Color.BLUE);
 		title.setFont(Font.font(myResources.getString("TitleFont"),
 				Integer.parseInt(myResources.getString("ToolBoxFontSize"))));
@@ -76,16 +80,21 @@ public class ToolBox {
 		GridPane.setMargin(title, new Insets(20, 10, 15, 10));
 
 		// reset button (reset console, command, and history)
-		addButton("Reset");
+		HBox firstLine = new HBox(10);
+		addButton(firstLine, "New");
+		addButton(firstLine, "Reset");
+		GridPane.setConstraints(firstLine, 0, ++count);
+		GridPane.setMargin(firstLine, new Insets(0, 10, 15, 15));
+		gp.getChildren().add(firstLine);
 
 		// save commands in the command history window into data/output.txt
-		addButton("SaveCommands");
+		addButton(gp, "SaveCommands");
 
 		// save current image that the turtle draws
-		addButton("SaveImage");
+		addButton(gp, "SaveImage");
 
 		// set online help
-		addButton("OnlineHelp");
+		addButton(gp, "OnlineHelp");
 
 		// set pen's color
 		addToolLabel("SetPenColor");
@@ -127,12 +136,12 @@ public class ToolBox {
 		GridPane.setMargin(label, new Insets(0, 0, 0, 15));
 	}
 
-	public void addButton(String refer) {
+	public void addButton(Pane pane, String refer) {
 		Button button = new Button(myResources.getString(refer));
 		addShadow(button);
 		addButtonEvent(button, refer);
 		GridPane.setConstraints(button, 0, ++count);
-		gp.getChildren().add(button);
+		pane.getChildren().add(button);
 		GridPane.setMargin(button, new Insets(0, 0, 15, 15));
 	}
 
@@ -162,6 +171,8 @@ public class ToolBox {
 					setSaveImageEvent();
 				} else if (function.equals("OnlineHelp")) {
 					setOnlineHelpEvent();
+				} else if (function.equals("New")) {
+					setNewScreenEvent();
 				} else {
 					ErrorException ee = new ErrorException(myResources.getString("NoButtonTitleError"));
 				}
@@ -232,6 +243,12 @@ public class ToolBox {
 		}
 	}
 
+	private void setNewScreenEvent() {
+		Stage newStage = new Stage();
+		Playground newPlayGround = new Playground(newStage);
+		newPlayGround.init();
+	}
+	
 	private void setLanguageEvent(String value) {
 		myDisplay.getConsole().setLanguage(value);
 		myLanguage = value;
