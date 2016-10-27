@@ -7,7 +7,11 @@ import java.lang.reflect.*;
 
 import main.Playground;
 import frontend.left.ToolBox;
-
+/**
+ * 
+ * @author Tripp Whaley
+ *
+ */
 public class Interpreter {
 
 	public Interpreter(Playground myPlay, Turtle turtle){
@@ -267,7 +271,26 @@ public class Interpreter {
 		Sine (Type.mathoperations),
 		Sum (Type.mathoperations),
 		Tangent (Type.mathoperations),
-		MakeVariable(Type.variables);
+		MakeVariable (Type.othercommands),
+		Repeat (Type.othercommands),
+		DoTimes (Type.othercommands),
+		For (Type.othercommands),
+		If (Type.othercommands),
+		IfElse (Type.othercommands),
+		MakeUserInstruction (Type.othercommands),
+		GetPenColor (Type.displaycommands),
+		SetBackground (Type.displaycommands),
+		SetPalette (Type.displaycommands),
+		SetPenColor (Type.displaycommands),
+		SetPenSize (Type.displaycommands),
+		SetShape (Type.displaycommands),
+		GetShape (Type.displaycommands),
+		Ask (Type.multiturtlecommands),
+		AskWith (Type.multiturtlecommands),
+		ID (Type.multiturtlecommands),
+		Tell (Type.multiturtlecommands),
+		Turtles (Type.multiturtlecommands);
+		
 
 		private Type type;
 
@@ -287,7 +310,9 @@ public class Interpreter {
 			booleanoperations,
 			mathoperations,
 			othercommands,
-			variables;
+			variables,
+			displaycommands,
+			multiturtlecommands;
 
 		}
 	}

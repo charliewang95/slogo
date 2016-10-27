@@ -36,6 +36,7 @@ import main.Playground;
 
 /**
  * @author Charlie Wang
+ * @author Tripp Whaley
  * 
  */
 public class ToolBox {

@@ -1,17 +1,13 @@
-package backend.variables;
+package backend.displaycommands;
 
 import java.util.ArrayList;
 
 import backend.Command;
-import backend.Turtle;
 
-public class MakeVariable extends Command {
-	
-	private Turtle myTurtle;
+public class SetPenColor extends Command {
 
-	public MakeVariable(Turtle t) {
-		super("Variables", 2);
-		myTurtle = t;
+	public SetPenColor(String type, int inputs) {
+		super(type, inputs);
 		// TODO Auto-generated constructor stub
 	}
 
