@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import backend.observables.ObservableOutput;
+import backend.observables.Communication;
 
 import java.lang.reflect.*;
 
@@ -211,7 +211,7 @@ public class Interpreter {
 		
 		
 		try {
-			ObservableOutput.class.newInstance().setOutput(store.toString());
+			Communication.class.newInstance().setOutput(store.toString());
 		} catch (InstantiationException | IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

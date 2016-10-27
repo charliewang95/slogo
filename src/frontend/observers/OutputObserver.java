@@ -3,7 +3,7 @@ package frontend.observers;
 import java.util.Observable;
 
 import backend.observables.ObservableDirection;
-import backend.observables.ObservableOutput;
+import backend.observables.Communication;
 import frontend.Display;
 import frontend.center.TurtleMascot;
 import javafx.scene.canvas.GraphicsContext;
@@ -15,7 +15,7 @@ public class OutputObserver extends TurtleObserver {
 	Display myDisplay;
 	String output;
 
-	public OutputObserver(TurtleMascot turtle, GraphicsContext gcc, int width, int height, ObservableOutput output,
+	public OutputObserver(TurtleMascot turtle, GraphicsContext gcc, int width, int height, Communication output,
 			Display display) {
 		super(turtle, gcc, width, height);
 		this.output = output.getOutput();
@@ -24,7 +24,7 @@ public class OutputObserver extends TurtleObserver {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		ObservableOutput out = (ObservableOutput) o;
+		Communication out = (Communication) o;
 		myDisplay.getConsole().updateOutput(out.getOutput());
 	}
 

@@ -26,6 +26,7 @@ public class Turtle {
 	private ObservablePen myPenDown = new ObservablePen(true);
 	private ObservablePosition myPosition = new ObservablePosition(0,0);
 	private ObservableVisibility myVisibility = new ObservableVisibility(true);
+	private Communication myOutput = new Communication();
 	
 	public Turtle(double x, double y, Playground playground) {
 	        myPosition.setX(x);
@@ -35,6 +36,10 @@ public class Turtle {
 	
 	public void observeDirection(DirectionObserver o) {
 	    myDirection.addObserver(o);
+	}
+	
+	public void observeOutput(Communication o) {
+	    //myOutput.addObserver(o);
 	}
 	
 	public void observePen(PenObserver o) {

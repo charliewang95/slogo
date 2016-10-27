@@ -112,6 +112,11 @@ public class ToolBox {
 		// set command language
 		addToolLabel("SetLanguage");
 		addComboBox(myLanguageList, "SetLanguage", DEFAULT_LANGUAGE);
+		
+		// add advanced toolbox
+		AdvancedToolBox atb = new AdvancedToolBox();
+		GridPane.setConstraints(atb.getBox(), 0, ++count);
+		gp.getChildren().add(atb.getBox());
 	}
 
 	public ComboBox<String> addComboBox(SimpleObjectProperty<ObservableList<String>> namelist, String refer) {
