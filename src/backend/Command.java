@@ -1,7 +1,11 @@
 package backend;
 
 import java.util.ArrayList;
-
+/**
+ * 
+ * @author Tripp Whaley
+ *
+ */
 public abstract class Command {
 	private String commandType;
 	private int numInputs;

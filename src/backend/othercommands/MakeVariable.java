@@ -1,4 +1,4 @@
-package backend.booleanoperations;
+package backend.othercommands;
 
 import java.util.ArrayList;
 
@@ -9,20 +9,20 @@ import backend.Turtle;
  * @author Tripp Whaley
  *
  */
-public class Not extends Command{
+public class MakeVariable extends Command {
+	
+	private Turtle myTurtle;
 
-	public Not(Turtle t) {
-		super("BooleanOperation", 1);
+	public MakeVariable(Turtle t, VariableHouse v) {
+		super("Variables", 2);
+		myTurtle = t;
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public String compute(ArrayList<Command> inputs) {
 		// TODO Auto-generated method stub
-		if (Double.parseDouble(inputs.get(0).compute(null)) == 0){
-			return "1";
-		}
-		return "0";
-		
+		return null;
 	}
+
 }
