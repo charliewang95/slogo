@@ -2,6 +2,8 @@ package frontend.observers;
 
 import java.util.List;
 import java.util.Observer;
+
+import frontend.Display;
 import frontend.center.Pen;
 import frontend.center.TurtleMascot;
 import frontend.coordinates.TurtleLandToLayout;

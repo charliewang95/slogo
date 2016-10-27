@@ -256,8 +256,8 @@ public class ToolBox {
 	}
 
 	private void setResetEvent() {
-		myDisplay.getConsole().clear();
-		myDisplay.getTurtleLand().reset();
+		myDisplay.getConsole().interpretInput("clearscreen");
+		myDisplay.getTurtleLand().updateText();
 	}
 
 	private void setSaveCommandsEvent() {

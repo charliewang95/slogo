@@ -3,9 +3,11 @@ package backend;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import backend.observables.ObservableOutput;
+
 import java.lang.reflect.*;
 
-import main.Communication;
 import main.Playground;
 import frontend.left.ToolBox;
 /**
@@ -209,7 +211,7 @@ public class Interpreter {
 		
 		
 		try {
-			Communication.class.newInstance().setOutput(store.toString());
+			ObservableOutput.class.newInstance().setOutput(store.toString());
 		} catch (InstantiationException | IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

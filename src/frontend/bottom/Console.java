@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 import javax.swing.JOptionPane;
 
 import backend.Interpreter;
+import backend.observables.ObservableOutput;
 import frontend.Display;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -30,6 +31,7 @@ import javafx.scene.paint.Color;
 public class Console {
 	private static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
 	private Display myDisplay;
+	private ObservableOutput myCommunicator;
 	private Interpreter myInterpreter;
 	private History myHistory;
 	private TextArea myTextArea;
@@ -169,6 +171,10 @@ public class Console {
 		myHistory.getHistory().itemsProperty().bind(myCommands);
 	}
 
+	public void updateOutput(String out) {
+		myOutputs.getValue().add(out);
+	}
+	
 	public SimpleObjectProperty<ObservableList<String>> getCommandList() {
 		return myCommands;
 	}

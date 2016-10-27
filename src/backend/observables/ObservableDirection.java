@@ -16,7 +16,7 @@ public class ObservableDirection extends Observable {
     public void setDirection(double degrees) {
             if (degrees != myDirection) {
                 myDirection = degrees;
-
+                
                 setChanged();
                 notifyObservers();
             }
