@@ -2,7 +2,9 @@ package backend;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.io.File;
 import java.lang.reflect.*;
 
 import main.Communication;
@@ -32,6 +34,7 @@ public class Interpreter {
 	private Turtle turtle;
 	private HashMap<Node, Command> nodeCommandMap;
 	private Double store = 0.0;
+	String substr;
 
 	public Tree interpretString(String input){
 		parse = new ProgramParser();
@@ -94,11 +97,32 @@ public class Interpreter {
 					Class<?> cls;
 					Constructor<?> cst;
 					Object instance;
-					cls = Class.forName("backend." + getType(list.get(i))+"." + list.get(i));
+					int n = 0;
+					File dir = new File("src/backend./");
+
+					File[] dirArr = dir.listFiles();
+					List<File> dirList = new ArrayList<File>();
+					for (int j = 0; j < dirArr.length; j ++){
+						if (dirArr[j].isDirectory()){
+							dirList.add(dirArr[j]);
+						}
+					}
+					cls = null;
+						for (File d : dirList){
+							File[] dirdir = d.listFiles();
+							for (int k = 0; k < dirdir.length; k++){
+							if (dirdir[k].toString().endsWith("\\"+list.get(i)+".java")){
+								substr = d.toString().substring(4, d.toString().length());
+								substr = "backend."+substr.substring(9, substr.length());
+								cls = Class.forName(substr + "." + list.get(i));//Class.forName("backend." + getType(list.get(i))+"." + list.get(i));
+								break;
+							}
+							}
+						}
 					/*
 					 * refactor this later
 					 */
-					if (getType(list.get(i)).equals("turtlecommands")||getType(list.get(i)).equals("turtlequeries")||getType(list.get(i)).equals("booleanoperations")){		
+					if (substr.contains("turtlecommands")||substr.contains("turtlequeries")||substr.contains("booleanoperations")){//(getType(list.get(i)).equals("turtlecommands")||getType(list.get(i)).equals("turtlequeries")||getType(list.get(i)).equals("booleanoperations")){		
 						cst = cls.getConstructor(Turtle.class);
 						instance = cst.newInstance(turtle);
 					}
@@ -175,7 +199,7 @@ public class Interpreter {
 	}
 
 	public Double parseTree(Node n){
-//		Double store = 0.0;
+		//		Double store = 0.0;
 		Node myNode = n;
 		if (myNode.children.size()>0){
 			for (int i = myNode.children.size() - 1; i>=0; i--){
@@ -206,8 +230,8 @@ public class Interpreter {
 		else{
 			store = updateTurtle(nodeCommandMap.get(myNode), null);
 		}
-		
-		
+
+
 		try {
 			Communication.class.newInstance().setOutput(store.toString());
 		} catch (InstantiationException | IllegalAccessException e) {
@@ -239,100 +263,7 @@ public class Interpreter {
 	}
 
 
-	public enum Commands{
-		Forward (Type.turtlecommands), 
-		Backward (Type.turtlecommands), 
-		ClearScreen (Type.turtlecommands), 
-		HideTurtle (Type.turtlecommands), 
-		ShowTurtle (Type.turtlecommands), 
-		Left (Type.turtlecommands), 
-		Right (Type.turtlecommands), 
-		Home (Type.turtlecommands), 
-		PenUp (Type.turtlecommands), 
-		PenDown (Type.turtlecommands), 
-		PositionMove (Type.turtlecommands),
-		SetHeading (Type.turtlecommands), 
-		SetPosition (Type.turtlecommands), 
-		Towards (Type.turtlecommands),
-		Heading (Type.turtlequeries),
-		IsPenDown (Type.turtlequeries),
-		IsShowing (Type.turtlequeries),
-		XCoordinate (Type.turtlequeries),
-		YCoordinate (Type.turtlequeries),
-		And (Type.booleanoperations),
-		Equal (Type.booleanoperations),
-		GreaterThan (Type.booleanoperations),
-		LessThan (Type.booleanoperations),
-		Not (Type.booleanoperations),
-		NotEqual (Type.booleanoperations),
-		Or (Type.booleanoperations),
-		ArcTangent (Type.mathoperations),
-		Cosine (Type.mathoperations),
-		Difference (Type.mathoperations),
-		NaturalLog (Type.mathoperations),
-		Minus (Type.mathoperations),
-		Pi (Type.mathoperations),
-		Power (Type.mathoperations),
-		Product (Type.mathoperations),
-		Quotient (Type.mathoperations),
-		Random (Type.mathoperations),
-		Remainder (Type.mathoperations),
-		Sine (Type.mathoperations),
-		Sum (Type.mathoperations),
-		Tangent (Type.mathoperations),
-		MakeVariable (Type.othercommands),
-		Repeat (Type.othercommands),
-		DoTimes (Type.othercommands),
-		For (Type.othercommands),
-		If (Type.othercommands),
-		IfElse (Type.othercommands),
-		MakeUserInstruction (Type.othercommands),
-		GetPenColor (Type.displaycommands),
-		SetBackground (Type.displaycommands),
-		SetPalette (Type.displaycommands),
-		SetPenColor (Type.displaycommands),
-		SetPenSize (Type.displaycommands),
-		SetShape (Type.displaycommands),
-		GetShape (Type.displaycommands),
-		Ask (Type.multiturtlecommands),
-		AskWith (Type.multiturtlecommands),
-		ID (Type.multiturtlecommands),
-		Tell (Type.multiturtlecommands),
-		Turtles (Type.multiturtlecommands);
-		
 
-		private Type type;
-
-		Commands(Type type){
-			this.type = type;
-		}
-
-		public boolean isInGroup(Type type){
-			return (this.type == type);
-		}
-
-
-
-		public enum Type {
-			turtlecommands,
-			turtlequeries,
-			booleanoperations,
-			mathoperations,
-			othercommands,
-			variables,
-			displaycommands,
-			multiturtlecommands;
-
-		}
-	}
-	public String getType(String input){
-		for (Commands comm : Commands.values()){
-			if (comm.toString().equals(input)){
-				return comm.type.toString();
-			}
-		}
-		return null;
-	}
 
 
 
