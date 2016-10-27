@@ -13,7 +13,7 @@ public class MakeVariable extends Command {
 	
 	private Turtle myTurtle;
 
-	public MakeVariable(Turtle t, VariableHouse v) {
+	public MakeVariable(Turtle t) {
 		super("Variables", 2);
 		myTurtle = t;
 		// TODO Auto-generated constructor stub
