@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.lang.reflect.*;
 
+import main.Communication;
 import main.Playground;
 import frontend.left.ToolBox;
 /**
@@ -204,6 +205,14 @@ public class Interpreter {
 		}
 		else{
 			store = updateTurtle(nodeCommandMap.get(myNode), null);
+		}
+		
+		
+		try {
+			Communication.class.newInstance().setOutput(store.toString());
+		} catch (InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return store;
 	}
