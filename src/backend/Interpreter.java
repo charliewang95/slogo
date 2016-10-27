@@ -262,11 +262,6 @@ public class Interpreter {
 		public String returnValue;
 	}
 
-
-
-
-
-
 	public void setLanguage(String language){
 		myLanguage = language;
 	}
