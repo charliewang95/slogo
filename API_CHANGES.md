@@ -1,0 +1,7 @@
+# API Changes
+#### Backend API Changes
+One of the biggest changes that occurred in the backend was how the commands were stored. We originally had it so there would be multiple commands within a class. For example, we thought to make a MathOperations class that would house all 15 commands in it. We structured the setup slightly differently with all math operations being stored within its own package and having the commands each has their own class. This was great because it allowed there to be a Command Abstract Class that housed an abstract method, compute(). This allows commands to all have the same structure, making it easy to add more commands.
+
+Another API changes in the backend was how the Interpreter is suppose to function. We originally had it so the interpreter would switch the string input into commands and had little idea with what to do with it. Now, the Interpreter is the class that instantiates the Command classes that are called and calls the compute() method. There still needs to be a little bit of improvement moving forward with the interpreter class in terms of cleaning it up, but it gets the job done as of 10/27. Also, due to the changes done to how the commands are stored, the Interpreter doesn't need to have access to the MathOperations class that no longer exists.
+
+Other then those two broader points, the API has held it own with the rest of the backend setup.
