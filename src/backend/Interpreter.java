@@ -7,7 +7,11 @@ import java.lang.reflect.*;
 
 import main.Playground;
 import frontend.left.ToolBox;
-
+/**
+ * 
+ * @author Tripp Whaley
+ *
+ */
 public class Interpreter {
 
 	public Interpreter(Playground myPlay, Turtle turtle){

@@ -32,6 +32,7 @@ import javafx.stage.Stage;
 
 /**
  * @author Charlie Wang
+ * @author Tripp Whaley
  * 
  */
 public class ToolBox {

@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import backend.Command;
 import backend.Turtle;
 
+/**
+ * 
+ * @author Tripp Whaley
+ *
+ */
 public class Or extends Command{
 
 	public Or(Turtle t) {

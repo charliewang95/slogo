@@ -4,7 +4,11 @@ import java.util.ArrayList;
 
 import backend.Command;
 import backend.Turtle;
-
+/**
+ * 
+ * @author Tripp Whaley
+ *
+ */
 public class And extends Command{
 
 	public And(Turtle t) {

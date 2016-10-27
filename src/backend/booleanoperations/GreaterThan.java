@@ -4,7 +4,11 @@ import java.util.ArrayList;
 
 import backend.Command;
 import backend.Turtle;
-
+/**
+ * 
+ * @author Tripp Whaley
+ *
+ */
 public class GreaterThan extends Command{
 
 	public GreaterThan(Turtle t) {
