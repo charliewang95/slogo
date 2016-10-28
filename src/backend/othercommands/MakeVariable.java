@@ -4,25 +4,30 @@ import java.util.ArrayList;
 
 import backend.Command;
 import backend.Turtle;
+import backend.VariableHouse;
 /**
  * 
- * @author Tripp Whaley
+ * @author Alex Zaldastani
  *
  */
 public class MakeVariable extends Command {
 	
 	private Turtle myTurtle;
+	private VariableHouse myVariableHouse;
 
-	public MakeVariable(Turtle t) {
+	public MakeVariable(Turtle t, VariableHouse vh) {
 		super("Variables", 2);
 		myTurtle = t;
-		// TODO Auto-generated constructor stub
+		myVariableHouse = vh;
 	}
 
 	@Override
 	public String compute(ArrayList<Command> inputs) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		myVariableHouse.makeVariable(inputs.get(0).compute(null), inputs.get(1).compute(null));
+		
+		return inputs.get(1).compute(null);
+		
 	}
 
 }

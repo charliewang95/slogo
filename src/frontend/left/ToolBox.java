@@ -112,9 +112,9 @@ public class ToolBox {
 		// set command language
 		addToolLabel("SetLanguage");
 		addComboBox(myLanguageList, "SetLanguage", DEFAULT_LANGUAGE);
-		
+
 		// add advanced toolbox
-		AdvancedToolBox atb = new AdvancedToolBox();
+		AdvancedToolBox atb = new AdvancedToolBox(myDisplay);
 		GridPane.setConstraints(atb.getBox(), 0, ++count);
 		gp.getChildren().add(atb.getBox());
 	}
@@ -129,10 +129,10 @@ public class ToolBox {
 		GridPane.setMargin(cb, new Insets(0, 0, 15, 15));
 		return cb;
 	}
-	
+
 	public void addComboBox(SimpleObjectProperty<ObservableList<String>> namelist, String refer, String defaultVal) {
-	        ComboBox<String> cb = addComboBox(namelist,refer);
-	        cb.setValue(defaultVal);
+		ComboBox<String> cb = addComboBox(namelist, refer);
+		cb.setValue(defaultVal);
 	}
 
 	public void addToolLabel(String refer) {
@@ -202,9 +202,11 @@ public class ToolBox {
 				try {
 					setTurtleEvent(box, box.getValue());
 				} catch (Exception e) {
-					//ErrorException ee = new ErrorException(myResources.getString("NoOptionError"));
-					ErrorException ee = new ErrorException(myDisplay, "aha", "Seek Help Online", "Define New Command", "fr 50");
-					
+					// ErrorException ee = new
+					// ErrorException(myResources.getString("NoOptionError"));
+					ErrorException ee = new ErrorException(myDisplay, "aha", "Seek Help Online", "Define New Command",
+							"fr 50");
+
 				}
 			} else if (refer.equals("SetLanguage")) {
 				try {
@@ -237,14 +239,15 @@ public class ToolBox {
 			}
 
 			myTurtleList.getValue().add(newName);
-			myTurtleList.getValue().set(myTurtleList.getValue().size()-2, newName);
-			myTurtleList.getValue().set(myTurtleList.getValue().size()-1, "AddAnother");
+			myTurtleList.getValue().set(myTurtleList.getValue().size() - 2, newName);
+			myTurtleList.getValue().set(myTurtleList.getValue().size() - 1, "AddAnother");
 			myDisplay.changeTurtle(newName, newImage);
 		} else {
 			try {
 				myDisplay.changeTurtle(value);
 			} catch (Exception e) {
-				ErrorException ee = new ErrorException(myDisplay, "aha", "Seek Help Online", "Define New Command", "fr 50");
+				ErrorException ee = new ErrorException(myDisplay, "aha", "Seek Help Online", "Define New Command",
+						"fr 50");
 			}
 		}
 	}
@@ -254,7 +257,7 @@ public class ToolBox {
 		Playground newPlayGround = new Playground(newStage);
 		newPlayGround.init();
 	}
-	
+
 	private void setLanguageEvent(String value) {
 		myDisplay.setLanguage(value);
 		myLanguage = value;
@@ -322,9 +325,22 @@ public class ToolBox {
 				languageList[i] = languageList[i].replace(".properties", "");
 			}
 			String tmp = languageList[0];
-			languageList[0]=languageList[1];
-			languageList[1]=tmp;
+			languageList[0] = languageList[1];
+			languageList[1] = tmp;
 		}
 		return languageList;
+	}
+
+	public String getLanguage() {
+		return myLanguage;
+	}
+
+	public void setLanguage(String s) {
+		for (String l : languageList) {
+			if (l.equals(s)) {
+				myLanguage = s;
+			}
+		}
+		ErrorException ee = new ErrorException("Language Not Found");
 	}
 }

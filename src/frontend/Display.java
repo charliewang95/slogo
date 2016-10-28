@@ -144,4 +144,16 @@ public class Display {
 	public void changeBackground(Color c) {
 		myTurtleLand.changeBackground(c);
 	}
+	
+//	public void saveDefault() {
+//		StringBuilder sb = new StringBuilder();
+//		sb.append(myTurtleLand.getBackgroundColor());
+//	}
+//	
+//	public void setDefault() {
+//		myTurtleLand.changeBackground(c);
+//		myTurtleLand.setPenColor(c);
+//		myTurtleLand.changeTurtle(value);
+//		myTool.setLanguage(s);
+//	}
 }

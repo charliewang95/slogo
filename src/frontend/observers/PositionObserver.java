@@ -24,7 +24,8 @@ public class PositionObserver extends TurtleObserver {
     public void update(Observable obs, Object obj) {
             if (obs == turtlePosition) {
                     // Move Turtle to updated position;
-                    // Check if pen is down, maybe draw line
+                    // Draw line if pen is down
+                
                     ObservablePosition pos = (ObservablePosition) obs;
                     Point2D start = new Point2D(getMascotX(),getMascotY());
                     Point2D end = new Point2D(pos.getX(),pos.getY());
