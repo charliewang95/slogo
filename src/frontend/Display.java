@@ -1,34 +1,20 @@
 package frontend;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Observer;
+import java.io.File;
 import java.util.ResourceBundle;
 
 import backend.Interpreter;
 import frontend.bottom.Console;
-import frontend.bottom.History;
 import frontend.center.TurtleLand;
 import frontend.left.ToolBox;
 import frontend.right.Variable;
-import javafx.animation.KeyFrame;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import main.Playground;
 
 /**
  * @author Charlie Wang
@@ -40,7 +26,6 @@ public class Display {
 	private Interpreter myInterpreter;
 	private BorderPane myBorderPane;
 	private Console myConsole;
-	private History myHistory;
 	private ToolBox myTool;
 	private Variable myVariable;
 	private TurtleLand myTurtleLand;
@@ -62,8 +47,6 @@ public class Display {
 		myScene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
 	}
 
-	
-	
 	private void handleKeyInput(KeyCode code) {
 		if (code == KeyCode.TAB) {
 			myTurtleLand.toggleParameters();
@@ -71,8 +54,6 @@ public class Display {
 	}
 
 	public void init(Interpreter inter) {
-		// KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e
-		// -> step(SECOND_DELAY));
 		myInterpreter = inter;
 
 		myBorderPane = new BorderPane();
@@ -120,15 +101,47 @@ public class Display {
 		return myConsole;
 	}
 
-	public History getHistory() {
-		return myHistory;
-	}
-
 	public ToolBox getTool() {
 		return myTool;
 	}
 
 	public TurtleLand getTurtleLand() {
 		return myTurtleLand;
+	}
+	
+	public void updateText() {
+		myTurtleLand.updateText();
+	}
+	
+	public void changeTurtle(String newName, File newImage) {
+		myTurtleLand.changeTurtle(newName, newImage);
+	}
+	
+	public void changeTurtle(String value) {
+		myTurtleLand.changeTurtle(value);
+	}
+	
+	public void setLanguage(String value) {
+		myConsole.setLanguage(value);
+	}
+	
+	public void interpretInput(String in) {
+		myConsole.interpretInput(in);
+	}
+	
+	public void printHistoryToFile() {
+		myConsole.getHistory().printHistoryToFile();
+	}
+	
+	public void printGround() {
+		myTurtleLand.printGround();
+	}
+	
+	public void setPenColor(Color color) {
+		myTurtleLand.setPenColor(color);
+	}
+	
+	public void changeBackground(Color c) {
+		myTurtleLand.changeBackground(c);
 	}
 }

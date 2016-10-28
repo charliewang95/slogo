@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import backend.observables.ObservableOutput;
+//import backend.observables.ObservableOutput;
 import java.io.File;
+
+import backend.observables.Communication;
+
 import java.lang.reflect.*;
 
 import main.Playground;
@@ -16,11 +19,12 @@ import frontend.left.ToolBox;
  *
  */
 public class Interpreter {
-        //private ObservableOutput output;
+        private Communication comm;
     
 	public Interpreter(Playground myPlay, Turtle turtle){
 		this.myPlayground = myPlay;
 		this.turtle = turtle;
+		comm = new Communication();
 	}
 
 	private Playground myPlayground;
@@ -231,9 +235,16 @@ public class Interpreter {
 		else{
 			store = updateTurtle(nodeCommandMap.get(myNode), null);
 		}
-		System.out.println("About to initialize Observable Output");
-		ObservableOutput observer = new ObservableOutput(store.toString());
-		observer.setOutput(store.toString());
+		// update output
+		comm.setOutput(store.toString());
+
+		
+		try {
+			Communication.class.newInstance().setOutput(store.toString());
+		} catch (InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return store;
 	}
 
