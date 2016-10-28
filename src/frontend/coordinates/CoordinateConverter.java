@@ -47,6 +47,12 @@ public abstract class CoordinateConverter {
         return makePoint(transformedX, transformedY);
     }
     
+    public Point2D converPt(int x, int y) {
+        double transformedX = convertX(x);
+        double transformedY = convertY(y);
+        return new Point2D(transformedX,transformedY);
+    }
+    
     public Point2D convertPt(Point2D point) {
         Point2D transformedPt = new Point2D(convertX(point.getX()),convertY(point.getY()));
         return transformedPt;
