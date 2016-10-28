@@ -16,7 +16,8 @@ import frontend.left.ToolBox;
  *
  */
 public class Interpreter {
-
+        //private ObservableOutput output;
+    
 	public Interpreter(Playground myPlay, Turtle turtle){
 		this.myPlayground = myPlay;
 		this.turtle = turtle;
@@ -98,8 +99,7 @@ public class Interpreter {
 					Constructor<?> cst;
 					Object instance;
 					int n = 0;
-					File dir = new File("src/backend./");
-
+					File dir = new File("src/backend/");
 					File[] dirArr = dir.listFiles();
 					List<File> dirList = new ArrayList<File>();
 					for (int j = 0; j < dirArr.length; j ++){
@@ -111,9 +111,10 @@ public class Interpreter {
 						for (File d : dirList){
 							File[] dirdir = d.listFiles();
 							for (int k = 0; k < dirdir.length; k++){
-							if (dirdir[k].toString().endsWith("\\"+list.get(i)+".java")){
+							if (dirdir[k].toString().endsWith("/"+list.get(i)+".java")){
 								substr = d.toString().substring(4, d.toString().length());
-								substr = "backend."+substr.substring(9, substr.length());
+								substr = "backend."+substr.substring(8, substr.length());
+								System.out.println(substr + "." + list.get(i));
 								cls = Class.forName(substr + "." + list.get(i));//Class.forName("backend." + getType(list.get(i))+"." + list.get(i));
 								break;
 							}
@@ -230,7 +231,7 @@ public class Interpreter {
 		else{
 			store = updateTurtle(nodeCommandMap.get(myNode), null);
 		}
-
+		System.out.println("About to initialize Observable Output");
 		ObservableOutput observer = new ObservableOutput(store.toString());
 		observer.setOutput(store.toString());
 		return store;

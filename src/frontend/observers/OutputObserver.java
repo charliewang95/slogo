@@ -12,20 +12,22 @@ import javafx.scene.canvas.GraphicsContext;
  * @author Charlie Wang
  */
 public class OutputObserver extends TurtleObserver {
-	Display myDisplay;
-	String output;
+	private Display myDisplay;
+	private ObservableOutput output;
 
 	public OutputObserver(TurtleMascot turtle, GraphicsContext gcc, int width, int height, ObservableOutput output,
 			Display display) {
 		super(turtle, gcc, width, height);
-		this.output = output.getOutput();
+		this.output = output;
 		myDisplay = display;
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		ObservableOutput out = (ObservableOutput) o;
-		myDisplay.getConsole().updateOutput(out.getOutput());
+	        if (o == output) {
+	            ObservableOutput out = (ObservableOutput) o;
+	            myDisplay.getConsole().updateOutput(out.getOutput());
+	        }
 	}
 
 }
