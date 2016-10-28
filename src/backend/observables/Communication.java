@@ -8,9 +8,15 @@ public class Communication extends Observable{
 	public Communication() {
 		output = null;
 	}
+	
+	public Communication(String str) {
+	        output = str;
+	}
 
 	public void setOutput(String out) {
 		output = out;
+	        setChanged();
+	        notifyObservers();
 	}
 
 	public String getOutput() {

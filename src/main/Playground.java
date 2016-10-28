@@ -13,6 +13,7 @@ import backend.observables.ObservableVisibility;
 import frontend.Display;
 import frontend.center.TurtleLand;
 import frontend.center.TurtleMascot;
+import frontend.observers.*;
 import frontend.observers.DirectionObserver;
 import frontend.observers.OutputObserver;
 import frontend.observers.PenObserver;

@@ -8,6 +8,13 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.PathElement;
 
+/**
+ * TODO: Make new class PathDrawer that handles logic of drawing paths,
+ *       pass Pen a reference to the gcc (Canvas) so it can draw paths.
+ * 
+ * @author Niklas Sjoquist
+ *
+ */
 public class Pen {
 	private Path myPath = new Path();
 	private TurtleLandToLayout converter;
