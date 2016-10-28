@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 import javax.swing.JOptionPane;
 
 import backend.Interpreter;
-import backend.observables.ObservableOutput;
+import backend.observables.Communication;
 import frontend.Display;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -31,7 +31,7 @@ import javafx.scene.paint.Color;
 public class Console {
 	private static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
 	private Display myDisplay;
-	private ObservableOutput myCommunicator;
+	private Communication myCommunicator;
 	private Interpreter myInterpreter;
 	private History myHistory;
 	private TextArea myTextArea;
@@ -140,7 +140,7 @@ public class Console {
 				e.consume();
 				try {
 					interpretInput(s);
-					myDisplay.getTurtleLand().updateText();
+					myDisplay.updateText();
 				} catch (Exception exception) {
 					JOptionPane.showMessageDialog(null,
 							"Your chosen language does not contain the Command you gave. Click OK to continue and try a new Command.");

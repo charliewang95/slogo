@@ -2,11 +2,11 @@ package backend.observables;
 
 import java.util.Observable;
 
-public class ObservableOutput extends Observable{
+public class Communication extends Observable{
 	private String output;
 
-	public ObservableOutput(String out) {
-		output = out;
+	public Communication() {
+		output = null;
 	}
 
 	public void setOutput(String out) {

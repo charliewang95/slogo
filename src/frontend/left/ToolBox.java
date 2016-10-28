@@ -112,6 +112,11 @@ public class ToolBox {
 		// set command language
 		addToolLabel("SetLanguage");
 		addComboBox(myLanguageList, "SetLanguage", DEFAULT_LANGUAGE);
+		
+		// add advanced toolbox
+		AdvancedToolBox atb = new AdvancedToolBox();
+		GridPane.setConstraints(atb.getBox(), 0, ++count);
+		gp.getChildren().add(atb.getBox());
 	}
 
 	public ComboBox<String> addComboBox(SimpleObjectProperty<ObservableList<String>> namelist, String refer) {
@@ -234,10 +239,10 @@ public class ToolBox {
 			myTurtleList.getValue().add(newName);
 			myTurtleList.getValue().set(myTurtleList.getValue().size()-2, newName);
 			myTurtleList.getValue().set(myTurtleList.getValue().size()-1, "AddAnother");
-			myDisplay.getTurtleLand().changeTurtle(newName, newImage);
+			myDisplay.changeTurtle(newName, newImage);
 		} else {
 			try {
-				myDisplay.getTurtleLand().changeTurtle(value);
+				myDisplay.changeTurtle(value);
 			} catch (Exception e) {
 				ErrorException ee = new ErrorException(myDisplay, "aha", "Seek Help Online", "Define New Command", "fr 50");
 			}
@@ -251,21 +256,21 @@ public class ToolBox {
 	}
 	
 	private void setLanguageEvent(String value) {
-		myDisplay.getConsole().setLanguage(value);
+		myDisplay.setLanguage(value);
 		myLanguage = value;
 	}
 
 	private void setResetEvent() {
-		myDisplay.getConsole().interpretInput("clearscreen");
-		myDisplay.getTurtleLand().updateText();
+		myDisplay.interpretInput("clearscreen");
+		myDisplay.updateText();
 	}
 
 	private void setSaveCommandsEvent() {
-		myDisplay.getConsole().getHistory().printHistoryToFile();
+		myDisplay.printHistoryToFile();
 	}
 
 	private void setSaveImageEvent() {
-		myDisplay.getTurtleLand().printGround();
+		myDisplay.printGround();
 	}
 
 	public void setOnlineHelpEvent() {
@@ -282,11 +287,11 @@ public class ToolBox {
 	}
 
 	private void setPenEvent(Color color) {
-		myDisplay.getTurtleLand().setPenColor(color);
+		myDisplay.setPenColor(color);
 	}
 
 	private void setBackgroundEvent(Color c) {
-		myDisplay.getTurtleLand().changeBackground(c);
+		myDisplay.changeBackground(c);
 	}
 
 	private void addShadow(Button button) {

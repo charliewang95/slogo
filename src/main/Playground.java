@@ -14,6 +14,7 @@ import frontend.Display;
 import frontend.center.TurtleLand;
 import frontend.center.TurtleMascot;
 import frontend.observers.DirectionObserver;
+import frontend.observers.OutputObserver;
 import frontend.observers.PenObserver;
 import frontend.observers.PositionObserver;
 import frontend.observers.VisibilityObserver;
@@ -88,6 +89,7 @@ public class Playground {
 	        observers.add(new PenObserver(turtle,gc,width,height,turtleModel.getPenObs()));
 	        observers.add(new PositionObserver(turtle,gc,width,height,turtleModel.getPosObs()));
 	        observers.add(new VisibilityObserver(turtle,gc,width,height,turtleModel.getVisObs()));
+	        //observers.add(new OutputObserver(turtle,gc,width,height,turtleModel.getoutObs()));
 	        return observers;
 	}
 	

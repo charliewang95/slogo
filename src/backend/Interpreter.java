@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import backend.observables.ObservableOutput;
+//import backend.observables.ObservableOutput;
 import java.io.File;
+
+import backend.observables.Communication;
+
 import java.lang.reflect.*;
 
 import main.Playground;
@@ -232,8 +235,19 @@ public class Interpreter {
 		}
 
 
-		ObservableOutput observer = new ObservableOutput(store.toString());
-		observer.setOutput(store.toString());
+
+		//ObservableOutput observer = new ObservableOutput(store.toString());
+		//observer.setOutput(store.toString());
+
+		
+		
+		try {
+			Communication.class.newInstance().setOutput(store.toString());
+		} catch (InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		return store;
 	}
 
