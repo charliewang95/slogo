@@ -43,6 +43,7 @@ import javafx.scene.text.Font;
 public class TurtleLand {
 	public static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
 	private Color defaultGround = Color.LIGHTGREEN;
+	//private Color my
 	private Pane myPane;
 	private Display myDisplay;
 	private Canvas myCanvas, myBackground, myText;
