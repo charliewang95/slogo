@@ -211,7 +211,7 @@ public class TurtleMascot {
 	}
 	
 	public Pen getPen() {
-	        return myPen;
+	    return myPen;
 	}
 	
 	public void setPenColor(Color c) {

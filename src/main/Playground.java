@@ -21,6 +21,7 @@ import javafx.beans.Observable;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
 public class Playground {
@@ -97,6 +98,10 @@ public class Playground {
 //	public String getCommandError() {
 
 //	}
+	
+	public Collection<Observer> getObservers() {
+		return myObservers;
+	}
 	
 	public void interpretInput(String input){
 		
