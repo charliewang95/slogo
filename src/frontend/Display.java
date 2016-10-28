@@ -1,36 +1,20 @@
 package frontend;
 
 import java.io.File;
-import java.util.Collection;
-import java.util.List;
-import java.util.Observer;
 import java.util.ResourceBundle;
 
 import backend.Interpreter;
 import frontend.bottom.Console;
-import frontend.bottom.History;
 import frontend.center.TurtleLand;
 import frontend.left.ToolBox;
 import frontend.right.Variable;
-import javafx.animation.KeyFrame;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import main.Playground;
 
 /**
  * @author Charlie Wang
