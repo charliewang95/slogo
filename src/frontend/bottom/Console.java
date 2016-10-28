@@ -140,7 +140,7 @@ public class Console {
 				e.consume();
 				try {
 					interpretInput(s);
-					myDisplay.getTurtleLand().updateText();
+					myDisplay.updateText();
 				} catch (Exception exception) {
 					JOptionPane.showMessageDialog(null,
 							"Your chosen language does not contain the Command you gave. Click OK to continue and try a new Command.");

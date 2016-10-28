@@ -24,7 +24,8 @@ public class AdvancedToolBox {
 	}
 	
 	private void addWorkspaceSettings() {
-		
+		cb.getItems().add("Save Pref");
+		cb.getItems().add("Load Pref");
 	}
 
 	private void addChangePenProperties() {
