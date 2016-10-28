@@ -11,6 +11,8 @@ public class ObservableOutput extends Observable{
 
 	public void setOutput(String out) {
 		output = out;
+	        setChanged();
+	        notifyObservers();
 	}
 
 	public String getOutput() {

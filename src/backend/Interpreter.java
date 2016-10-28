@@ -231,7 +231,6 @@ public class Interpreter {
 			store = updateTurtle(nodeCommandMap.get(myNode), null);
 		}
 
-
 		ObservableOutput observer = new ObservableOutput(store.toString());
 		observer.setOutput(store.toString());
 		return store;
