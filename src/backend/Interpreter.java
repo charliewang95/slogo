@@ -20,11 +20,13 @@ import frontend.left.ToolBox;
  */
 public class Interpreter {
         private Communication comm;
+        private VariableHouse varHouse;
     
 	public Interpreter(Playground myPlay, Turtle turtle){
 		this.myPlayground = myPlay;
 		this.turtle = turtle;
 		comm = new Communication();
+		varHouse = new VariableHouse();
 	}
 
 	private Playground myPlayground;
@@ -131,6 +133,10 @@ public class Interpreter {
 					if (substr.contains("turtlecommands")||substr.contains("turtlequeries")||substr.contains("booleanoperations")){//(getType(list.get(i)).equals("turtlecommands")||getType(list.get(i)).equals("turtlequeries")||getType(list.get(i)).equals("booleanoperations")){		
 						cst = cls.getConstructor(Turtle.class);
 						instance = cst.newInstance(turtle);
+					}
+					else if (substr.contains("othercommands")){
+						cst = cls.getConstructor(Turtle.class, VariableHouse.class);
+						instance = cst.newInstance(turtle, varHouse);
 					}
 					else{
 						instance = cls.newInstance();
