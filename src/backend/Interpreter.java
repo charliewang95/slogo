@@ -6,10 +6,12 @@ import java.util.Iterator;
 import java.util.List;
 //import backend.observables.ObservableOutput;
 import java.io.File;
+import java.io.IOException;
 
 import backend.observables.Communication;
 
 import java.lang.reflect.*;
+import java.nio.charset.Charset;
 
 import main.Playground;
 import frontend.left.ToolBox;
@@ -59,6 +61,8 @@ public class Interpreter {
 		createCommandTree(createCommandList(parsedList));
 
 		parseTree(commandTree.root);
+		
+		Tester("doc/SLogoFiles/Test1");
 
 		return commandTree;
 
@@ -139,7 +143,7 @@ public class Interpreter {
 						instance = cst.newInstance(turtle, varHouse);
 					}
 					else{
-						instance = cls.newInstance();
+							instance = cls.newInstance();
 					}
 					tempCommand = (Command) instance;
 
@@ -280,4 +284,16 @@ public class Interpreter {
 		myLanguage = language;
 	}
 
+	public String Tester(String path){
+		try {
+			System.out.println(FileToString.readFile(path, Charset.defaultCharset()));
+			return FileToString.readFile(path, Charset.defaultCharset());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	
 }

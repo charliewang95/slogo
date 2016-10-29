@@ -11,13 +11,11 @@ public class StringInterpreter {
 	
 	public List<String> interpretString(String input){
 		parse = new ProgramParser();
-		System.out.println("HEY");
 		List<String> stringList = separateStrings(input);
 		List<String> parsedList = new ArrayList<String>();
 		if (myLanguage == null){
 			myLanguage = "English";
 		}
-		System.out.println("hellO");
 		parse.addPatterns("resources.languages/" + myLanguage);
 		parse.addPatterns("resources.languages/Syntax");
 		for (int i = 0; i < stringList.size(); i++){
