@@ -115,7 +115,8 @@ public class Interpreter {
 						for (File d : dirList){
 							File[] dirdir = d.listFiles();
 							for (int k = 0; k < dirdir.length; k++){
-							if (dirdir[k].toString().endsWith("/"+list.get(i)+".java")){
+							if (dirdir[k].toString().endsWith("\\"+list.get(i)+".java")||dirdir[k].toString().endsWith("/"+list.get(i)+".java")){
+								
 								substr = d.toString().substring(4, d.toString().length());
 								substr = "backend."+substr.substring(8, substr.length());
 								System.out.println(substr + "." + list.get(i));
