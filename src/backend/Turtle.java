@@ -34,6 +34,34 @@ public class Turtle {
 	        playGround = playground;
 	}
 	
+	public String getShape() {
+		return null;
+	}
+	
+	public String getPenColor() {
+		return null;
+	}
+	
+	public void setBackground(int index) {
+		
+	}
+	
+	public void setPalette(int index, int r, int g, int b) {
+		
+	}
+	
+	public void setPenColor(int index) {
+		
+	}
+	
+	public void setPenSize(int pix) {
+		
+	}
+	
+	public void setShape(int index) {
+		
+	}
+	
 	public void observeDirection(DirectionObserver o) {
 	    myDirection.addObserver(o);
 	}
