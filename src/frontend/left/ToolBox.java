@@ -339,6 +339,7 @@ public class ToolBox {
 		for (String l : languageList) {
 			if (l.equals(s)) {
 				myLanguage = s;
+				return;
 			}
 		}
 		ErrorException ee = new ErrorException("Language Not Found");

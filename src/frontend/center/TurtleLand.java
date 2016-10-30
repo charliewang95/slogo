@@ -44,7 +44,7 @@ public class TurtleLand {
 	public static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
 	private Color defaultGround = Color.LIGHTGREEN;
 
-	private Color myBackgroundColor, myPenColor;
+	private Color myBackgroundColor;
 	
 	private Pane myPane;
 	private Display myDisplay;
@@ -75,6 +75,7 @@ public class TurtleLand {
 		gcc = myCanvas.getGraphicsContext2D();
 
 		gcb.setFill(defaultGround);
+		myBackgroundColor = defaultGround;
 		gcb.fillRect(0, 0, myWidth, myHeight);
 
 		myTurtle = new TurtleMascot(myWidth, myHeight, converter);
@@ -112,12 +113,30 @@ public class TurtleLand {
 
 	public void changeBackground(Color c) {
 		gcb.setFill(c);
+		myBackgroundColor = c;
 		gcb.fillRect(0, 0, myWidth, myHeight);
+	}
+	
+	public void changeBackground(String stringc) {
+		Color c = parseColor(stringc);
+		changeBackground(c);
+	}
+	
+	public Color parseColor(String stringc) {
+		int r = Integer.parseInt(stringc.substring(2,4), 16);
+		int g = Integer.parseInt(stringc.substring(4,6), 16);
+		int b = Integer.parseInt(stringc.substring(6,8), 16);
+		Color c = Color.rgb(r,g,b);
+		return c;
+	}
+	
+	public Color getBackgroundColor() {
+		return myBackgroundColor;
 	}
 
 	public void changeTurtle(String value) {
 		Image newImage = myTurtle.getAnimalMap().get(value);
-		myTurtle.setImage(newImage);
+		myTurtle.setImage(value, newImage);
 	}
 
 	public void changeTurtle(String name, File file) {
@@ -126,6 +145,11 @@ public class TurtleLand {
 
 	public void setPenColor(Color color) {
 		myTurtle.setPenColor(color);
+	}
+	
+	public void setPenColor(String stringc) {
+		Color c = parseColor(stringc);
+		setPenColor(c);
 	}
 
 	public void printGround() {

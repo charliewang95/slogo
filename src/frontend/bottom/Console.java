@@ -1,5 +1,6 @@
 package frontend.bottom;
 
+import java.io.File;
 import java.util.ResourceBundle;
 
 import javax.swing.JOptionPane;
@@ -24,6 +25,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 
 /**
  * @author Charlie Wang
@@ -84,6 +86,20 @@ public class Console {
 				e.consume();
 			}
 		});
+		
+		Button button3 = new Button(myResources.getString("ConsoleLoad"));
+		GridPane.setConstraints(button3, 0, 3);
+		myLeftArea.getChildren().add(button3);
+		button3.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				FileChooser fileChooser = new FileChooser();
+				fileChooser.setTitle(myResources.getString("LoadTitle"));
+				File preset = fileChooser.showOpenDialog(null);
+				//myInterpreter.loadCommands(preset);
+			}
+		});
+		
 		myHBox.getChildren().add(myLeftArea);
 
 		myTextArea = new TextArea();
