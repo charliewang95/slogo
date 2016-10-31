@@ -28,6 +28,13 @@ public class Turtle {
 	private ObservableVisibility myVisibility = new ObservableVisibility(true);
 	private Communication myOutput = new Communication();
 	
+	/*
+	private ObservableShape myShape = new ObservableShape(0);
+	private ObservablePenColor myPenColor = new ObservablePenColor(0);
+	private ObservableBackgroundColor myBackgroundColor = new ObservableBackgroundColor(0);
+	private ObservablePenSize myPenSize = new ObservablePenSize(5);
+	*/
+	
 	public Turtle(double x, double y, Playground playground) {
 	        myPosition.setX(x);
 	        myPosition.setY(y);
@@ -35,31 +42,33 @@ public class Turtle {
 	}
 	
 	public String getShape() {
+		//return myShape.getShape();
 		return null;
 	}
 	
 	public String getPenColor() {
+		//return myPenColor.getColor();
 		return null;
 	}
 	
 	public void setBackground(int index) {
-		
+		//myBackgroundColor.getColor(index);
 	}
 	
 	public void setPalette(int index, int r, int g, int b) {
-		
+		//myBackgroundColor.changeIndex(index,r,g,b);
 	}
 	
 	public void setPenColor(int index) {
-		
+		//myPenColor.setColor(index);
 	}
 	
 	public void setPenSize(int pix) {
-		
+		//myPenSize.setSize(pix);
 	}
 	
 	public void setShape(int index) {
-		
+		//myShape.setShape(index);
 	}
 	
 	public void observeDirection(DirectionObserver o) {
