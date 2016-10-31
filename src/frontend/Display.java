@@ -1,7 +1,11 @@
 package frontend;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 import backend.Interpreter;
 import frontend.bottom.Console;
@@ -36,6 +40,7 @@ public class Display {
 	private double myWidth;
 	private double myHeight;
 	private ResourceBundle myResources;
+	private Scanner in;
 
 	public Display(Stage s) {
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Common");
@@ -145,15 +150,43 @@ public class Display {
 		myTurtleLand.changeBackground(c);
 	}
 	
-//	public void saveDefault() {
-//		StringBuilder sb = new StringBuilder();
-//		sb.append(myTurtleLand.getBackgroundColor());
-//	}
-//	
-//	public void setDefault() {
-//		myTurtleLand.changeBackground(c);
-//		myTurtleLand.setPenColor(c);
-//		myTurtleLand.changeTurtle(value);
-//		myTool.setLanguage(s);
-//	}
+	public void changePenSize() {
+		
+	}
+	
+	public void saveDefaultConfig() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(myTurtleLand.getBackgroundColor()+"\n");
+		sb.append(myTurtleLand.getTurtle().getPenColor()+"\n");
+		sb.append(myTurtleLand.getTurtle().getAnimal()+"\n");
+		sb.append(myTool.getLanguage());
+		
+		File file = new File("data/output.txt");
+		String toWrite = sb.toString();
+
+		try (FileOutputStream fos = new FileOutputStream(file)) {
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+			byte[] byteArray = toWrite.getBytes();
+			fos.write(byteArray);
+			fos.flush();
+			fos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void setDefaultConfig(File file) throws FileNotFoundException {
+		in = new Scanner(file);
+		String bkcolor = in.next();
+		myTurtleLand.changeBackground(bkcolor);
+		String pencolor = in.next();	
+		myTurtleLand.changeBackground(pencolor);
+		String turtlepic = in.next();
+		myTurtleLand.changeTurtle(turtlepic);
+		String lang = in.next();
+		myTool.setLanguage(lang);
+		myConsole.setLanguage(lang);
+	}
 }

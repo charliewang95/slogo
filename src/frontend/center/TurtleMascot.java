@@ -29,13 +29,14 @@ import javafx.scene.shape.PathElement;
  */
 public class TurtleMascot {
 	public static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
-	public static final int WIDTH = 50;
-	public static final int HEIGHT = 50;
+	public static final int WIDTH = 30;
+	public static final int HEIGHT = 30;
 
 	private ImageView myImage;
 	private ResourceBundle myResources;
 	private double myX, myY;
 	private HashMap<String, Image> myAnimalMap;
+	private String myAnimal;
 	private boolean isDown;
 	private Pen myPen;
 	private Color myPenColor;
@@ -68,7 +69,8 @@ public class TurtleMascot {
 			ErrorException ee = new ErrorException(myResources.getString("NoDefaultImageError") + " (Rocket)");
 		}
 
-		setImage(myAnimalMap.get("Turtle"));
+		setImage("Turtle", myAnimalMap.get("Turtle"));
+		myAnimal = "Turtle";
 		isDown = true;
 		myPen = new Pen(tlConverter, myX, myY);
     }
@@ -147,19 +149,24 @@ public class TurtleMascot {
 			BufferedImage bufferedImage = ImageIO.read(newImage);
 			Image image = SwingFXUtils.toFXImage(bufferedImage, null);
 			addAnimal(name, image);
-			setImage(image);
+			setImage(name, image);
 		} catch (IOException ex) {
 			ErrorException ee = new ErrorException(myResources.getString("FileNotImageError"));
 		}
 	}
 
+	public String getAnimal () {
+		return myAnimal;
+	}
+	
 	/**
 	 * Sets the ImageView of the Sprite
 	 * 
 	 * @param newImage
 	 *            the image to be drawn
 	 */
-	public void setImage(Image newImage) {
+	public void setImage(String animal, Image newImage) {
+		myAnimal = animal;
 		try {
 			myImage.setImage(newImage);
 			myImage.setFitWidth(WIDTH);
