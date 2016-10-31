@@ -73,6 +73,7 @@ public class Console {
 			@Override
 			public void handle(ActionEvent e) {
 				checkInput(e);
+				myOutputs.getValue().add(myInterpreter.getOutput());
 			}
 		});
 
@@ -112,6 +113,7 @@ public class Console {
 		myTextArea.setOnKeyPressed(e -> {
 			if (e.getCode().equals(KeyCode.ENTER)) {
 				checkInput(e);
+				myOutputs.getValue().add(myInterpreter.getOutput());
 			}
 		});
 

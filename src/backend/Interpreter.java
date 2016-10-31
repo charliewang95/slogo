@@ -254,7 +254,7 @@ public class Interpreter {
 			store = updateTurtle(nodeCommandMap.get(myNode), null);
 		}
 		// update output
-		comm.setOutput(store.toString());
+		//comm.setOutput(store.toString());
 
 		try {
 			Communication.class.newInstance().setOutput(store.toString());
@@ -295,4 +295,8 @@ public class Interpreter {
 
 	}
 
+	public String getOutput() {
+		return store.toString();
+	}
+	
 }
