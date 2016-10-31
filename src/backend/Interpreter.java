@@ -134,7 +134,7 @@ public class Interpreter {
 					/*
 					 * refactor this later
 					 */
-					if (substr.contains("turtlecommands")||substr.contains("turtlequeries")||substr.contains("booleanoperations")){//(getType(list.get(i)).equals("turtlecommands")||getType(list.get(i)).equals("turtlequeries")||getType(list.get(i)).equals("booleanoperations")){		
+					if (substr.contains("turtlecommands")||substr.contains("turtlequeries")||substr.contains("booleanoperations")||substr.contains("displaycommands")){//(getType(list.get(i)).equals("turtlecommands")||getType(list.get(i)).equals("turtlequeries")||getType(list.get(i)).equals("booleanoperations")){		
 						cst = cls.getConstructor(Turtle.class);
 						instance = cst.newInstance(turtle);
 					}
