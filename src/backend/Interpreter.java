@@ -52,7 +52,7 @@ public class Interpreter {
 		for (int i = 0; i < stringList.size(); i++){
 			parsedList.add(parse.getSymbol(stringList.get(i)));
 		}
-		
+
 
 		List<List<Command>> bigL = separateCommandLists(createCommandList(parsedList));
 		for (int j = 0; j < bigL.size(); j++){
@@ -91,7 +91,7 @@ public class Interpreter {
 				tempCommand = new CommandNumber(Integer.parseInt(stringList.get(i)));
 			}
 			else if (list.get(i).equals("ListStart") || list.get(i).equals("ListEnd")){
-				tempCommand = new CommandOperator(list.get(i));
+				tempCommand = new CommandOperator(stringList.get(i));
 			}
 			else{
 				try {
@@ -169,7 +169,6 @@ public class Interpreter {
 
 	public List<List<Command>> separateCommandLists(List<Command> myList){
 		List<List<Command>> myListyLists = new ArrayList<List<Command>>();
-		System.out.println("in separate Command Lists");
 		while (myList.size()>0){
 			System.out.println(myList.size());
 			List<Command> tempList = new ArrayList<Command>();
@@ -179,9 +178,11 @@ public class Interpreter {
 			int k = 0;
 			while (counter != 0){
 				k++;
-				Command temp = myList.get(k);
-				counter += ( temp.getNumInputs() - 1);
-				tempList.add(temp);
+				if (!myList.get(k).getType().equals("Operator")){
+					Command temp = myList.get(k);
+					counter += ( temp.getNumInputs() - 1);
+					tempList.add(temp);
+				}
 			}
 
 			myListyLists.add(tempList);
