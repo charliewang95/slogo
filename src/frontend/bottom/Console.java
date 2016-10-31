@@ -37,7 +37,7 @@ public class Console {
 	private Interpreter myInterpreter;
 	private History myHistory;
 	private TextArea myTextArea;
-	private ListView myOutputArea;
+	private ListView<String> myOutputArea;
 	private HBox myHBox;
 	private VBox myLeftArea;
 	private VBox myRightArea;
@@ -193,5 +193,9 @@ public class Console {
 	
 	public SimpleObjectProperty<ObservableList<String>> getCommandList() {
 		return myCommands;
+	}
+	
+	public void updateText() {
+		myDisplay.updateText();
 	}
 }

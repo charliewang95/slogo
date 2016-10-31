@@ -1,4 +1,3 @@
-0xcc9933ff
-0x336666ff
-Rocket
-Chinese
+fd 50
+lt 60
+fd 50

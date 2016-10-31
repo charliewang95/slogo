@@ -29,8 +29,8 @@ import javafx.scene.shape.PathElement;
  */
 public class TurtleMascot {
 	public static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
-	public static final int WIDTH = 50;
-	public static final int HEIGHT = 50;
+	public static final int WIDTH = 30;
+	public static final int HEIGHT = 30;
 
 	private ImageView myImage;
 	private ResourceBundle myResources;

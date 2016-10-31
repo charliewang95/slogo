@@ -22,13 +22,15 @@ public class AdvancedToolBox {
 		cb.setPromptText(myResources.getString("AdvancedSettings"));
 		GridPane.setMargin(cb, new Insets(0, 0, 15, 15));
 		
-		addWorkspaceSettings();
-		addChangePenProperties();
+		cb.getItems().add(myResources.getString("SavePref"));
+		cb.getItems().add(myResources.getString("LoadPref"));
+		cb.getItems().add(myResources.getString("SaveCommands"));
+		cb.getItems().add(myResources.getString("SaveImage"));
 		
 		cb.setOnAction(t -> {
-			if (cb.getValue().equals("Save Pref")) {
+			if (cb.getValue().equals(myResources.getString("SavePref"))) {
 				myDisplay.saveDefaultConfig();
-			} else if (cb.getValue().equals("Load Pref")) {
+			} else if (cb.getValue().equals(myResources.getString("LoadPref"))) {
 				FileChooser fileChooser = new FileChooser();
 				fileChooser.setTitle(myResources.getString("LoadPref"));
 				File config = fileChooser.showOpenDialog(null);
@@ -38,19 +40,22 @@ public class AdvancedToolBox {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}
+			} else if (cb.getValue().equals(myResources.getString("SaveCommands"))) {
+				setSaveCommandsEvent();
+			} else if (cb.getValue().equals(myResources.getString("SaveImage"))) {
+				setSaveImageEvent();
+			} 
 		});
 	}
+
+	private void setSaveCommandsEvent() {
+		myDisplay.printHistoryToFile();
+	}
 	
-	private void addWorkspaceSettings() {
-		cb.getItems().add("Save Pref");
-		cb.getItems().add("Load Pref");
+	private void setSaveImageEvent() {
+		myDisplay.printGround();
 	}
-
-	private void addChangePenProperties() {
-		cb.getItems().add("Pensize");
-	}
-
+	
 	public ComboBox<String> getBox() {
 		return cb;
 	}

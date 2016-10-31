@@ -36,6 +36,7 @@ public class History {
 			public void handle(MouseEvent event) {
 				if (event.getClickCount() == 2 && lv.getSelectionModel().getSelectedItem()!=null) {
 					myConsole.interpretInput(lv.getSelectionModel().getSelectedItem());
+					myConsole.updateText();
 				}
 			}
 		});

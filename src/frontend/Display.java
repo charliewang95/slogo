@@ -150,6 +150,10 @@ public class Display {
 		myTurtleLand.changeBackground(c);
 	}
 	
+	public void changePenSize() {
+		
+	}
+	
 	public void saveDefaultConfig() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(myTurtleLand.getBackgroundColor()+"\n");
