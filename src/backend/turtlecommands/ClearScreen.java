@@ -10,7 +10,7 @@ public class ClearScreen extends PositionMove {
 	private Turtle myTurtle;
 
 	public ClearScreen(Turtle t) {
-		super();
+		super(0);
 		myTurtle = t;
 	}
 	
