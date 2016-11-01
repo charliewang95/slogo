@@ -299,4 +299,8 @@ public class Interpreter {
 		return store.toString();
 	}
 	
+	public void setVariableHouse(VariableHouse vh) {
+		varHouse = vh;
+	}
+	
 }
