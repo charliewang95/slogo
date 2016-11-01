@@ -176,14 +176,23 @@ public class TurtleLand {
 	public void updateText() {
 		GraphicsContext gct = myText.getGraphicsContext2D();
 		gct.clearRect(0, 0, myWidth, myHeight);
-		String xText = "x: " + myTurtle.getX() + "\n";
-		String yText = "y: " + myTurtle.getY() + "\n";
-		String dirText = "direction: " + myTurtle.getDirection() + "\n";
+		// Round double values
+		double roundedX = roundToNearestHundredth(myTurtle.getX());
+		double roundedY = roundToNearestHundredth(myTurtle.getX());
+		double roundedDir = roundToNearestHundredth(myTurtle.getDirection());
+		// Set text
+		String xText = "x: " + roundedX + "\n";
+		String yText = "y: " + roundedY + "\n";
+		String dirText = "direction: " + roundedDir + "\n";
 		String pen = myTurtle.isDrawing()?"down":"up";
 		String penText = "pen: " + pen;
 		String out = xText + yText + dirText + penText;
 		gct.setFont(new Font("Verdana", 10));
 		gct.fillText(out, 0, 10	);
+	}
+	
+	private double roundToNearestHundredth(double a) {
+	    return Math.round(a*100.0)/100.0;
 	}
 
 	public void toggleParameters() {

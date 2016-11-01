@@ -4,6 +4,7 @@ import java.util.List;
 import frontend.coordinates.TurtleLandToLayout;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
@@ -22,6 +23,9 @@ public class Pen {
 	private TurtleLandToLayout converter;
 	private GraphicsContext gc;
 	private Color color = Color.BLACK;
+	
+	private double myX;
+	private double myY;
 	
 	public Pen (GraphicsContext gc, TurtleLandToLayout converter) {
 	        this.gc = gc;
@@ -58,19 +62,72 @@ public class Pen {
 	        double newX = converter.convertX(x);
 	        double newY = converter.convertY(y);
 	        addPathElement(new LineTo(newX,newY));
+                myX = newX;
+                myY = newY;
 	}
 	
 	public void moveTo(double x, double y) {
 	        double newX = converter.convertX(x);
 	        double newY = converter.convertY(y);
 	        addPathElement(new MoveTo(newX,newY));
+	        myX = newX;
+	        myY = newY;
 	}
 	
-	private double[] handleToroidal(double x, double y) {
-	    return new double[1];
+	private boolean handleToroidal(double x, double y) {
+	    double sideEdge = converter.getWidth()/2.0;
+            double topEdge = converter.getHeight()/2.0;
+            
+	    if (Math.abs(x) > sideEdge || Math.abs(y) > topEdge) {
+	        return false;
+	    }
+	    else {
+	        // corner case
+	        Point2D[] corners = {new Point2D(sideEdge,topEdge),
+	                             new Point2D(sideEdge,(-1)*topEdge),
+	                             new Point2D((-1)*sideEdge,topEdge),
+                                     new Point2D((-1)*sideEdge,(-1)*topEdge)};
+	        
+	        Point2D wallCollisionPt = getCollisionPt(x,y,sideEdge,topEdge);
+	        // side case
+	        
+	        // top/bottom case
+	        
+	        // normal
+	    }
+	    
+	    double[] pt = new double[2];
+	    
+	    
+	    
+	    if (Math.abs(x) > sideEdge) {
+	        pt[0] = (-1)*sideEdge;
+	    } else {
+	        pt[0] = x;
+	    }
+	    
+	    if (Math.abs(y) > topEdge) {
+	        pt[1] = (-1)*topEdge;
+	    } else {
+	        pt[1] = y;
+	    }
+	    
+	    return false;
 	}
 	
-	private void addPathElement(PathElement pe) {
+	private Point2D getCollisionPt (double x, double y, double halfWidth, double halfHeight) {
+	    double ratioYtoX = y/x;
+	    
+	    if (Math.abs(x) > halfWidth) {
+	        // collides with side wall
+                return new Point2D(halfWidth,halfHeight*ratioYtoX);
+            } else {
+                // collides with 
+                return new Point2D(halfWidth/ratioYtoX,halfHeight);
+            }
+        }
+
+        private void addPathElement(PathElement pe) {
 	        myPath.getElements().add(pe);
 	}
 	
