@@ -9,6 +9,8 @@ import backend.Interpreter;
 import frontend.Display;
 import frontend.ErrorException;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -46,11 +48,11 @@ public class ToolBox {
 	private static final Color DEFAULTBACKGROUNDCOLOR = Color.LIGHTGREEN;
 	private static final String DEFAULT_LANGUAGE = "English";
 	private String[] turtleList = { "Turtle", "Elephant", "Rocket" };
-
+	private String[] styleList = { "Pen Down", "Pen Up", "Dash", "Solid" };
 	private String[] languageList;
 	private SimpleObjectProperty<ObservableList<String>> myTurtleList;
 	private SimpleObjectProperty<ObservableList<String>> myLanguageList;
-
+	private SimpleObjectProperty<ObservableList<String>> myStyleList;
 	private GridPane gp;
 	private WebView myPage;
 	private Display myDisplay;
@@ -66,6 +68,8 @@ public class ToolBox {
 		myTurtleList.getValue().add(myResources.getString("AddAnother"));
 		myLanguageList = new SimpleObjectProperty<>(FXCollections.observableArrayList());
 		myLanguageList.getValue().addAll(getLanguages());
+		myStyleList = new SimpleObjectProperty<>(FXCollections.observableArrayList());
+		myStyleList.getValue().addAll(styleList);
 
 		gp = new GridPane();
 		gp.setPrefSize(Integer.parseInt(myResources.getString("ToolBoxWidth")),
@@ -81,20 +85,23 @@ public class ToolBox {
 		gp.getChildren().add(title);
 		GridPane.setMargin(title, new Insets(20, 10, 10, 10));
 
-		// reset button (reset console, command, and history)
 		HBox firstLine = new HBox(10);
-		addButton(firstLine, "New");
-		addButton(firstLine, "Reset");
 		GridPane.setConstraints(firstLine, 0, ++count);
 		GridPane.setMargin(firstLine, new Insets(0, 10, 10, 15));
 		gp.getChildren().add(firstLine);
 
+		// create new workspace
+		addButton(firstLine, "New");
+
+		// reset button (reset console, command, and history)
+		addButton(firstLine, "Reset");
+
 		// save commands in the command history window into data/output.txt
-		addButton(gp, "SetPenUp");
+		addComboBox(myStyleList, "SetPenStyle");
 
 		// save current image that the turtle draws
 		addToolLabel("SetPenSize");
-		addSlider(1, 5, 2);
+		addSlider(1, 5, 1);
 
 		// set pen's color
 		addToolLabel("SetPenColor");
@@ -116,7 +123,7 @@ public class ToolBox {
 		AdvancedToolBox atb = new AdvancedToolBox(myDisplay);
 		GridPane.setConstraints(atb.getBox(), 0, ++count);
 		gp.getChildren().add(atb.getBox());
-		
+
 		// set online help
 		addButton(gp, "OnlineHelp");
 	}
@@ -135,12 +142,13 @@ public class ToolBox {
 	public void addSlider(int min, int max, int value) {
 		Slider slider = new Slider(min, max, value);
 		slider.setShowTickLabels(true);
+		slider.setMajorTickUnit(1);
 		GridPane.setConstraints(slider, 0, ++count);
 		addSliderEvent(slider);
 		GridPane.setMargin(slider, new Insets(0, 0, 0, 15));
 		gp.getChildren().add(slider);
 	}
-	
+
 	public void addComboBox(SimpleObjectProperty<ObservableList<String>> namelist, String refer, String defaultVal) {
 		ComboBox<String> cb = addComboBox(namelist, refer);
 		cb.setValue(defaultVal);
@@ -182,10 +190,6 @@ public class ToolBox {
 			public void handle(ActionEvent event) {
 				if (function.equals("Reset")) {
 					setResetEvent();
-				} else if (function.equals("SavePenUp")) {
-					setPenUpEvent();
-				} else if (function.equals("SaveImage")) {
-					setSaveImageEvent();
 				} else if (function.equals("OnlineHelp")) {
 					setOnlineHelpEvent();
 				} else if (function.equals("New")) {
@@ -198,11 +202,15 @@ public class ToolBox {
 	}
 
 	private void addSliderEvent(Slider slider) {
-		slider.setOnDragDetected(e -> {
-			//myDisplay.changePenSize(slider.getValue());
+		slider.valueProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				// TODO Auto-generated method stub
+				myDisplay.changePenSize(newValue.doubleValue());
+			}
 		});
 	}
-	
+
 	private void addPaletteEvent(ColorPicker cp, String function) {
 		cp.setOnAction(t -> {
 			if (function.equals("SetPenColor")) {
@@ -214,16 +222,15 @@ public class ToolBox {
 	}
 
 	private void addComboBoxEvent(ComboBox<String> box, String refer) {
+		if (refer.equals("SetPenStyle")) {
+			box.setPromptText(myResources.getString("SetPenStyle"));
+		}
 		box.setOnAction(t -> {
 			if (refer.equals("SetTurtle")) {
 				try {
 					setTurtleEvent(box, box.getValue());
 				} catch (Exception e) {
-					// ErrorException ee = new
-					// ErrorException(myResources.getString("NoOptionError"));
-					ErrorException ee = new ErrorException(myDisplay, "aha", "Seek Help Online", "Define New Command",
-							"fr 50");
-
+					ErrorException ee = new ErrorException(myResources.getString("NoOptionError"));
 				}
 			} else if (refer.equals("SetLanguage")) {
 				try {
@@ -231,6 +238,12 @@ public class ToolBox {
 					setLanguageEvent(box.getValue());
 				} catch (Exception e) {
 					ErrorException ee = new ErrorException(myResources.getString("NoLanguageError"));
+				}
+			} else if (refer.equals("SetPenStyle")) {
+				try {
+					setPenStyleEvent(box.getValue());
+				} catch (Exception e) {
+					ErrorException ee = new ErrorException(myResources.getString("NoOptionError"));
 				}
 			}
 		});
@@ -263,15 +276,13 @@ public class ToolBox {
 			try {
 				myDisplay.changeTurtle(value);
 			} catch (Exception e) {
-				
+
 			}
 		}
 	}
 
 	private void setNewScreenEvent() {
-		Stage newStage = new Stage();
-		Playground newPlayGround = new Playground(newStage);
-		newPlayGround.init();
+		myDisplay.newStage();
 	}
 
 	private void setLanguageEvent(String value) {
@@ -283,12 +294,8 @@ public class ToolBox {
 		myDisplay.reset();
 	}
 
-	private void setPenUpEvent() {
-		//TODO
-	}
-	
-	private void setSaveImageEvent() {
-		//TODO
+	private void setPenStyleEvent(String value) {
+		myDisplay.setPenStyleEvent(value);
 	}
 
 	public void setOnlineHelpEvent() {

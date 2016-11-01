@@ -2,36 +2,21 @@ package frontend.center;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Observer;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 
 import frontend.Display;
 import frontend.ErrorException;
-import frontend.coordinates.CoordinateConverter;
 import frontend.coordinates.TurtleLandToLayout;
-import frontend.observers.*;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.geometry.Insets;
-import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.PathElement;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
 /**
@@ -48,6 +33,7 @@ public class TurtleLand {
 	
 	private Pane myPane;
 	private Display myDisplay;
+	private Pen myPen;
 	private Canvas myCanvas, myBackground, myText;
 	private TurtleMascot myTurtle;
 	private ImageView myTurtleImage;
@@ -80,7 +66,8 @@ public class TurtleLand {
 
 		myTurtle = new TurtleMascot(myWidth, myHeight, converter);
 		myTurtleImage = myTurtle.getImage();
-		myTurtle.setPen(new Pen(gcc, converter));
+		myPen = new Pen(gcc, converter);
+		myTurtle.setPen(myPen);
 		// put turtle in center
 		myTurtle.setX(0);
 		myTurtle.setY(0);
@@ -197,5 +184,9 @@ public class TurtleLand {
 
 	public void toggleParameters() {
 		myText.setVisible(!myText.isVisible());
+	}
+	
+	public void setPenSize(double size) {
+		myPen.setThickness(size);
 	}
 }

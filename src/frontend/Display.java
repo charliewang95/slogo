@@ -17,6 +17,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.KeyCode;
@@ -25,6 +26,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import main.Playground;
 
 /**
  * @author Charlie Wang
@@ -184,10 +186,22 @@ public class Display {
 		myTurtleLand.changeBackground(c);
 	}
 	
-	public void changePenSize() {
-
+	public void changePenSize(double size) {
+		myTurtleLand.setPenSize(size);
 	}
 
+	public void setPenStyleEvent(String value) {
+		if (value.equals(myResources.getString("Pen Down"))) {
+			
+		} else if (value.equals(myResources.getString("Pen Up"))) {
+			
+		} else if (value.equals(myResources.getString("Dashed"))) {
+//			myTurtleLand.toDashed();
+		} else if (value.equals(myResources.getString("Solid"))) {
+//			myTurtleLand.toSolid();
+		}
+	}
+	
 	public void saveDefaultConfig() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(myTurtleLand.getBackgroundColor() + "\n");
@@ -224,10 +238,14 @@ public class Display {
 		myConsole.setLanguage(lang);
 	}
 	
+	public void newStage() {
+		Stage newStage = new Stage();
+		Playground newPlayGround = new Playground(newStage);
+		newPlayGround.init();
+	}
+	
 	public void reset() {
-		interpretInput("clearscreen");
-		updateText();
-		myVariable.clear();
-		myConsole.clear();
+		newStage();
+		myStage.close();
 	}
 }

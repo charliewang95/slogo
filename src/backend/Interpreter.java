@@ -86,11 +86,18 @@ public class Interpreter {
 		//  must handle all types when converting to commands
 		commandList = new ArrayList<Command>();
 		for (int i = 0; i < list.size(); i++){
+			System.out.println("list.get(i) is : " + list.get(i));
+			System.out.println(stringList.get(i));
 			if (list.get(i).equals("Constant")){
 				tempCommand = new CommandNumber(Integer.parseInt(stringList.get(i)));
 			}
 			else if (list.get(i).equals("ListStart") || list.get(i).equals("ListEnd")){
 				tempCommand = new CommandOperator(stringList.get(i));
+			}
+			else if (list.get(i).equals("Command")){
+				if (varHouse.getVariable(stringList.get(i))!= null){
+					tempCommand = new CommandNumber(Integer.parseInt(varHouse.getVariable(stringList.get(i))));
+				}
 			}
 			else{
 				try {
@@ -110,6 +117,7 @@ public class Interpreter {
 					for (File d : dirList){
 						File[] dirdir = d.listFiles();
 						for (int k = 0; k < dirdir.length; k++){
+							// "/" or "\\" handles difference between how Mac and PC process filepaths
 							if (dirdir[k].toString().endsWith("\\"+list.get(i)+".java")||dirdir[k].toString().endsWith("/"+list.get(i)+".java")){
 
 								substr = d.toString().substring(4, d.toString().length());
@@ -126,9 +134,10 @@ public class Interpreter {
 						cst = cls.getConstructor(Turtle.class);
 						instance = cst.newInstance(turtle);
 					}
-					else if (substr.contains("othercommands")){
-						cst = cls.getConstructor(Turtle.class, VariableHouse.class);
-						instance = cst.newInstance(turtle, varHouse);
+					else if (substr.contains("variables")){
+						cst = cls.getConstructor(Turtle.class, VariableHouse.class, String.class);
+						instance = cst.newInstance(turtle, varHouse, stringList.get(i + 1) +" " + stringList.get(i+2));
+						i = i + 2; //NOT SURE ABOUT THIS
 					}
 					else{
 						instance = cls.newInstance();

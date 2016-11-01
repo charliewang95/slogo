@@ -26,14 +26,13 @@ public class MakeVariable extends Command {
 	}
 	
 	private void createVariable(String s) {
-		
 		s = s.trim();
-		
 		int indexOfFirstSpace = s.indexOf(SPACE);
 		String varName = s.substring(0, indexOfFirstSpace);
 		
 		int indexOfLastSpace = s.lastIndexOf(SPACE);
 		String varVal = s.substring(indexOfLastSpace+1);
+		System.out.println("var val is " +varVal);
 		
 		varValue = new String(varVal);
 		myVariableHouse.makeVariable(varName, varVal);
