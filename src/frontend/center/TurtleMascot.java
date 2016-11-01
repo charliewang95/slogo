@@ -38,7 +38,6 @@ public class TurtleMascot {
 	private HashMap<String, Image> myAnimalMap;
 	private boolean isDown;
 	private Pen myPen;
-	private Color myPenColor;
 
 	private TurtleToLayout converter;
 
@@ -46,7 +45,6 @@ public class TurtleMascot {
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Common");
 
 		converter = new TurtleToLayout(environmentWidth, environmentHeight, WIDTH, HEIGHT);
-		myPenColor = Color.BLACK;
 		myImage = new ImageView();
 		myX = 0;
 		myY = 0;
@@ -70,7 +68,7 @@ public class TurtleMascot {
 
 		setImage(myAnimalMap.get("Turtle"));
 		isDown = true;
-		myPen = new Pen(tlConverter, myX, myY);
+		//myPen = new Pen(tlConverter, myX, myY);
     }
     
     /**
@@ -210,15 +208,19 @@ public class TurtleMascot {
 		return HEIGHT;
 	}
 	
+	public void setPen(Pen pen) {
+	    myPen = pen;
+	}
+	
 	public Pen getPen() {
 	    return myPen;
 	}
 	
 	public void setPenColor(Color c) {
-		myPenColor = c;
+		myPen.setColor(c);
 	}
 	
 	public Color getPenColor() {
-		return myPenColor;
+	        return myPen.getColor();
 	}
 }

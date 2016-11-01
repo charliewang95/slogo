@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Observer;
 import backend.observables.*;
 import frontend.observers.DirectionObserver;
+import frontend.observers.OutputObserver;
 import frontend.observers.PenObserver;
 import frontend.observers.PositionObserver;
 import frontend.observers.VisibilityObserver;
@@ -38,8 +39,8 @@ public class Turtle {
 	    myDirection.addObserver(o);
 	}
 	
-	public void observeOutput(Communication o) {
-	    //myOutput.addObserver(o);
+	public void observeOutput(OutputObserver o) {
+	    myOutput.addObserver(o);
 	}
 	
 	public void observePen(PenObserver o) {
@@ -120,6 +121,10 @@ public class Turtle {
 	
 	public ObservableVisibility getVisObs() {
 	        return myVisibility;
+	}
+	
+	public Communication getOutObs() {
+	        return myOutput;
 	}
 	
 }

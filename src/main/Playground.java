@@ -47,7 +47,7 @@ public class Playground {
 		myDisplay.init(myInterpreter);
 		
 		// link frontend/backend
-		myObservers = initializeObservers(myDisplay.getTurtleLand(),myTurtle);
+		myObservers = initializeObservers(myDisplay.getTurtleLand(),myTurtle,myDisplay);
 		observeObservables(myObservers);
 	}
 	
@@ -66,6 +66,9 @@ public class Playground {
                 } else if (obs.getClass() == VisibilityObserver.class) {
                     myTurtle.observeVisibility((VisibilityObserver)obs);
                     count++;
+                } else if (obs.getClass() == OutputObserver.class) {
+                    myTurtle.observeOutput((OutputObserver)obs);
+                    count++;
                 }
 	    }
 	    return count;
@@ -78,19 +81,21 @@ public class Playground {
 	 * @param observables - turtle states
 	 * @return
 	 */
-	private Collection<Observer> initializeObservers(TurtleLand turtleLand, Turtle turtleModel) {
+	private Collection<Observer> initializeObservers(TurtleLand turtleLand, Turtle turtleModel, Display display) {
 	        TurtleMascot turtle = turtleLand.getTurtle();
 	        GraphicsContext gc = turtleLand.getGraphicsContext();
 	        
 	        int width = turtleLand.getWidth();
 	        int height = turtleLand.getHeight();
 	        
+	        // TODO: change Observers to take in Display instead of TurtleLand
+	        
 	        Collection<Observer> observers = new ArrayList<>();
 	        observers.add(new DirectionObserver(turtle,gc,width,height,turtleModel.getDirObs()));
 	        observers.add(new PenObserver(turtle,gc,width,height,turtleModel.getPenObs()));
 	        observers.add(new PositionObserver(turtle,gc,width,height,turtleModel.getPosObs()));
 	        observers.add(new VisibilityObserver(turtle,gc,width,height,turtleModel.getVisObs()));
-	        //observers.add(new OutputObserver(turtle,gc,width,height,turtleModel.getoutObs()));
+	        observers.add(new OutputObserver(turtle,gc,width,height,turtleModel.getOutObs(),display));
 	        return observers;
 	}
 	

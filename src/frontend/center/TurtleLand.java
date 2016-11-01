@@ -76,6 +76,7 @@ public class TurtleLand {
 
 		myTurtle = new TurtleMascot(myWidth, myHeight, converter);
 		myTurtleImage = myTurtle.getImage();
+		myTurtle.setPen(new Pen(gcc, converter));
 		// put turtle in center
 		myTurtle.setX(0);
 		myTurtle.setY(0);
