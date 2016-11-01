@@ -13,35 +13,85 @@ public class MakeUserInstruction extends Command {
 	private Turtle myTurtle;
 	private VariableHouse myVariableHouse;
 	private final String ONE = "1";
+	private final char SPACE = ' ';
+	private final char LEFT_BRACKET = '[';
+	private final char RIGHT_BRACKET = ']';
 
-	public MakeUserInstruction(Turtle t, VariableHouse vh) {
-		super("Variables", -1);
+	public MakeUserInstruction(Turtle t, VariableHouse vh, String val) {
+		super("Variables", 0);
 		myTurtle = t;
 		myVariableHouse = vh;
+		createCommand(val);
 	}
 
-	//assumes inputs is formatted correctly
+	//assumes inputs is formatted correctly because error has already been thrown
 	public String compute(ArrayList<Command> inputs) {
+		return ONE;
+	}
+	
+	private void createCommand(String s) {
 		
-		String commandName = inputs.get(0).compute(null);
 		List<String> commandVars = new ArrayList<String>();
 		List<String> commandActions = new ArrayList<String>();
 		
-		int index = 2; //0 + 1 (for commandName) + 1 ( for [ ) = 2
-		while(! ( inputs.get(index) instanceof CommandOperator ) ) {
-			commandVars.add(inputs.get(index).compute(null));
-			index++;
-		}
-		index+=2; //++ to get to the next command, which is ], and another to get pass that
-		while(! ( inputs.get(index) instanceof CommandOperator ) ) {
-			commandActions.add(inputs.get(index).compute(null));
-			index++;
-		}
+		String commandName = getCommandName(s);
+		int helperIndex = commandName.length(); //goes past the space
+		helperIndex = pastNextChar(helperIndex, s, LEFT_BRACKET);
+		helperIndex = makeCommandObjects(commandVars, s, helperIndex);
+		helperIndex = pastNextChar(helperIndex, s, LEFT_BRACKET);
+		makeCommandObjects(commandActions, s, helperIndex);
 		
 		myVariableHouse.makeCommands(commandName, commandVars, commandActions);
 		
-		return ONE;
+	}
+	
+	private String getCommandName(String s) {
+		int helperIndex = s.indexOf(SPACE);
+		if(! isSafeIndex(s,helperIndex) ) {
+			return "";
+		}
+		return s.substring(0,helperIndex);
+	}
+	
+	private int pastNextChar(int helperIndex, String s, char c) {
+		while(helperIndex < s.length() && s.charAt(helperIndex) != c) {helperIndex++;}
+		return ++helperIndex;
+	}
+	
+	private int makeCommandObjects(List<String> commandObjects, String s, int index) {
 		
+		StringBuilder currentString = new StringBuilder();
+		
+		while(index < s.length() && s.charAt(index) != RIGHT_BRACKET) {
+			char currentChar = s.charAt(index);
+			if (currentChar != ' '){
+				currentString.append(currentChar);
+			} else {
+				if (!currentString.toString().isEmpty()) {
+					commandObjects.add(currentString.toString());
+				}
+				currentString = new StringBuilder();
+			}
+		}
+		
+		if (!currentString.toString().isEmpty()) {
+			commandObjects.add(currentString.toString());
+		}
+		
+		if(! isSafeIndex(s,index) ) {
+			return -1;
+		}
+		
+		return index;
+		
+	}
+	
+	private boolean isSafeIndex(String s, int index) {
+		if( index >= s.length() ) {
+			//error
+			return false;
+		}
+		return true;
 	}
 
 }
