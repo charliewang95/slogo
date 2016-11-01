@@ -23,6 +23,7 @@ public class Pen {
 	private TurtleLandToLayout converter;
 	private GraphicsContext gc;
 	private Color color = Color.BLACK;
+	private double thickness = 1;
 	
 	private double myX;
 	private double myY;
@@ -47,6 +48,14 @@ public class Pen {
 	
 	public Color getColor() {
 	    return color;
+	}
+	
+	public void setThickness(double t) {
+	    thickness = t;
+	}
+	
+	public double getThickness() {
+	    return thickness;
 	}
         
         public ObservableList<PathElement> getPathElements() {
@@ -117,6 +126,10 @@ public class Pen {
 	
 	private Point2D getCollisionPt (double x, double y, double halfWidth, double halfHeight) {
 	    double ratioYtoX = y/x;
+	    double distToSide = Math.abs(halfWidth-myX);
+	    double distToTop = Math.abs(halfHeight-myY);
+	    
+	    
 	    
 	    if (Math.abs(x) > halfWidth) {
 	        // collides with side wall

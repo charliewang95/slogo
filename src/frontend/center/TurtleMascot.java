@@ -230,4 +230,12 @@ public class TurtleMascot {
 	public Color getPenColor() {
 	        return myPen.getColor();
 	}
+	
+	public void setPenThickness(double t) {
+	        myPen.setThickness(t);
+	}
+	
+	public double getPenThickness() {
+	        return myPen.getThickness();
+	}
 }

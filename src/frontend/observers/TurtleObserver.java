@@ -102,6 +102,7 @@ public abstract class TurtleObserver implements Observer {
             }
         });
         gc.setStroke(myTurtle.getPenColor());
+        gc.setLineWidth(myTurtle.getPenThickness());
         gc.stroke();
         gc.closePath();
     }
