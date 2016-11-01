@@ -1,4 +1,4 @@
-package backend.othercommands;
+package backend.variables;
 
 import java.util.ArrayList;
 import java.util.List;
