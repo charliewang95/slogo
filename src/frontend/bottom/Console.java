@@ -99,7 +99,7 @@ public class Console {
 				fileChooser.setTitle(myResources.getString("LoadTitle"));
 				File preset = fileChooser.showOpenDialog(null);
 				System.out.println(preset.getAbsolutePath());
-				String[] inputStrings = myInterpreter.Tester(preset.getAbsolutePath());
+				String[] inputStrings = myInterpreter.convertFileToString(preset.getAbsolutePath());
 				StringBuilder sBuild = new StringBuilder();
 				for (int i = 0; i < inputStrings.length; i++){
 					if (inputStrings[i].contains("#")){

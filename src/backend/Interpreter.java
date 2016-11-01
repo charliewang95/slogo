@@ -114,7 +114,6 @@ public class Interpreter {
 
 								substr = d.toString().substring(4, d.toString().length());
 								substr = "backend."+substr.substring(8, substr.length());
-								System.out.println(substr + "." + list.get(i));
 								cls = Class.forName(substr + "." + list.get(i));//Class.forName("backend." + getType(list.get(i))+"." + list.get(i));
 								break;
 							}
@@ -169,11 +168,9 @@ public class Interpreter {
 	public List<List<Command>> separateCommandLists(List<Command> myList){
 		List<List<Command>> myListyLists = new ArrayList<List<Command>>();
 		while (myList.size()>0){
-			System.out.println(myList.size());
 			List<Command> tempList = new ArrayList<Command>();
 			int counter = myList.get(0).getNumInputs();
 			tempList.add(myList.get(0));
-			System.out.println(counter);
 			int k = 0;
 			while (counter != 0){
 				k++;
@@ -188,7 +185,6 @@ public class Interpreter {
 			myList = myList.subList(tempList.size(), myList.size());
 		}
 
-		System.out.println(myListyLists.size());
 
 		return myListyLists;
 	}
@@ -226,7 +222,10 @@ public class Interpreter {
 		//		Double store = 0.0;
 		Node myNode = n;
 		if (myNode.children.size()>0){
-			for (int i = myNode.children.size() - 1; i>=0; i--){
+//			for (int i = myNode.children.size() - 1; i>=0; i--){
+			for (int i = 0; i < myNode.children.size(); i++){
+				System.out.println(myNode.value);
+				System.out.println(myNode.children.size());
 				Node child = myNode.children.get(i);
 				if (child.type.equals("Constant")){
 				}
@@ -282,7 +281,7 @@ public class Interpreter {
 	public void setLanguage(String language){
 		myLanguage = language;
 	}
-	public String[] Tester(String path){
+	public String[] convertFileToString(String path){
 		try {
 			System.out.println(FileToString.readFile(path, Charset.defaultCharset()));
 			String tempString = FileToString.readFile(path, Charset.defaultCharset());
