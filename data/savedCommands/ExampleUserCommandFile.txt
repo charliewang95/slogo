@@ -1,0 +1,10 @@
+fd 100 back 50
+penup
+right 90 fd 50
+left 90
+pendown
+fd 50 back 100
+penup
+fd 50
+left 90
+home
