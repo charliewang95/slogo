@@ -96,11 +96,11 @@ public class Turtle {
 	}
 	
 	public Point2D getMyPos() {
-	        return new Point2D(getMyX(),getMyY());
+		return new Point2D(getMyX(),getMyY());
 	}
 	
 	public void setMyPos(double x, double y) {
-	        myPosition.setPosition(x, y);
+		myPosition.setPosition(x, y);
 	}
 	
 	public double getMyX() {
@@ -112,7 +112,7 @@ public class Turtle {
 	}
 
 	public double getMyY() {
-	        return myPosition.getY();
+		return myPosition.getY();
 	}
 
 	public void setMyY(double myY) {
