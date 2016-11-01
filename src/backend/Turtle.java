@@ -93,6 +93,7 @@ public class Turtle {
 	
 	public void eraseLines() {
 		playGround.clearScreen();
+		myDirection.setDirection(0);
 	}
 	
 	public Point2D getMyPos() {

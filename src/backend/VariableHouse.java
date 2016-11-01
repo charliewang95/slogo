@@ -15,6 +15,10 @@ public class VariableHouse {
 		commandActions = new HashMap<String, List<String>>();
 	}
 	
+	public boolean isVariable(String var) {
+		return variables.containsKey(var);
+	}
+	
 	public String getVariable(String var) {
 		if( ! variables.containsKey(var) ) {
 			return null;
