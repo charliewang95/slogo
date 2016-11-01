@@ -30,6 +30,8 @@ public class PositionObserver extends TurtleObserver {
                     Point2D start = new Point2D(getMascotX(),getMascotY());
                     Point2D end = new Point2D(pos.getX(),pos.getY());
                     
+                    System.out.println("Start Pt: "+start.toString()+";\tEnd Pt: "+end.toString());
+                    
                     moveTurtle(start,end);
             }
     }
