@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Observer;
 import backend.observables.*;
 import frontend.observers.DirectionObserver;
+import frontend.observers.OutputObserver;
 import frontend.observers.PenObserver;
 import frontend.observers.PositionObserver;
 import frontend.observers.VisibilityObserver;
@@ -75,8 +76,8 @@ public class Turtle {
 	    myDirection.addObserver(o);
 	}
 	
-	public void observeOutput(Communication o) {
-	    //myOutput.addObserver(o);
+	public void observeOutput(OutputObserver o) {
+	    myOutput.addObserver(o);
 	}
 	
 	public void observePen(PenObserver o) {
@@ -93,14 +94,15 @@ public class Turtle {
 	
 	public void eraseLines() {
 		playGround.clearScreen();
+		myDirection.setDirection(0);
 	}
 	
 	public Point2D getMyPos() {
-	        return new Point2D(getMyX(),getMyY());
+		return new Point2D(getMyX(),getMyY());
 	}
 	
 	public void setMyPos(double x, double y) {
-	        myPosition.setPosition(x, y);
+		myPosition.setPosition(x, y);
 	}
 	
 	public double getMyX() {
@@ -112,7 +114,7 @@ public class Turtle {
 	}
 
 	public double getMyY() {
-	        return myPosition.getY();
+		return myPosition.getY();
 	}
 
 	public void setMyY(double myY) {
@@ -157,6 +159,10 @@ public class Turtle {
 	
 	public ObservableVisibility getVisObs() {
 	        return myVisibility;
+	}
+	
+	public Communication getOutObs() {
+	        return myOutput;
 	}
 	
 }

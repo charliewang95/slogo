@@ -10,7 +10,7 @@ public class Home extends PositionMove {
 	private Turtle myTurtle;
 
 	public Home(Turtle t) {
-		super();
+		super(0);
 		myTurtle = t;
 	}
 	

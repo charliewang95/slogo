@@ -61,7 +61,6 @@ public class Interpreter {
 			parseTree(commandTree.root);
 		}
 
-		Tester("doc/SLogoFiles/Test1");
 		return commandTree;
 	}
 	private List<String> separateStrings(String input){
@@ -176,7 +175,7 @@ public class Interpreter {
 			tempList.add(myList.get(0));
 			System.out.println(counter);
 			int k = 0;
-			while (counter != 0){
+			while (counter != 0 && k < (myList.size() - 1)){
 				k++;
 				if (!myList.get(k).getType().equals("Operator")){
 					Command temp = myList.get(k);
@@ -283,10 +282,11 @@ public class Interpreter {
 	public void setLanguage(String language){
 		myLanguage = language;
 	}
-	public String Tester(String path){
+	public String[] Tester(String path){
 		try {
 			System.out.println(FileToString.readFile(path, Charset.defaultCharset()));
-			return FileToString.readFile(path, Charset.defaultCharset());
+			String tempString = FileToString.readFile(path, Charset.defaultCharset());
+			return (tempString.split("\\r?\\n"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
