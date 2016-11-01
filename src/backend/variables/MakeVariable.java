@@ -1,15 +1,11 @@
-package backend.othercommands;
+package backend.variables;
 
 import java.util.ArrayList;
 
 import backend.Command;
 import backend.Turtle;
 import backend.VariableHouse;
-/**
- * 
- * @author Alex Zaldastani
- *
- */
+
 public class MakeVariable extends Command {
 	
 	private Turtle myTurtle;

@@ -21,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
@@ -89,13 +90,11 @@ public class ToolBox {
 		gp.getChildren().add(firstLine);
 
 		// save commands in the command history window into data/output.txt
-		addButton(gp, "SaveCommands");
+		addButton(gp, "SetPenUp");
 
 		// save current image that the turtle draws
-		addButton(gp, "SaveImage");
-
-		// set online help
-		addButton(gp, "OnlineHelp");
+		addToolLabel("SetPenSize");
+		addSlider(1, 5, 2);
 
 		// set pen's color
 		addToolLabel("SetPenColor");
@@ -112,11 +111,14 @@ public class ToolBox {
 		// set command language
 		addToolLabel("SetLanguage");
 		addComboBox(myLanguageList, "SetLanguage", DEFAULT_LANGUAGE);
-		
+
 		// add advanced toolbox
-		AdvancedToolBox atb = new AdvancedToolBox();
+		AdvancedToolBox atb = new AdvancedToolBox(myDisplay);
 		GridPane.setConstraints(atb.getBox(), 0, ++count);
 		gp.getChildren().add(atb.getBox());
+		
+		// set online help
+		addButton(gp, "OnlineHelp");
 	}
 
 	public ComboBox<String> addComboBox(SimpleObjectProperty<ObservableList<String>> namelist, String refer) {
@@ -129,10 +131,19 @@ public class ToolBox {
 		GridPane.setMargin(cb, new Insets(0, 0, 15, 15));
 		return cb;
 	}
+
+	public void addSlider(int min, int max, int value) {
+		Slider slider = new Slider(min, max, value);
+		slider.setShowTickLabels(true);
+		GridPane.setConstraints(slider, 0, ++count);
+		addSliderEvent(slider);
+		GridPane.setMargin(slider, new Insets(0, 0, 0, 15));
+		gp.getChildren().add(slider);
+	}
 	
 	public void addComboBox(SimpleObjectProperty<ObservableList<String>> namelist, String refer, String defaultVal) {
-	        ComboBox<String> cb = addComboBox(namelist,refer);
-	        cb.setValue(defaultVal);
+		ComboBox<String> cb = addComboBox(namelist, refer);
+		cb.setValue(defaultVal);
 	}
 
 	public void addToolLabel(String refer) {
@@ -171,8 +182,8 @@ public class ToolBox {
 			public void handle(ActionEvent event) {
 				if (function.equals("Reset")) {
 					setResetEvent();
-				} else if (function.equals("SaveCommands")) {
-					setSaveCommandsEvent();
+				} else if (function.equals("SavePenUp")) {
+					setPenUpEvent();
 				} else if (function.equals("SaveImage")) {
 					setSaveImageEvent();
 				} else if (function.equals("OnlineHelp")) {
@@ -186,6 +197,12 @@ public class ToolBox {
 		});
 	}
 
+	private void addSliderEvent(Slider slider) {
+		slider.setOnDragDetected(e -> {
+			//myDisplay.changePenSize(slider.getValue());
+		});
+	}
+	
 	private void addPaletteEvent(ColorPicker cp, String function) {
 		cp.setOnAction(t -> {
 			if (function.equals("SetPenColor")) {
@@ -202,9 +219,11 @@ public class ToolBox {
 				try {
 					setTurtleEvent(box, box.getValue());
 				} catch (Exception e) {
-					//ErrorException ee = new ErrorException(myResources.getString("NoOptionError"));
-					ErrorException ee = new ErrorException(myDisplay, "aha", "Seek Help Online", "Define New Command", "fr 50");
-					
+					// ErrorException ee = new
+					// ErrorException(myResources.getString("NoOptionError"));
+					ErrorException ee = new ErrorException(myDisplay, "aha", "Seek Help Online", "Define New Command",
+							"fr 50");
+
 				}
 			} else if (refer.equals("SetLanguage")) {
 				try {
@@ -237,14 +256,15 @@ public class ToolBox {
 			}
 
 			myTurtleList.getValue().add(newName);
-			myTurtleList.getValue().set(myTurtleList.getValue().size()-2, newName);
-			myTurtleList.getValue().set(myTurtleList.getValue().size()-1, "AddAnother");
+			myTurtleList.getValue().set(myTurtleList.getValue().size() - 2, newName);
+			myTurtleList.getValue().set(myTurtleList.getValue().size() - 1, "AddAnother");
 			myDisplay.changeTurtle(newName, newImage);
 		} else {
 			try {
 				myDisplay.changeTurtle(value);
 			} catch (Exception e) {
-				ErrorException ee = new ErrorException(myDisplay, "aha", "Seek Help Online", "Define New Command", "fr 50");
+				ErrorException ee = new ErrorException(myDisplay, "aha", "Seek Help Online", "Define New Command",
+						"fr 50");
 			}
 		}
 	}
@@ -254,7 +274,7 @@ public class ToolBox {
 		Playground newPlayGround = new Playground(newStage);
 		newPlayGround.init();
 	}
-	
+
 	private void setLanguageEvent(String value) {
 		myDisplay.setLanguage(value);
 		myLanguage = value;
@@ -265,12 +285,12 @@ public class ToolBox {
 		myDisplay.updateText();
 	}
 
-	private void setSaveCommandsEvent() {
-		myDisplay.printHistoryToFile();
+	private void setPenUpEvent() {
+		//TODO
 	}
-
+	
 	private void setSaveImageEvent() {
-		myDisplay.printGround();
+		//TODO
 	}
 
 	public void setOnlineHelpEvent() {
@@ -322,9 +342,23 @@ public class ToolBox {
 				languageList[i] = languageList[i].replace(".properties", "");
 			}
 			String tmp = languageList[0];
-			languageList[0]=languageList[1];
-			languageList[1]=tmp;
+			languageList[0] = languageList[1];
+			languageList[1] = tmp;
 		}
 		return languageList;
+	}
+
+	public String getLanguage() {
+		return myLanguage;
+	}
+
+	public void setLanguage(String s) {
+		for (String l : languageList) {
+			if (l.equals(s)) {
+				myLanguage = s;
+				return;
+			}
+		}
+		ErrorException ee = new ErrorException("Language Not Found");
 	}
 }
