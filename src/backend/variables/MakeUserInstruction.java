@@ -32,14 +32,13 @@ public class MakeUserInstruction extends Command {
 	private void createCommand(String s) {
 		
 		List<String> commandVars = new ArrayList<String>();
-		List<String> commandActions = new ArrayList<String>();
-		
+		s = s.trim();
 		String commandName = getCommandName(s);
 		int helperIndex = commandName.length(); //goes past the space
 		helperIndex = pastNextChar(helperIndex, s, LEFT_BRACKET);
 		helperIndex = makeCommandObjects(commandVars, s, helperIndex);
 		helperIndex = pastNextChar(helperIndex, s, LEFT_BRACKET);
-		makeCommandObjects(commandActions, s, helperIndex);
+		String commandActions = makeCommandActions(s, helperIndex);
 		
 		myVariableHouse.makeCommands(commandName, commandVars, commandActions);
 		
@@ -84,6 +83,13 @@ public class MakeUserInstruction extends Command {
 		
 		return index;
 		
+	}
+	
+	private String makeCommandActions(String s, int index) {
+		int rightIndex = pastNextChar(index, s, RIGHT_BRACKET) - 1;
+		String ans = s.substring(index, rightIndex);
+		ans = ans.trim();
+		return ans;
 	}
 	
 	private boolean isSafeIndex(String s, int index) {
