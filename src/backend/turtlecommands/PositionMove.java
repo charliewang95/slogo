@@ -9,6 +9,10 @@ public abstract class PositionMove extends Command {
 		super("TurtleCommand", 2);
 	}
 	
+	public PositionMove(int numInputs) {
+		super("TurtleCommand", numInputs);
+	}
+	
 	public String setPosition(int x, int y, Turtle t) {
 		Double distance = computeDistance(x,y,t.getMyX(),t.getMyY());
 		
