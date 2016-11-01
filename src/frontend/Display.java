@@ -225,7 +225,7 @@ public class Display {
 	}
 	
 	public void reset() {
-		//interpretInput("clearscreen");
+		interpretInput("clearscreen");
 		updateText();
 		myVariable.clear();
 		myConsole.clear();
