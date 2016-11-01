@@ -1,6 +1,7 @@
 package frontend.bottom;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ResourceBundle;
 
 import javax.swing.JOptionPane;
@@ -97,7 +98,19 @@ public class Console {
 				FileChooser fileChooser = new FileChooser();
 				fileChooser.setTitle(myResources.getString("LoadTitle"));
 				File preset = fileChooser.showOpenDialog(null);
-				//myInterpreter.loadCommands(preset);
+				System.out.println(preset.getAbsolutePath());
+				String[] inputStrings = myInterpreter.Tester(preset.getAbsolutePath());
+				StringBuilder sBuild = new StringBuilder();
+				for (int i = 0; i < inputStrings.length; i++){
+					if (inputStrings[i].contains("#")){
+						int commentIndex = inputStrings[i].indexOf("#");
+						inputStrings[i] = inputStrings[i].substring(0, commentIndex);
+					}
+				sBuild.append(" " + inputStrings[i]);
+				}
+				System.out.println(sBuild.toString());
+				myInterpreter.interpretString(sBuild.toString());
+//				myInterpreter.loadCommands(preset);
 			}
 		});
 		
