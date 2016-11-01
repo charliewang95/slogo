@@ -263,8 +263,7 @@ public class ToolBox {
 			try {
 				myDisplay.changeTurtle(value);
 			} catch (Exception e) {
-				ErrorException ee = new ErrorException(myDisplay, "aha", "Seek Help Online", "Define New Command",
-						"fr 50");
+				
 			}
 		}
 	}
@@ -281,8 +280,7 @@ public class ToolBox {
 	}
 
 	private void setResetEvent() {
-		myDisplay.interpretInput("clearscreen");
-		myDisplay.updateText();
+		myDisplay.reset();
 	}
 
 	private void setPenUpEvent() {

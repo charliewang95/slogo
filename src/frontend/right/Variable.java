@@ -2,6 +2,9 @@ package frontend.right;
 
 import java.util.ResourceBundle;
 
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -18,6 +21,7 @@ public class Variable {
 
 	private ListView<String> lvVariable;
 	private ListView<String> lvCommands;
+	private SimpleObjectProperty<ObservableList<String>> myNewCommands;
 	private VBox myVBox;
 	private ResourceBundle myResources;
 
@@ -28,6 +32,8 @@ public class Variable {
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Common");
 		lvVariable = new ListView<>();
 		lvCommands = new ListView<>();
+		myNewCommands = new SimpleObjectProperty<>(FXCollections.observableArrayList());
+		lvCommands.itemsProperty().bind(myNewCommands);
 
 		lvVariable.setPrefSize(Integer.parseInt(myResources.getString("VariableWidth")),
 				Integer.parseInt(myResources.getString("VariableHeight")));
@@ -57,5 +63,14 @@ public class Variable {
 
 	public VBox getVariable() {
 		return myVBox;
+	}
+	
+	public void bindNewCommands(String user, String existed) {
+		myNewCommands.getValue().add(user+" = "+existed);
+	}
+	
+	public void clear() {
+		myNewCommands = new SimpleObjectProperty<>(FXCollections.observableArrayList());
+		lvCommands.itemsProperty().bind(myNewCommands);
 	}
 }

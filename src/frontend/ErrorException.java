@@ -63,20 +63,11 @@ public class ErrorException {
 		
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == buttonType1) {
-			display.getTool().setOnlineHelpEvent();
+			display.setOnlineHelpEvent();
 		} else if (result.get() == buttonType2) {
-			TextInputDialog dialog = new TextInputDialog(myResources.getString("NewCommandPrompt"));
-			dialog.setTitle(myResources.getString("NewCommandTitle"));
-			dialog.setHeaderText(myResources.getString("NewCommand") + command);
-			dialog.setContentText(myResources.getString("NewCommandHint"));
-			Optional<String> newCommand = dialog.showAndWait();
-			if (newCommand.isPresent()){
-			    System.out.println(newCommand.get());
-			} else  {
-				ErrorException ee = new ErrorException(message);
-			}
+			display.defineNewCommands(command);
 		} else {
-			//
+			//exit
 		}
 	}
 }

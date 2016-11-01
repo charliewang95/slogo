@@ -26,7 +26,7 @@ public class OutputObserver extends TurtleObserver {
 	public void update(Observable o, Object arg) {
 	        if (o == output) {
 	            Communication out = (Communication) o;
-	            myDisplay.getConsole().updateOutput(out.getOutput());
+	            //myDisplay.getConsole().updateOutput(out.getOutput());
 	        }
 	}
 

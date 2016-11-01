@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
@@ -15,10 +16,15 @@ import frontend.right.Variable;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 /**
  * @author Charlie Wang
@@ -102,65 +108,93 @@ public class Display {
 		return myHeight;
 	}
 
-	public Console getConsole() {
-		return myConsole;
-	}
-
-	public ToolBox getTool() {
-		return myTool;
+	public void setOnlineHelpEvent() {
+		myTool.setOnlineHelpEvent();
 	}
 
 	public TurtleLand getTurtleLand() {
 		return myTurtleLand;
 	}
-	
+
 	public void updateText() {
 		myTurtleLand.updateText();
 	}
-	
+
 	public void changeTurtle(String newName, File newImage) {
 		myTurtleLand.changeTurtle(newName, newImage);
 	}
-	
+
 	public void changeTurtle(String value) {
 		myTurtleLand.changeTurtle(value);
 	}
-	
+
 	public void setLanguage(String value) {
 		myConsole.setLanguage(value);
 	}
-	
+
 	public void interpretInput(String in) {
 		myConsole.interpretInput(in);
 	}
-	
+
 	public void printHistoryToFile() {
 		myConsole.getHistory().printHistoryToFile();
 	}
-	
+
 	public void printGround() {
 		myTurtleLand.printGround();
 	}
+
+	public void defineNewCommands(String command) {
+		TextInputDialog dialog = new TextInputDialog();
+		dialog.setTitle(myResources.getString("NewCommandTitle"));
+		dialog.setHeaderText(myResources.getString("NewCommand") + command);
+		dialog.setContentText(myResources.getString("NewCommandHint"));
+		Optional<String> newFunc = dialog.showAndWait();
+		if (newFunc.isPresent()) {
+			dialog.close();
+			TextInputDialog dialog2 = new TextInputDialog();
+			dialog2.setTitle(myResources.getString("NewCommandTitle"));
+			dialog2.setHeaderText(myResources.getString("NewCommand") + command);
+			dialog2.setContentText(myResources.getString("OldCommandHint"));
+			Optional<String> oldFunc = dialog2.showAndWait();
+			if (oldFunc.isPresent()) {
+				saveNewCommands(newFunc.get(), oldFunc.get());
+				bindNewCommands(newFunc.get(), oldFunc.get());
+			} else {
+				ErrorException ee = new ErrorException(myResources.getString("NoNewCommand"));
+			}
+		} else {
+			ErrorException ee = new ErrorException(myResources.getString("NoNewCommand"));
+		}
+	}
+
+	public void saveNewCommands(String user, String existed) {
+		myConsole.saveNewCommands(user, existed);
+	}
 	
+	public void bindNewCommands(String user, String existed) {
+		myVariable.bindNewCommands(user, existed);
+	}
+
 	public void setPenColor(Color color) {
 		myTurtleLand.setPenColor(color);
 	}
-	
+
 	public void changeBackground(Color c) {
 		myTurtleLand.changeBackground(c);
 	}
 	
 	public void changePenSize() {
-		
+
 	}
-	
+
 	public void saveDefaultConfig() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(myTurtleLand.getBackgroundColor()+"\n");
-		sb.append(myTurtleLand.getTurtle().getPenColor()+"\n");
-		sb.append(myTurtleLand.getTurtle().getAnimal()+"\n");
+		sb.append(myTurtleLand.getBackgroundColor() + "\n");
+		sb.append(myTurtleLand.getTurtle().getPenColor() + "\n");
+		sb.append(myTurtleLand.getTurtle().getAnimal() + "\n");
 		sb.append(myTool.getLanguage());
-		
+
 		File file = new File("data/output.txt");
 		String toWrite = sb.toString();
 
@@ -181,12 +215,19 @@ public class Display {
 		in = new Scanner(file);
 		String bkcolor = in.next();
 		myTurtleLand.changeBackground(bkcolor);
-		String pencolor = in.next();	
+		String pencolor = in.next();
 		myTurtleLand.changeBackground(pencolor);
 		String turtlepic = in.next();
 		myTurtleLand.changeTurtle(turtlepic);
 		String lang = in.next();
 		myTool.setLanguage(lang);
 		myConsole.setLanguage(lang);
+	}
+	
+	public void reset() {
+		//interpretInput("clearscreen");
+		updateText();
+		myVariable.clear();
+		myConsole.clear();
 	}
 }
