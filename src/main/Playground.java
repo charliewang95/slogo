@@ -32,88 +32,88 @@ public class Playground {
 	private Interpreter myInterpreter;
 	private Turtle myTurtle;
 	private Collection<Observer> myObservers;
-	
+
 	public Playground(Stage s) {
 		myStage = s;
 	}
-	
+
 	public void init() {
-	        // initialize backend
-                myTurtle = new Turtle(0,0,this);
-                myInterpreter = new Interpreter(this,myTurtle);    
-                
-                // initialize frontend
+		// initialize backend
+		myTurtle = new Turtle(0, 0, this);
+		myInterpreter = new Interpreter(this, myTurtle);
+
+		// initialize frontend
 		myDisplay = new Display(myStage);
 		myDisplay.init(myInterpreter);
-		
+
 		// link frontend/backend
-		myObservers = initializeObservers(myDisplay.getTurtleLand(),myTurtle,myDisplay);
+		myObservers = initializeObservers(myDisplay.getTurtleLand(), myTurtle, myDisplay);
 		observeObservables(myObservers);
 	}
-	
+
 	private int observeObservables(Iterable<Observer> observers) {
-	    int count = 0;
-	    for (Observer obs : observers) {
-	        if (obs.getClass() == DirectionObserver.class) {
-	            myTurtle.observeDirection((DirectionObserver)obs);
-	            count++;
-                } else if (obs.getClass() == PenObserver.class) {
-                    myTurtle.observePen((PenObserver)obs);
-                    count++;
-                } else if (obs.getClass() == PositionObserver.class) {
-                    myTurtle.observePosition((PositionObserver)obs);
-                    count++;
-                } else if (obs.getClass() == VisibilityObserver.class) {
-                    myTurtle.observeVisibility((VisibilityObserver)obs);
-                    count++;
-                } else if (obs.getClass() == OutputObserver.class) {
-                    myTurtle.observeOutput((OutputObserver)obs);
-                    count++;
-                }
-	    }
-	    return count;
+		int count = 0;
+		for (Observer obs : observers) {
+			if (obs.getClass() == DirectionObserver.class) {
+				myTurtle.observeDirection((DirectionObserver) obs);
+				count++;
+			} else if (obs.getClass() == PenObserver.class) {
+				myTurtle.observePen((PenObserver) obs);
+				count++;
+			} else if (obs.getClass() == PositionObserver.class) {
+				myTurtle.observePosition((PositionObserver) obs);
+				count++;
+			} else if (obs.getClass() == VisibilityObserver.class) {
+				myTurtle.observeVisibility((VisibilityObserver) obs);
+				count++;
+			} else if (obs.getClass() == OutputObserver.class) {
+				myTurtle.observeOutput((OutputObserver) obs);
+				count++;
+			}
+		}
+		return count;
 	}
-	
+
 	/**
-	 * Creates an observer for each observable. 
-	 * @param turtle - view
-	 * @param gc - graphics context of the canvas of turtleland
-	 * @param observables - turtle states
+	 * Creates an observer for each observable.
+	 * 
+	 * @param turtle
+	 *            - view
+	 * @param gc
+	 *            - graphics context of the canvas of turtleland
+	 * @param observables
+	 *            - turtle states
 	 * @return
 	 */
 	private Collection<Observer> initializeObservers(TurtleLand turtleLand, Turtle turtleModel, Display display) {
-	        TurtleMascot turtle = turtleLand.getTurtle();
-	        GraphicsContext gc = turtleLand.getGraphicsContext();
-	        
-	        int width = turtleLand.getWidth();
-	        int height = turtleLand.getHeight();
-	        
-	        // TODO: change Observers to take in Display instead of TurtleLand
-	        
-	        Collection<Observer> observers = new ArrayList<>();
-	        observers.add(new DirectionObserver(turtle,gc,width,height,turtleModel.getDirObs()));
-	        observers.add(new PenObserver(turtle,gc,width,height,turtleModel.getPenObs()));
-	        observers.add(new PositionObserver(turtle,gc,width,height,turtleModel.getPosObs()));
-	        observers.add(new VisibilityObserver(turtle,gc,width,height,turtleModel.getVisObs()));
-	        observers.add(new OutputObserver(turtle,gc,width,height,turtleModel.getOutObs(),display));
-	        return observers;
+		TurtleMascot turtle = turtleLand.getTurtle();
+		GraphicsContext gc = turtleLand.getGraphicsContext();
+
+		int width = turtleLand.getWidth();
+		int height = turtleLand.getHeight();
+
+		// TODO: change Observers to take in Display instead of TurtleLand
+
+		Collection<Observer> observers = new ArrayList<>();
+		observers.add(new DirectionObserver(turtle, gc, width, height, turtleModel.getDirObs()));
+		observers.add(new PenObserver(turtle, gc, width, height, turtleModel.getPenObs()));
+		observers.add(new PositionObserver(turtle, gc, width, height, turtleModel.getPosObs()));
+		observers.add(new VisibilityObserver(turtle, gc, width, height, turtleModel.getVisObs()));
+		observers.add(new OutputObserver(turtle, gc, width, height, turtleModel.getOutObs(), display));
+		return observers;
 	}
-	
+
 	public void clearScreen() {
 		myDisplay.getTurtleLand().reset();
 		myDisplay.getTurtleLand().getTurtle().getPen().resetPath();
 	}
-	
-//	public String getCommandError() {
 
-//	}
-	
 	public Collection<Observer> getObservers() {
 		return myObservers;
 	}
-	
-	public void interpretInput(String input){
-		
+
+	public void interpretInput(String input) {
+
 		try {
 			Interpreter.class.newInstance().interpretString(input);
 		} catch (InstantiationException e) {
@@ -123,6 +123,6 @@ public class Playground {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 }

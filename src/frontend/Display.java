@@ -196,9 +196,9 @@ public class Display {
 		} else if (value.equals(myResources.getString("Pen Up"))) {
 			
 		} else if (value.equals(myResources.getString("Dashed"))) {
-			myTurtleLand.toDashed();
+//			myTurtleLand.toDashed();
 		} else if (value.equals(myResources.getString("Solid"))) {
-			myTurtleLand.toSolid();
+//			myTurtleLand.toSolid();
 		}
 	}
 	
