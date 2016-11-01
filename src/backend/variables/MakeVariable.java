@@ -10,19 +10,33 @@ public class MakeVariable extends Command {
 	
 	private Turtle myTurtle;
 	private VariableHouse myVariableHouse;
+	private String varValue;
+	private final char SPACE = ' ';
 
-	public MakeVariable(Turtle t, VariableHouse vh) {
-		super("Variables", 2);
+	public MakeVariable(Turtle t, VariableHouse vh, String val) {
+		super("Variables", 0);
 		myTurtle = t;
 		myVariableHouse = vh;
+		createVariable(val);
 	}
 
 	@Override
 	public String compute(ArrayList<Command> inputs) {
+		return varValue;
+	}
+	
+	private void createVariable(String s) {
 		
-		myVariableHouse.makeVariable(inputs.get(0).compute(null), inputs.get(1).compute(null));
+		s = s.trim();
 		
-		return inputs.get(1).compute(null);
+		int indexOfFirstSpace = s.indexOf(SPACE);
+		String varName = s.substring(0, indexOfFirstSpace);
+		
+		int indexOfLastSpace = s.lastIndexOf(SPACE);
+		String varVal = s.substring(indexOfLastSpace+1);
+		
+		varValue = new String(varVal);
+		myVariableHouse.makeVariable(varName, varVal);
 		
 	}
 
