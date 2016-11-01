@@ -178,7 +178,7 @@ public class TurtleLand {
 		gct.clearRect(0, 0, myWidth, myHeight);
 		// Round double values
 		double roundedX = roundToNearestHundredth(myTurtle.getX());
-		double roundedY = roundToNearestHundredth(myTurtle.getX());
+		double roundedY = roundToNearestHundredth(myTurtle.getY());
 		double roundedDir = roundToNearestHundredth(myTurtle.getDirection());
 		// Set text
 		String xText = "x: " + roundedX + "\n";
@@ -192,7 +192,7 @@ public class TurtleLand {
 	}
 	
 	private double roundToNearestHundredth(double a) {
-	    return Math.round(a*100.0)/100.0;
+	    return Math.round(a*100)/100.0;
 	}
 
 	public void toggleParameters() {
