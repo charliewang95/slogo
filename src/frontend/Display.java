@@ -59,7 +59,7 @@ public class Display {
 	}
 
 	private void handleKeyInput(KeyCode code) {
-		if (code == KeyCode.TAB) {
+		if (code == KeyCode.P) {
 			myTurtleLand.toggleParameters();
 		}
 	}
@@ -195,7 +195,7 @@ public class Display {
 		sb.append(myTurtleLand.getTurtle().getAnimal() + "\n");
 		sb.append(myTool.getLanguage());
 
-		File file = new File("data/output.txt");
+		File file = new File("data/config.txt");
 		String toWrite = sb.toString();
 
 		try (FileOutputStream fos = new FileOutputStream(file)) {

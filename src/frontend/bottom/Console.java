@@ -20,6 +20,7 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -34,6 +35,8 @@ import javafx.stage.FileChooser;
 
 /**
  * @author Charlie Wang
+ * 
+ * @modifier Tripp Whaley
  */
 public class Console {
 	private static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
@@ -44,8 +47,8 @@ public class Console {
 	private TextArea myTextArea;
 	private ListView<String> myOutputArea;
 	private HBox myHBox;
-	private VBox myLeftArea;
-	private VBox myRightArea;
+	private HBox myBottomArea;
+	private VBox myMidArea;
 	private ResourceBundle myResources;
 	private HashMap<String, String> newCommandsMap;
 	private int bracketCount = 0;
@@ -56,8 +59,8 @@ public class Console {
 	public Console(Display display, Interpreter inter) {
 		myInterpreter = inter;
 		myDisplay = display;
-		myLeftArea = new VBox();
-		myRightArea = new VBox();
+		myBottomArea = new HBox();
+		myMidArea = new VBox();
 		myCommands = new SimpleObjectProperty<>(FXCollections.observableArrayList());
 		myOutputs = new SimpleObjectProperty<>(FXCollections.observableArrayList());
 		myHistory = new History(this);
@@ -67,15 +70,15 @@ public class Console {
 		myHBox = new HBox();
 		myHBox.setPadding(new Insets(10, 10, 10, 10));
 		myHBox.setSpacing(10);
-		myLeftArea.setSpacing(10);
-		myRightArea.setSpacing(10);
+		myMidArea.setSpacing(10);
+		myBottomArea.setSpacing(10);
 
 		Label label1 = new Label(myResources.getString("ConsoleText"));
-		myLeftArea.getChildren().add(label1);
+		myHBox.getChildren().add(label1);
 		GridPane.setMargin(label1, new Insets(0, 0, 0, 5));
 
 		Button button1 = new Button(myResources.getString("ConsoleButton"));
-		myLeftArea.getChildren().add(button1);
+		myBottomArea.getChildren().add(button1);
 		button1.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
@@ -86,7 +89,7 @@ public class Console {
 
 		Button button2 = new Button(myResources.getString("ConsoleClear"));
 		GridPane.setConstraints(button2, 0, 2);
-		myLeftArea.getChildren().add(button2);
+		myBottomArea.getChildren().add(button2);
 		button2.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
@@ -97,7 +100,7 @@ public class Console {
 
 		Button button3 = new Button(myResources.getString("ConsoleLoad"));
 		GridPane.setConstraints(button3, 0, 3);
-		myLeftArea.getChildren().add(button3);
+		myBottomArea.getChildren().add(button3);
 		button3.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
@@ -118,11 +121,8 @@ public class Console {
 				}
 				System.out.println(sBuild.toString());
 				myInterpreter.interpretString(sBuild.toString());
-//				myInterpreter.loadCommands(preset);
 			}
 		});
-
-		myHBox.getChildren().add(myLeftArea);
 
 		myTextArea = new TextArea();
 		myTextArea.setPromptText(myResources.getString("ConsoleHint"));
@@ -130,19 +130,21 @@ public class Console {
 		myTextArea.getText();
 		myTextArea.setPrefSize(Integer.parseInt(myResources.getString("ConsoleWidth")),
 				Integer.parseInt(myResources.getString("ConsoleHeight")));
-		myHBox.getChildren().add(myTextArea);
+		//myHBox.getChildren().add(myTextArea);
 		myTextArea.setOnKeyPressed(e -> {
 			if (e.getCode().equals(KeyCode.ENTER)) {
 				checkInput(e);
 				myOutputs.getValue().add(myInterpreter.getOutput());
 			}
 		});
-
+		myMidArea.getChildren().add(myTextArea);
+		myMidArea.getChildren().add(myBottomArea);
+		myHBox.getChildren().add(myMidArea);
+		
 		Label label2 = new Label(myResources.getString("HistoryTitle"));
-		GridPane.setMargin(myRightArea, new Insets(0, 0, 0, 10));
-
-		myHBox.getChildren().add(myRightArea);
-		myRightArea.getChildren().add(label2);
+		myHBox.getChildren().add(label2);
+		
+		
 		myHBox.getChildren().add(myHistory.getHistory());
 
 		Label label3 = new Label(myResources.getString("OutputText"));
@@ -235,5 +237,6 @@ public class Console {
 
 	public void updateText() {
 		myDisplay.updateText();
+		myOutputs.getValue().add(myInterpreter.getOutput());
 	}
 }

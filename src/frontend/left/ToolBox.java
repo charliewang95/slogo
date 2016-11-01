@@ -79,14 +79,14 @@ public class ToolBox {
 				Integer.parseInt(myResources.getString("ToolBoxFontSize"))));
 		GridPane.setConstraints(title, 0, ++count);
 		gp.getChildren().add(title);
-		GridPane.setMargin(title, new Insets(20, 10, 15, 10));
+		GridPane.setMargin(title, new Insets(20, 10, 10, 10));
 
 		// reset button (reset console, command, and history)
 		HBox firstLine = new HBox(10);
 		addButton(firstLine, "New");
 		addButton(firstLine, "Reset");
 		GridPane.setConstraints(firstLine, 0, ++count);
-		GridPane.setMargin(firstLine, new Insets(0, 10, 15, 15));
+		GridPane.setMargin(firstLine, new Insets(0, 10, 10, 15));
 		gp.getChildren().add(firstLine);
 
 		// save commands in the command history window into data/output.txt
