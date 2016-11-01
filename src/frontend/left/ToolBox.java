@@ -48,11 +48,11 @@ public class ToolBox {
 	private static final Color DEFAULTBACKGROUNDCOLOR = Color.LIGHTGREEN;
 	private static final String DEFAULT_LANGUAGE = "English";
 	private String[] turtleList = { "Turtle", "Elephant", "Rocket" };
-
+	private String[] styleList = { "Pen Down", "Pen Up", "Dash", "Solid" };
 	private String[] languageList;
 	private SimpleObjectProperty<ObservableList<String>> myTurtleList;
 	private SimpleObjectProperty<ObservableList<String>> myLanguageList;
-
+	private SimpleObjectProperty<ObservableList<String>> myStyleList;
 	private GridPane gp;
 	private WebView myPage;
 	private Display myDisplay;
@@ -68,6 +68,8 @@ public class ToolBox {
 		myTurtleList.getValue().add(myResources.getString("AddAnother"));
 		myLanguageList = new SimpleObjectProperty<>(FXCollections.observableArrayList());
 		myLanguageList.getValue().addAll(getLanguages());
+		myStyleList = new SimpleObjectProperty<>(FXCollections.observableArrayList());
+		myStyleList.getValue().addAll(styleList);
 
 		gp = new GridPane();
 		gp.setPrefSize(Integer.parseInt(myResources.getString("ToolBoxWidth")),
@@ -87,15 +89,15 @@ public class ToolBox {
 		GridPane.setConstraints(firstLine, 0, ++count);
 		GridPane.setMargin(firstLine, new Insets(0, 10, 10, 15));
 		gp.getChildren().add(firstLine);
-		
+
 		// create new workspace
 		addButton(firstLine, "New");
-		
+
 		// reset button (reset console, command, and history)
 		addButton(firstLine, "Reset");
-		
+
 		// save commands in the command history window into data/output.txt
-		addButton(gp, "SetPenUp");
+		addComboBox(myStyleList, "SetPenStyle");
 
 		// save current image that the turtle draws
 		addToolLabel("SetPenSize");
@@ -188,8 +190,6 @@ public class ToolBox {
 			public void handle(ActionEvent event) {
 				if (function.equals("Reset")) {
 					setResetEvent();
-				} else if (function.equals("SavePenUp")) {
-					setPenUpEvent();
 				} else if (function.equals("OnlineHelp")) {
 					setOnlineHelpEvent();
 				} else if (function.equals("New")) {
@@ -208,7 +208,7 @@ public class ToolBox {
 				// TODO Auto-generated method stub
 				myDisplay.changePenSize(newValue.doubleValue());
 			}
-        });
+		});
 	}
 
 	private void addPaletteEvent(ColorPicker cp, String function) {
@@ -222,6 +222,9 @@ public class ToolBox {
 	}
 
 	private void addComboBoxEvent(ComboBox<String> box, String refer) {
+		if (refer.equals("SetPenStyle")) {
+			box.setPromptText(myResources.getString("SetPenStyle"));
+		}
 		box.setOnAction(t -> {
 			if (refer.equals("SetTurtle")) {
 				try {
@@ -235,6 +238,12 @@ public class ToolBox {
 					setLanguageEvent(box.getValue());
 				} catch (Exception e) {
 					ErrorException ee = new ErrorException(myResources.getString("NoLanguageError"));
+				}
+			} else if (refer.equals("SetPenStyle")) {
+				try {
+					setPenStyleEvent(box.getValue());
+				} catch (Exception e) {
+					ErrorException ee = new ErrorException(myResources.getString("NoOptionError"));
 				}
 			}
 		});
@@ -285,8 +294,8 @@ public class ToolBox {
 		myDisplay.reset();
 	}
 
-	private void setPenUpEvent() {
-		// TODO
+	private void setPenStyleEvent(String value) {
+		myDisplay.setPenStyleEvent(value);
 	}
 
 	public void setOnlineHelpEvent() {

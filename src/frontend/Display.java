@@ -17,6 +17,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.KeyCode;
@@ -189,6 +190,18 @@ public class Display {
 		myTurtleLand.setPenSize(size);
 	}
 
+	public void setPenStyleEvent(String value) {
+		if (value.equals(myResources.getString("Pen Down"))) {
+			
+		} else if (value.equals(myResources.getString("Pen Up"))) {
+			
+		} else if (value.equals(myResources.getString("Dashed"))) {
+			myTurtleLand.toDashed();
+		} else if (value.equals(myResources.getString("Solid"))) {
+			myTurtleLand.toSolid();
+		}
+	}
+	
 	public void saveDefaultConfig() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(myTurtleLand.getBackgroundColor() + "\n");
