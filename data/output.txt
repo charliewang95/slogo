@@ -1,3 +1,4 @@
-fd 50
-lt 60
-fd 50
+0xffcc99ff
+0x994d66ff
+Elephant
+German
