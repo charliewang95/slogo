@@ -37,7 +37,6 @@ public class TurtleMascot {
 	private double myX, myY;
 	private HashMap<String, Image> myAnimalMap;
 	private String myAnimal;
-	private boolean isDown;
 	private Pen myPen;
 
 	private TurtleToLayout converter;
@@ -69,7 +68,6 @@ public class TurtleMascot {
 
 		setImage("Turtle", myAnimalMap.get("Turtle"));
 		myAnimal = "Turtle";
-		isDown = true;
 		//myPen = new Pen(tlConverter, myX, myY);
     }
     
@@ -188,7 +186,7 @@ public class TurtleMascot {
 	}
 
 	public boolean isDrawing() {
-		return isDown;
+		return myPen.isDrawing();
 	}
 
 	/**
@@ -196,7 +194,7 @@ public class TurtleMascot {
 	 *            - true sets pen down (draws) false raises pen (stops drawing)
 	 */
 	public void setDrawing(boolean penStatus) {
-		isDown = penStatus;
+		myPen.setDrawing(penStatus);
 	}
 
 	public HashMap<String, Image> getAnimalMap() {
