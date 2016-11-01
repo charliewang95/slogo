@@ -83,14 +83,17 @@ public class ToolBox {
 		gp.getChildren().add(title);
 		GridPane.setMargin(title, new Insets(20, 10, 10, 10));
 
-		// reset button (reset console, command, and history)
 		HBox firstLine = new HBox(10);
-		addButton(firstLine, "New");
-		addButton(firstLine, "Reset");
 		GridPane.setConstraints(firstLine, 0, ++count);
 		GridPane.setMargin(firstLine, new Insets(0, 10, 10, 15));
 		gp.getChildren().add(firstLine);
-
+		
+		// create new workspace
+		addButton(firstLine, "New");
+		
+		// reset button (reset console, command, and history)
+		addButton(firstLine, "Reset");
+		
 		// save commands in the command history window into data/output.txt
 		addButton(gp, "SetPenUp");
 
@@ -270,9 +273,7 @@ public class ToolBox {
 	}
 
 	private void setNewScreenEvent() {
-		Stage newStage = new Stage();
-		Playground newPlayGround = new Playground(newStage);
-		newPlayGround.init();
+		myDisplay.newStage();
 	}
 
 	private void setLanguageEvent(String value) {

@@ -25,6 +25,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import main.Playground;
 
 /**
  * @author Charlie Wang
@@ -224,10 +225,14 @@ public class Display {
 		myConsole.setLanguage(lang);
 	}
 	
+	public void newStage() {
+		Stage newStage = new Stage();
+		Playground newPlayGround = new Playground(newStage);
+		newPlayGround.init();
+	}
+	
 	public void reset() {
-		interpretInput("clearscreen");
-		updateText();
-		myVariable.clear();
-		myConsole.clear();
+		newStage();
+		myStage.close();
 	}
 }
