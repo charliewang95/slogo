@@ -176,7 +176,7 @@ public class Interpreter {
 			tempList.add(myList.get(0));
 			System.out.println(counter);
 			int k = 0;
-			while (counter != 0){
+			while (counter != 0 && k < (myList.size() - 1)){
 				k++;
 				if (!myList.get(k).getType().equals("Operator")){
 					Command temp = myList.get(k);

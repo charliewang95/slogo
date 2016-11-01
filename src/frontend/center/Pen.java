@@ -48,6 +48,11 @@ public class Pen {
         public ObservableList<PathElement> getPathElements() {
                 return myPath.getElements();
         }
+        
+        public void resetPath() {
+                myPath.getElements().clear();
+                moveTo(0,0);
+        }
 	
 	public void lineTo(double x, double y) {
 	        double newX = converter.convertX(x);
@@ -59,6 +64,10 @@ public class Pen {
 	        double newX = converter.convertX(x);
 	        double newY = converter.convertY(y);
 	        addPathElement(new MoveTo(newX,newY));
+	}
+	
+	private double[] handleToroidal(double x, double y) {
+	    return new double[1];
 	}
 	
 	private void addPathElement(PathElement pe) {

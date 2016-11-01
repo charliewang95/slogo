@@ -101,6 +101,7 @@ public class Playground {
 	
 	public void clearScreen() {
 		myDisplay.getTurtleLand().reset();
+		myDisplay.getTurtleLand().getTurtle().getPen().resetPath();
 	}
 	
 //	public String getCommandError() {
