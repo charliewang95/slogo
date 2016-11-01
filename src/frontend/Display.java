@@ -184,8 +184,8 @@ public class Display {
 		myTurtleLand.changeBackground(c);
 	}
 	
-	public void changePenSize() {
-
+	public void changePenSize(double size) {
+		myTurtleLand.setPenSize(size);
 	}
 
 	public void saveDefaultConfig() {

@@ -9,6 +9,8 @@ import backend.Interpreter;
 import frontend.Display;
 import frontend.ErrorException;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -94,7 +96,7 @@ public class ToolBox {
 
 		// save current image that the turtle draws
 		addToolLabel("SetPenSize");
-		addSlider(1, 5, 2);
+		addSlider(1, 5, 1);
 
 		// set pen's color
 		addToolLabel("SetPenColor");
@@ -116,7 +118,7 @@ public class ToolBox {
 		AdvancedToolBox atb = new AdvancedToolBox(myDisplay);
 		GridPane.setConstraints(atb.getBox(), 0, ++count);
 		gp.getChildren().add(atb.getBox());
-		
+
 		// set online help
 		addButton(gp, "OnlineHelp");
 	}
@@ -135,12 +137,13 @@ public class ToolBox {
 	public void addSlider(int min, int max, int value) {
 		Slider slider = new Slider(min, max, value);
 		slider.setShowTickLabels(true);
+		slider.setMajorTickUnit(1);
 		GridPane.setConstraints(slider, 0, ++count);
 		addSliderEvent(slider);
 		GridPane.setMargin(slider, new Insets(0, 0, 0, 15));
 		gp.getChildren().add(slider);
 	}
-	
+
 	public void addComboBox(SimpleObjectProperty<ObservableList<String>> namelist, String refer, String defaultVal) {
 		ComboBox<String> cb = addComboBox(namelist, refer);
 		cb.setValue(defaultVal);
@@ -184,8 +187,6 @@ public class ToolBox {
 					setResetEvent();
 				} else if (function.equals("SavePenUp")) {
 					setPenUpEvent();
-				} else if (function.equals("SaveImage")) {
-					setSaveImageEvent();
 				} else if (function.equals("OnlineHelp")) {
 					setOnlineHelpEvent();
 				} else if (function.equals("New")) {
@@ -198,11 +199,15 @@ public class ToolBox {
 	}
 
 	private void addSliderEvent(Slider slider) {
-		slider.setOnDragDetected(e -> {
-			//myDisplay.changePenSize(slider.getValue());
-		});
+		slider.valueProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				// TODO Auto-generated method stub
+				myDisplay.changePenSize(newValue.doubleValue());
+			}
+        });
 	}
-	
+
 	private void addPaletteEvent(ColorPicker cp, String function) {
 		cp.setOnAction(t -> {
 			if (function.equals("SetPenColor")) {
@@ -219,11 +224,7 @@ public class ToolBox {
 				try {
 					setTurtleEvent(box, box.getValue());
 				} catch (Exception e) {
-					// ErrorException ee = new
-					// ErrorException(myResources.getString("NoOptionError"));
-					ErrorException ee = new ErrorException(myDisplay, "aha", "Seek Help Online", "Define New Command",
-							"fr 50");
-
+					ErrorException ee = new ErrorException(myResources.getString("NoOptionError"));
 				}
 			} else if (refer.equals("SetLanguage")) {
 				try {
@@ -263,7 +264,7 @@ public class ToolBox {
 			try {
 				myDisplay.changeTurtle(value);
 			} catch (Exception e) {
-				
+
 			}
 		}
 	}
@@ -284,11 +285,7 @@ public class ToolBox {
 	}
 
 	private void setPenUpEvent() {
-		//TODO
-	}
-	
-	private void setSaveImageEvent() {
-		//TODO
+		// TODO
 	}
 
 	public void setOnlineHelpEvent() {
