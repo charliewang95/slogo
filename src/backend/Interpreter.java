@@ -292,8 +292,8 @@ public class Interpreter {
 		if (myNode.children.size()>0){
 //			for (int i = myNode.children.size() - 1; i>=0; i--){
 			for (int i = 0; i < myNode.children.size(); i++){
-				System.out.println(myNode.value);
-				System.out.println(myNode.children.size());
+				//System.out.println(myNode.value);
+				//System.out.println(myNode.children.size());
 				Node child = myNode.children.get(i);
 				if (child.type.equals("Constant")){
 				}
@@ -343,7 +343,7 @@ public class Interpreter {
 	}
 	public String[] convertFileToString(String path){
 		try {
-			System.out.println(FileToString.readFile(path, Charset.defaultCharset()));
+			//System.out.println(FileToString.readFile(path, Charset.defaultCharset()));
 			String tempString = FileToString.readFile(path, Charset.defaultCharset());
 			return (tempString.split("\\r?\\n"));
 		} catch (IOException e) {
