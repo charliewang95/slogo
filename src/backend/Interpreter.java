@@ -13,6 +13,7 @@ import java.lang.reflect.*;
 import java.nio.charset.Charset;
 
 import main.Playground;
+import frontend.ErrorException;
 import frontend.left.ToolBox;
 /**
  * 
@@ -67,14 +68,12 @@ public class Interpreter {
 				createCommandTree(commandList);
 				parseTree(commandTree.root);
 			}
-		} catch (NoSuchMethodException | SecurityException
-				| InstantiationException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException
-				| ClassNotFoundException e) {
+		} catch (SecurityException
+				| IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 
 		return commandTree;
 	}
@@ -97,7 +96,7 @@ public class Interpreter {
 		}
 		return stringList;
 	}
-	public List<Command> createCommandList(List<String> list) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException {
+	public List<Command> createCommandList(List<String> list)  {
 		//  must handle all types when converting to commands
 		commandList = new ArrayList<Command>();
 		for (int i = 0; i < list.size(); i++){
@@ -110,16 +109,27 @@ public class Interpreter {
 				tempCommand = new CommandOperator(stringList.get(i));
 			}
 			else if (list.get(i).equals("Command")){
+				try {
+					if (varHouse.isVariable(stringList.get(i))){
+						tempCommand = new CommandNumber(Integer.parseInt(varHouse.getVariable(stringList.get(i))));
+					}
+					else if (varHouse.isCommand(stringList.get(i))){
+						Class<?> cls = Class.forName("backend.variables.RunUserInstruction");
+						Constructor<?> cst = cls.getConstructor(Playground.class, Turtle.class, VariableHouse.class, String.class);
+						//					System.out.println("Made it to this point");
+						Object instance = cst.newInstance(myPlayground, turtle, varHouse, stringList.get(i));
+						tempCommand = (Command) instance;
+					}
+					else{
 
-				if (varHouse.isVariable(stringList.get(i))){
-					tempCommand = new CommandNumber(Integer.parseInt(varHouse.getVariable(stringList.get(i))));
+						System.out.println("we in here");
+						tempCommand = null;
+						new ErrorException("Command does not exist");
+					}
 				}
-				else if (varHouse.isCommand(stringList.get(i))){
-					Class<?> cls = Class.forName("backend.variables.RunUserInstruction");
-					Constructor<?> cst = cls.getConstructor(Playground.class, Turtle.class, VariableHouse.class, String.class);
-//					System.out.println("Made it to this point");
-					Object instance = cst.newInstance(myPlayground, turtle, varHouse, stringList.get(i));
-					tempCommand = (Command) instance;
+				catch (Exception e){
+//					System.out.println("we in here");
+//					tempCommand = null;
 				}
 			}
 			else{
@@ -163,41 +173,120 @@ public class Interpreter {
 						i = i + 2; 
 					}
 					else if (substr.contains("othercommands")){
-						cst = cls.getConstructor(Playground.class, Turtle.class, VariableHouse.class, String.class);
+						instance = null;
+						if (list.get(i).equals("Repeat")){
+
+							cst = cls.getConstructor(Playground.class, Turtle.class, VariableHouse.class, String.class);
+							int ind = 0;
+							int j = i+1;
+							StringBuilder build = new StringBuilder();
+							while (ind < 1){
+
+								build.append(stringList.get(j)+ SPACE);
+								if (stringList.get(j).equals(RIGHT_BRACKET)){
+									ind++;
+								}
+
+								j++;
+							}
+							System.out.println(build.toString());
+							instance = cst.newInstance(myPlayground, turtle, varHouse, build.toString());
+							i = j;
+						}
+						else if (list.get(i).equals("If")){
+							cst = cls.getConstructor(Playground.class, Turtle.class, VariableHouse.class, String.class);
+							int ind = 0;
+							int j = i+1;
+							StringBuilder build = new StringBuilder();
+							while (ind < 1){
+
+								build.append(stringList.get(j)+ SPACE);
+								if (stringList.get(j).equals(RIGHT_BRACKET)){
+									ind++;
+								}
+
+								j++;
+							}
+							System.out.println(build.toString());
+							instance = cst.newInstance(myPlayground, turtle, varHouse, build.toString());
+							i = j; 
+						}
+						else if (list.get(i).equals("IfElse")){
+							cst = cls.getConstructor(Playground.class, Turtle.class, VariableHouse.class, String.class);
+							int ind = 0;
+							int j = i+1;
+							StringBuilder build = new StringBuilder();
+							while (ind < 2){
+
+								build.append(stringList.get(j)+ SPACE);
+								if (stringList.get(j).equals(RIGHT_BRACKET)){
+									ind++;
+								}
+
+								j++;
+							}
+							System.out.println(build.toString());
+							instance = cst.newInstance(myPlayground, turtle, varHouse, build.toString());
+							i = j; 
+						}
+						else if (list.get(i).equals("DoTimes")){
+							cst = cls.getConstructor(Playground.class, Turtle.class, VariableHouse.class, String.class);
+							int ind = 0; 
+							int j = i + 1;
+							StringBuilder build = new StringBuilder();
+							while (ind < 2){
+
+								build.append(stringList.get(j)+ SPACE);
+								if (stringList.get(j).equals(RIGHT_BRACKET)){
+									ind++;
+								}
+
+								j++;
+							}
+							System.out.println(build.toString());
+							instance = cst.newInstance(myPlayground, turtle, varHouse, build.toString());
+							i = j;
+
+						}
+
+						else if (list.get(i).equals("For")){
+							cst = cls.getConstructor(Playground.class, Turtle.class, VariableHouse.class, String.class);
+							int ind = 0; 
+							int j = i + 1;
+							StringBuilder build = new StringBuilder();
+							while (ind < 2){
+
+								build.append(stringList.get(j)+ SPACE);
+								if (stringList.get(j).equals(RIGHT_BRACKET)){
+									ind++;
+								}
+
+								j++;
+							}
+							System.out.println(build.toString());
+							instance = cst.newInstance(myPlayground, turtle, varHouse, build.toString());
+							i = j;
+
+						}
+					}
+					else if (substr.contains("usercommands")){
+						cst = cls.getConstructor(Turtle.class, VariableHouse.class, String.class);
+
 						int ind = 0;
 						int j = i+1;
 						StringBuilder build = new StringBuilder();
-						while (ind < 1){
+						while (ind < 2){
 
 							build.append(stringList.get(j)+ SPACE);
 							if (stringList.get(j).equals(RIGHT_BRACKET)){
 								ind++;
 							}
-							
-							j++;
-						}
-						System.out.println(build.toString());
-						instance = cst.newInstance(myPlayground, turtle, varHouse, build.toString());
-						i = j;
-					}
-					else if (substr.contains("usercommands")){
-						cst = cls.getConstructor(Turtle.class, VariableHouse.class, String.class);
-						
-						int ind = 0;
-						int j = i+1;
-						StringBuilder build = new StringBuilder();
-						while (ind < 2){
-							
-							build.append(stringList.get(j)+ SPACE);
-							if (stringList.get(j).equals(RIGHT_BRACKET)){
-								ind++;
-							}
-							
+
 							j++;
 						}
 						ind = 0;
 						instance = cst.newInstance(turtle, varHouse, build.toString());
-						
+
 						i = list.size();
 					}
 					else{
@@ -292,7 +381,7 @@ public class Interpreter {
 		//		Double store = 0.0;
 		Node myNode = n;
 		if (myNode.children.size()>0){
-//			for (int i = myNode.children.size() - 1; i>=0; i--){
+			//			for (int i = myNode.children.size() - 1; i>=0; i--){
 			for (int i = 0; i < myNode.children.size(); i++){
 				System.out.println(myNode.value);
 				System.out.println(myNode.children.size());
@@ -330,6 +419,7 @@ public class Interpreter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		myNode.returnValue = store.toString();
 		return store;
 	}
 	private Double updateTurtle(Command command, ArrayList<Command> list) {
@@ -367,9 +457,9 @@ public class Interpreter {
 	public String getOutput() {
 		return store.toString();
 	}
-	
+
 	public void setVariableHouse(VariableHouse vh) {
 		varHouse = vh;
 	}
-	
+
 }
