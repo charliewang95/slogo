@@ -300,34 +300,20 @@ public abstract class TurtleObserver implements Observer {
     
     private void drawPath(Pen pen) {
         List<PathElement> path = pen.getPathElements();
-        Path p = new Path();
         
         gc.beginPath();
         path.stream().forEachOrdered((pe) -> {
             if (pe.getClass() == MoveTo.class) {
                 MoveTo mt = (MoveTo)pe;
                 gc.moveTo(mt.getX(), mt.getY());
-//                p.getElements().add(new MoveTo(layoutToTL.convertX(mt.getX()),layoutToTL.convertY(mt.getY())));
             } else if (pe.getClass() == LineTo.class) {
                 LineTo lt = (LineTo)pe;
                 gc.lineTo(lt.getX(), lt.getY());
-//                p.getElements().add(new LineTo(layoutToTL.convertX(lt.getX()),layoutToTL.convertY(lt.getY())));
             }
         });
-        
-        //animate(p);
-        
         gc.setStroke(myTurtleView.getPenColor());
         gc.setLineWidth(myTurtleView.getPenThickness());
         gc.stroke();
         gc.closePath();
-    }
-    
-    private void animate(Path p) {
-        // offset: (15,65)
-        System.out.println("Animation: Path Elements\n\t"+p.toString());
-        PathTransition pt = new PathTransition(Duration.millis(4000),p,myTurtleView.getImage());
-        Animation ani = new SequentialTransition(myTurtleView.getImage(), pt);
-        ani.play();
     }
 }
