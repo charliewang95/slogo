@@ -116,7 +116,7 @@ public class Interpreter {
 					}
 					else{
 						tempCommand = null;
-						new ErrorException("Command does not exist");
+						//new ErrorException("Command does not exist");
 					}
 				}
 				catch (Exception e){
