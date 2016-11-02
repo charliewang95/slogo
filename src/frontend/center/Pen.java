@@ -1,6 +1,8 @@
 package frontend.center;
 
+import java.awt.geom.Line2D;
 import java.util.List;
+import frontend.coordinates.LayoutToTurtleLand;
 import frontend.coordinates.TurtleLandToLayout;
 import javafx.animation.Animation;
 import javafx.animation.PathTransition;
@@ -8,7 +10,7 @@ import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.geometry.Point2D;
+import java.awt.geom.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
@@ -18,6 +20,7 @@ import javafx.scene.shape.PathElement;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
+
 /**
  * TODO: The ListChangeListener is not drawing the newly added path elements
  * 
@@ -25,12 +28,14 @@ import javafx.util.Duration;
  *
  */
 public class Pen {
+
 	private Path myPath = new Path();
 	private TurtleLandToLayout converter;
 	private GraphicsContext gc;
 	private Color color = Color.BLACK;
 	private double thickness = 1;
 	private TurtleMascot myTurtle;
+	private boolean drawing = true;
 
 	private double myX;
 	private double myY;
@@ -92,55 +97,6 @@ public class Pen {
 		myY = newY;
 	}
 
-	private boolean handleToroidal(double x, double y) {
-		double sideEdge = converter.getWidth() / 2.0;
-		double topEdge = converter.getHeight() / 2.0;
-
-		if (Math.abs(x) > sideEdge || Math.abs(y) > topEdge) {
-			return false;
-		} else {
-			// corner case
-			Point2D[] corners = { new Point2D(sideEdge, topEdge), new Point2D(sideEdge, (-1) * topEdge),
-					new Point2D((-1) * sideEdge, topEdge), new Point2D((-1) * sideEdge, (-1) * topEdge) };
-
-			Point2D wallCollisionPt = getCollisionPt(x, y, sideEdge, topEdge);
-			// side case
-
-			// top/bottom case
-
-			// normal
-		}
-
-		double[] pt = new double[2];
-
-		if (Math.abs(x) > sideEdge) {
-			pt[0] = (-1) * sideEdge;
-		} else {
-			pt[0] = x;
-		}
-
-		if (Math.abs(y) > topEdge) {
-			pt[1] = (-1) * topEdge;
-		} else {
-			pt[1] = y;
-		}
-
-		return false;
-	}
-
-	private Point2D getCollisionPt(double x, double y, double halfWidth, double halfHeight) {
-		double ratioYtoX = y / x;
-		double distToSide = Math.abs(halfWidth - myX);
-		double distToTop = Math.abs(halfHeight - myY);
-
-		if (Math.abs(x) > halfWidth) {
-			// collides with side wall
-			return new Point2D(halfWidth, halfHeight * ratioYtoX);
-		} else {
-			// collides with
-			return new Point2D(halfWidth / ratioYtoX, halfHeight);
-		}
-	}
 
 	private void addPathElement(PathElement pe) {
 		myPath.getElements().add(pe);
@@ -215,4 +171,34 @@ public class Pen {
 		};
 		return listener;
 	}
+
+    public Pen (GraphicsContext gc, TurtleLandToLayout converter) {
+        this.gc = gc;
+        this.converter = converter;
+        //listenToPath();
+        moveTo(0, 0);
+    }
+
+    public Pen (GraphicsContext gc, TurtleLandToLayout converter, double x, double y) {
+        this.gc = gc;
+        this.converter = converter;
+        //listenToPath();
+        moveTo(x, y);
+    }
+    
+    public double getX() {
+        return myX;
+    }
+    
+    public double getY() {
+        return myY;
+    }
+    
+    public void setDrawing(boolean value) {
+        drawing = value;
+    }
+    
+    public boolean isDrawing() {
+        return drawing;
+    }
 }
