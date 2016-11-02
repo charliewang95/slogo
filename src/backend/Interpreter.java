@@ -107,16 +107,15 @@ public class Interpreter {
 				tempCommand = new CommandOperator(stringList.get(i));
 			}
 			else if (list.get(i).equals("Command")){
+
 				if (varHouse.isVariable(stringList.get(i))){
 					tempCommand = new CommandNumber(Integer.parseInt(varHouse.getVariable(stringList.get(i))));
 				}
 				else if (varHouse.isCommand(stringList.get(i))){
-					System.out.print("X");
 					Class<?> cls = Class.forName("backend.variables.RunUserInstruction");
-					System.out.print("Y");
 					Constructor<?> cst = cls.getConstructor(Playground.class, Turtle.class, VariableHouse.class, String.class);
-					Object instance = cst.newInstance(myPlayground, turtle, varHouse, stringList.get(i+1));
-					System.out.print("Z");
+//					System.out.println("Made it to this point");
+					Object instance = cst.newInstance(myPlayground, turtle, varHouse, stringList.get(i));
 					tempCommand = (Command) instance;
 				}
 			}
@@ -162,6 +161,7 @@ public class Interpreter {
 					}
 					else if (substr.contains("usercommands")){
 						cst = cls.getConstructor(Turtle.class, VariableHouse.class, String.class);
+						
 						int ind = 0;
 						int j = i+1;
 						StringBuilder build = new StringBuilder();
@@ -173,10 +173,10 @@ public class Interpreter {
 							}
 							
 							j++;
-						}						
-						System.out.println(build.toString());
+						}
+						ind = 0;
 						instance = cst.newInstance(turtle, varHouse, build.toString());
-						System.out.println("A");
+						
 						i = list.size();
 					}
 					else{

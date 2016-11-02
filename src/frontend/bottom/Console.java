@@ -209,7 +209,7 @@ public class Console {
 				sb.append(word + " ");
 			}
 			if (bracketCount == 0) {
-				str = sb.toString().trim().replace("[", "").replace(" ]", "").replaceAll(" +", " ");
+//				str = sb.toString().trim().replace("[", "").replace(" ]", "").replaceAll(" +", " ");
 				System.out.println("checking: " + str);
 				myTextArea.clear();
 				e.consume();
