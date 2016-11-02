@@ -1,4 +1,5 @@
 package backend;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -6,8 +7,6 @@ import java.util.List;
 //import backend.observables.ObservableOutput;
 import java.io.File;
 import java.io.IOException;
-
-import backend.observables.Communication;
 
 import java.lang.reflect.*;
 import java.nio.charset.Charset;
@@ -20,13 +19,11 @@ import frontend.left.ToolBox;
  *
  */
 public class Interpreter {
-	private Communication comm;
 	private VariableHouse varHouse;
 
 	public Interpreter(Playground myPlay, Turtle turtle){
 		this.myPlayground = myPlay;
 		this.turtle = turtle;
-		comm = new Communication();
 		varHouse = new VariableHouse();
 	}
 	private Playground myPlayground;
@@ -321,15 +318,7 @@ public class Interpreter {
 		else{
 			store = updateTurtle(nodeCommandMap.get(myNode), null);
 		}
-		// update output
-		//comm.setOutput(store.toString());
-
-		try {
-			Communication.class.newInstance().setOutput(store.toString());
-		} catch (InstantiationException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		return store;
 	}
 	private Double updateTurtle(Command command, ArrayList<Command> list) {

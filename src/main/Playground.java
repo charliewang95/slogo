@@ -16,6 +16,10 @@ import frontend.Display;
 import frontend.center.TurtleLand;
 import frontend.center.TurtleMascot;
 import frontend.observers.*;
+import frontend.observers.DirectionObserver;
+import frontend.observers.PenObserver;
+import frontend.observers.PositionObserver;
+import frontend.observers.VisibilityObserver;
 import javafx.beans.Observable;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -63,9 +67,6 @@ public class Playground {
 			} else if (obs.getClass() == VisibilityObserver.class) {
 				myTurtle.observeVisibility((VisibilityObserver) obs);
 				count++;
-			} else if (obs.getClass() == OutputObserver.class) {
-				myTurtle.observeOutput((OutputObserver) obs);
-				count++;
 			}
 		}
 		return count;
@@ -92,11 +93,10 @@ public class Playground {
 		// TODO: change Observers to take in Display instead of TurtleLand
 
 		Collection<Observer> observers = new ArrayList<>();
-		observers.add(new DirectionObserver(turtle, gc, width, height, turtleModel.getDirObs()));
-		observers.add(new PenObserver(turtle, gc, width, height, turtleModel.getPenObs()));
-		observers.add(new PositionObserver(turtle, gc, width, height, turtleModel.getPosObs()));
-		observers.add(new VisibilityObserver(turtle, gc, width, height, turtleModel.getVisObs()));
-		observers.add(new OutputObserver(turtle, gc, width, height, turtleModel.getOutObs(), display));
+		observers.add(new DirectionObserver(turtle, turtleModel, gc, width, height));
+		observers.add(new PenObserver(turtle, turtleModel, gc, width, height));
+		observers.add(new PositionObserver(turtle, turtleModel, gc, width, height));
+		observers.add(new VisibilityObserver(turtle, turtleModel, gc, width, height));
 		return observers;
 	}
 
