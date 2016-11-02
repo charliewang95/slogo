@@ -278,7 +278,7 @@ public class ToolBox {
 			try {
 				myDisplay.changeTurtle(value);
 			} catch (Exception e) {
-
+				ErrorException ee = new ErrorException(myResources.getString("NoOptionError"));
 			}
 		}
 	}

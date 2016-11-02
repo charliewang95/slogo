@@ -51,18 +51,16 @@ public class History {
 	public ListView<String> getHistory() {
 		return lv;
 	}
-
-	public void addString(String str) {
-		myBuilder.append(str);
-		myBuilder.append("\n");
-	}
-
+	
 	public void clear() {
 		myBuilder = new StringBuilder();
 	}
 
 	public void printHistoryToFile() {
-		File file = new File("data/output.txt");
+		File file = new File("data/savedCommands/output.txt");
+		for (String s : myConsole.getCommandList().getValue()) {
+			myBuilder.append(s+" \n");
+		}
 		String toWrite = myBuilder.toString();
 
 		try (FileOutputStream fos = new FileOutputStream(file)) {

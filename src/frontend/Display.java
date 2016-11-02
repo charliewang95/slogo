@@ -220,7 +220,7 @@ public class Display {
 		sb.append(myTurtleLand.getTurtle().getAnimal() + "\n");
 		sb.append(myTool.getLanguage());
 
-		File file = new File("data/config.txt");
+		File file = new File("data/savedConfigurations/config.txt");
 		String toWrite = sb.toString();
 
 		try (FileOutputStream fos = new FileOutputStream(file)) {
@@ -247,6 +247,7 @@ public class Display {
 		String lang = in.next();
 		myTool.setLanguage(lang);
 		myConsole.setLanguage(lang);
+		in.close();
 	}
 	
 	public void newStage() {
