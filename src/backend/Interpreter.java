@@ -162,6 +162,24 @@ public class Interpreter {
 						instance = cst.newInstance(turtle, varHouse, stringList.get(i + 1) +" " + stringList.get(i+2));
 						i = i + 2; 
 					}
+					else if (substr.contains("othercommands")){
+						cst = cls.getConstructor(Playground.class, Turtle.class, VariableHouse.class, String.class);
+						int ind = 0;
+						int j = i+1;
+						StringBuilder build = new StringBuilder();
+						while (ind < 1){
+
+							build.append(stringList.get(j)+ SPACE);
+							if (stringList.get(j).equals(RIGHT_BRACKET)){
+								ind++;
+							}
+							
+							j++;
+						}
+						System.out.println(build.toString());
+						instance = cst.newInstance(myPlayground, turtle, varHouse, build.toString());
+						i = j;
+					}
 					else if (substr.contains("usercommands")){
 						cst = cls.getConstructor(Turtle.class, VariableHouse.class, String.class);
 						
