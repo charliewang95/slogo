@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Scanner;
@@ -202,6 +203,10 @@ public class Display {
 		} else if (value.equals("Solid")) {
 			myTurtleLand.setSolid();
 		}
+	}
+	
+	public void updateVariable(ArrayList<String> map) {
+		myVariable.updateVariable(map);
 	}
 	
 	public void saveDefaultConfig() {

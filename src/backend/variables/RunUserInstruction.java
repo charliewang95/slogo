@@ -33,7 +33,7 @@ public class RunUserInstruction extends Command {
 			return "0";
 		}
 		
-		Interpreter i = new Interpreter(myPlayground, myTurtle);
+		Interpreter i = new Interpreter(myPlayground, myTurtle, myPlayground.getDisplay());
 		
 		List<String> variables = myVariableHouse.getCommandVars(command);
 		String commands = myVariableHouse.getCommandActions(command);
@@ -53,7 +53,7 @@ public class RunUserInstruction extends Command {
 	}
 	
 	private VariableHouse makeNewVariableHouse(List<String> variables) {
-		VariableHouse ans = new VariableHouse();
+		VariableHouse ans = new VariableHouse(myPlayground.getDisplay());
 		for(String s : variables) {
 			ans.makeVariable( new String(s), new String( myVariableHouse.getVariable(s) ) );
 		}

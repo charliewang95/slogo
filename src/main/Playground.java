@@ -35,14 +35,15 @@ public class Playground {
 	}
 
 	public void init() {
+		myDisplay = new Display(myStage);
+		
 		// initialize backend
 		myTurtle = new Turtle(0, 0, this);
-		myInterpreter = new Interpreter(this, myTurtle);
-
+		myInterpreter = new Interpreter(this, myTurtle, myDisplay);
+		
 		// initialize frontend
-		myDisplay = new Display(myStage);
 		myDisplay.init(myInterpreter);
-
+		
 		// link frontend/backend
 		myObservers = initializeObservers(myDisplay.getTurtleLand(), myTurtle, myDisplay);
 		observeObservables(myObservers);
@@ -127,5 +128,9 @@ public class Playground {
 			e.printStackTrace();
 		}
 
+	}
+	
+	public Display getDisplay() {
+		return myDisplay;
 	}
 }
