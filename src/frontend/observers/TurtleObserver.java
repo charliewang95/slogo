@@ -8,12 +8,17 @@ import frontend.Display;
 import frontend.center.Pen;
 import frontend.center.TurtleMascot;
 import frontend.coordinates.TurtleLandToLayout;
+import javafx.animation.Animation;
+import javafx.animation.PathTransition;
+import javafx.animation.SequentialTransition;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.shape.PathElement;
+import javafx.util.Duration;
 
 /**
  * @author Niklas Sjoquist
@@ -297,7 +302,7 @@ public abstract class TurtleObserver implements Observer {
         bearingDegrees = (bearingDegrees > 0.0 ? bearingDegrees : (360.0 + bearingDegrees)); // correct
                                                                                              // discontinuity
         System.out.println("Bearing = "+bearingDegrees);
-        return bearingDegrees;
+        return bearingDegrees; 
     }
     
     private void drawPath(Pen pen) {
@@ -307,6 +312,12 @@ public abstract class TurtleObserver implements Observer {
         path.stream().forEach((pe) -> {
             if (pe.getClass() == MoveTo.class) {
                 gc.moveTo(((MoveTo)pe).getX(), ((MoveTo)pe).getY());
+                System.out.println(((MoveTo)pe).getX()+" "+((MoveTo)pe).getY());
+                Path p = new Path();
+                p.getElements().addAll(new MoveTo(15, 65), new LineTo(50, 65));
+                PathTransition pt = new PathTransition(Duration.millis(1000), p, myTurtleView.getImage());
+                Animation ani = new SequentialTransition(myTurtleView.getImage(), pt);
+                ani.play();
             } else if (pe.getClass() == LineTo.class) {
                 gc.lineTo(((LineTo)pe).getX(), ((LineTo)pe).getY());
             }
