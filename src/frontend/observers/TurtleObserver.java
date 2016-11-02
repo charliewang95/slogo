@@ -112,6 +112,8 @@ public abstract class TurtleObserver implements Observer {
         
         if (Math.abs(x) < halfWidth && Math.abs(y) < halfHeight) {
             System.out.println("Normal case, no collisions");
+            double direction = getSegmentBearing(new Point2D(pen.getX(),pen.getY()),new Point2D(x,y));
+            System.out.println("Turtle Direction = "+myTurtleModel.getDirection());
             // Normal case (within bounds)
             // Update position
             myTurtleView.setX(x);
@@ -124,14 +126,11 @@ public abstract class TurtleObserver implements Observer {
             }
         }
         else {
-            // Out of bounds, split path into at least 2 segments
-            System.out.println("Out of bounds, split path into 2 segments");
-            
             Point2D start = new Point2D(pen.getX(), pen.getY());
             Point2D end = new Point2D(x,y);
             Point2D wallCollisionPt = getCollisionPt(start, end, halfWidth, halfHeight);
             
-            System.out.println("Collision Point: "+wallCollisionPt.toString());
+            System.out.println("Collision Pt: "+wallCollisionPt.toString());
             
             if (myTurtleView.isDrawing()) {
                 pen.lineTo(wallCollisionPt.getX(),wallCollisionPt.getY());
@@ -143,14 +142,15 @@ public abstract class TurtleObserver implements Observer {
             
             double distanceLeft = start.distance(end) - start.distance(wallCollisionPt);
             double direction = getSegmentBearing(start,end);
-            javafx.geometry.Point2D dirVector = new javafx.geometry.Point2D(end.getX()-wallCollisionPt.getX(),end.getY()-wallCollisionPt.getY());
-            javafx.geometry.Point2D nextStart = null;
-            javafx.geometry.Point2D nextEnd = null;
+            System.out.println("Turtle Direction = "+myTurtleModel.getDirection());
+            Point2D dirVector = end.subtract(wallCollisionPt);
+            Point2D nextStart = null;
+            Point2D nextEnd = null;
             
             // Corner case
             if (getCornerIndex(wallCollisionPt) > -1) {
                 // split line up and start from opposite corner
-                System.out.println("Hit a corner");
+                System.out.println("Hit corner");
                 int cornerIndex = getCornerIndex(wallCollisionPt);
                 nextStart = new javafx.geometry.Point2D(corners[(cornerIndex+2)%corners.length].getX(),corners[(cornerIndex+2)%corners.length].getY());
             }
@@ -158,18 +158,18 @@ public abstract class TurtleObserver implements Observer {
             // Side case
             if (Math.abs(wallCollisionPt.getX()) == halfWidth) {
                 // split line up and start at (-x,y)
-                System.out.println("Hit a side");
+                System.out.println("Hit side");
                 nextStart = new javafx.geometry.Point2D((-1)*wallCollisionPt.getX(),wallCollisionPt.getY());
             }
             
             // Top/Bottom case
             if (Math.abs(wallCollisionPt.getY()) == halfHeight) {
                 // split line up and start at (x,-y)
-                System.out.println("Hit top or bottom");
+                System.out.println("Hit top/bottom");
                 nextStart = new javafx.geometry.Point2D(wallCollisionPt.getX(),(-1)*wallCollisionPt.getY());
             }
             
-            System.out.println("Next Starting Point: "+nextStart.toString());
+            System.out.println("Pen Position (before update): "+pen.getX()+","+pen.getY());
             
             // Update positions and recurse
             myTurtleView.setX(nextStart.getX());
@@ -177,6 +177,10 @@ public abstract class TurtleObserver implements Observer {
             myTurtleModel.setMyPosQuiet(nextStart.getX(),nextStart.getY());
             pen.moveTo(nextStart.getX(),nextStart.getY());
             nextEnd = nextStart.add(dirVector);
+            
+            System.out.println("Pen Position (after update): "+pen.getX()+","+pen.getY());
+            System.out.println("Next Start: "+nextStart.toString()+"\nNext End: "+nextEnd.toString());
+            
             move(nextEnd.getX(),nextEnd.getY());
         }
     }
@@ -212,17 +216,13 @@ public abstract class TurtleObserver implements Observer {
 
         // Find intersection point
         Point2D intersection = null;
-        int count = 0;
         for (int j = 0; j < sides.length; j++) {
             Line2D side = sides[j];
             if (side.intersectsLine(path)) {
                 System.out.println("Intersected side "+j);
-                count++;
                 intersection = intersectPathWithSide(new Point2D(path.getP1().getX(),path.getP1().getY()),new Point2D(path.getP2().getX(),path.getP2().getY()),j);
             }
         }
-        
-        System.out.println("Path intersected " + count + " sides."); // Debug
         
         return intersection;
     }
@@ -290,23 +290,17 @@ public abstract class TurtleObserver implements Observer {
      * @return bearing direction, in degrees, from 0 to 360
      */
     private double getSegmentBearing (Point2D startingPoint, Point2D endingPoint) {
-        Point2D originPoint =
-                new Point2D(endingPoint.getX() - startingPoint.getX(),
-                            endingPoint.getY() - startingPoint.getY()); // get origin point to
-                                                                        // origin by subtracting end
-                                                                        // from start
+        Point2D originPoint = endingPoint.subtract(startingPoint);
         double bearingRadians = Math.atan2(originPoint.getY(), originPoint.getX()); // get bearing
                                                                                     // in radians
         double bearingDegrees = bearingRadians * (180.0 / Math.PI); // convert to degrees
         bearingDegrees = (bearingDegrees > 0.0 ? bearingDegrees : (360.0 + bearingDegrees)); // correct
                                                                                              // discontinuity
+        System.out.println("Bearing = "+bearingDegrees);
         return bearingDegrees;
     }
     
     private void drawPath(Pen pen) {
-        //gcc.setStroke(myPenColor);
-        //gcc.setLineWidth(1);
-        
         List<PathElement> path = pen.getPathElements();
         
         gc.beginPath();

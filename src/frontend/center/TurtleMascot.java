@@ -68,7 +68,6 @@ public class TurtleMascot {
 
 		setImage("Turtle", myAnimalMap.get("Turtle"));
 		myAnimal = "Turtle";
-		//myPen = new Pen(tlConverter, myX, myY);
     }
     
     /**
@@ -92,7 +91,6 @@ public class TurtleMascot {
      * @param x - TurtleLand X-coordinate
      */
     public void setX(double x) {
-        // TODO: implement toroidal TurtleLand
         myX = x;
         double layoutX = converter.convertX(x);
         myImage.setLayoutX(layoutX);
@@ -103,14 +101,12 @@ public class TurtleMascot {
      */
     public double getX() {
         return myX;
-        //return myImage.getLayoutX(); //returns the layout X-coord
     }
     
     /**
      * @param y - TurtleLand Y-coordinate
      */
     public void setY(double y) {
-        // TODO: implement toroidal TurtleLand
         myY = y;
         double layoutY = converter.convertY(y);
         myImage.setLayoutY(layoutY);
@@ -121,7 +117,6 @@ public class TurtleMascot {
      */
     public double getY() {
         return myY;
-        //return myImage.getLayoutY(); //returns the layout Y-coord
     }
     
     public double getDirection() {

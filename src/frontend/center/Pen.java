@@ -22,7 +22,6 @@ import javafx.util.Duration;
 
 
 /**
- * TODO: The ListChangeListener is not drawing the newly added path elements
  * 
  * @author Niklas Sjoquist
  *
