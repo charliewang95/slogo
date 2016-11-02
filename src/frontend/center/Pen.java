@@ -13,13 +13,13 @@ import javafx.collections.ObservableList;
 import java.awt.geom.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.HLineTo;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.PathElement;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-
 
 /**
  * 

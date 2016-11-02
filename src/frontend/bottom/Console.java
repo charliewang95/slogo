@@ -1,6 +1,7 @@
 package frontend.bottom;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -154,8 +155,7 @@ public class Console {
 				System.out.println(sBuild.toString());
 				try {
 					myInterpreter.interpretString(sBuild.toString());
-				} catch (SecurityException
-						| IllegalArgumentException e1) {
+				} catch (SecurityException | IllegalArgumentException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -192,9 +192,9 @@ public class Console {
 					.replaceAll(" +", " ");
 			String[] words = str.split(" ");
 			for (int i = 0; i < words.length; i++) {
-				if (words[i].equals("[")) {
+				if (words[i].equals("{")) {
 					bracketCount++;
-				} else if (words[i].equals("]")) {
+				} else if (words[i].equals("}")) {
 					bracketCount--;
 					if (bracketCount < 0) {
 						ErrorException ee = new ErrorException(myResources.getString("UnbalancedCommand"));
@@ -209,7 +209,7 @@ public class Console {
 				sb.append(word + " ");
 			}
 			if (bracketCount == 0) {
-//				str = sb.toString().trim().replace("[", "").replace(" ]", "").replaceAll(" +", " ");
+				str = sb.toString().trim().replace("{", "").replace("}", "").replaceAll(" +", " ");
 				System.out.println("checking: " + str);
 				myTextArea.clear();
 				e.consume();
@@ -229,8 +229,7 @@ public class Console {
 	public void interpretInput(String input) {
 		try {
 			myInterpreter.interpretString(input);
-		} catch (SecurityException
-				| IllegalArgumentException e) {
+		} catch (SecurityException | IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

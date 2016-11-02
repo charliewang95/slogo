@@ -1,5 +1,6 @@
 package frontend.right;
 
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.beans.property.SimpleObjectProperty;
@@ -22,6 +23,7 @@ public class Variable {
 	private ListView<String> lvVariable;
 	private ListView<String> lvCommands;
 	private SimpleObjectProperty<ObservableList<String>> myNewCommands;
+	private SimpleObjectProperty<ObservableList<String>> myNewVariables;
 	private VBox myVBox;
 	private ResourceBundle myResources;
 
@@ -33,8 +35,11 @@ public class Variable {
 		lvVariable = new ListView<>();
 		lvCommands = new ListView<>();
 		myNewCommands = new SimpleObjectProperty<>(FXCollections.observableArrayList());
+		myNewVariables = new SimpleObjectProperty<>(FXCollections.observableArrayList());
 		lvCommands.itemsProperty().bind(myNewCommands);
-
+		lvVariable.itemsProperty().bind(myNewVariables);
+		
+		
 		lvVariable.setPrefSize(Integer.parseInt(myResources.getString("VariableWidth")),
 				Integer.parseInt(myResources.getString("VariableHeight")));
 		lvCommands.setPrefSize(Integer.parseInt(myResources.getString("VariableWidth")),
@@ -63,6 +68,12 @@ public class Variable {
 
 	public VBox getVariable() {
 		return myVBox;
+	}
+	
+	public void updateVariable(ArrayList<String> map) {
+		myNewVariables = new SimpleObjectProperty<>(FXCollections.observableArrayList());
+		myNewVariables.getValue().addAll(map);
+		lvVariable.itemsProperty().bind(myNewVariables);
 	}
 	
 	public void bindNewCommands(String user, String existed) {
