@@ -1,5 +1,6 @@
 package backend.variables;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import main.Playground;
@@ -19,7 +20,7 @@ public class RunUserInstruction {
 		myVariableHouse = vh;
 	}
 	
-	public void compute(String command) {
+	public void compute(String command) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException {
 		
 		if( ! myVariableHouse.isCommand(command)) {
 			//error

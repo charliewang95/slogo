@@ -6,9 +6,12 @@ import java.util.List;
 //import backend.observables.ObservableOutput;
 import java.io.File;
 import java.io.IOException;
+
 import backend.observables.Communication;
+
 import java.lang.reflect.*;
 import java.nio.charset.Charset;
+
 import main.Playground;
 import frontend.left.ToolBox;
 /**
@@ -38,8 +41,10 @@ public class Interpreter {
 	private Turtle turtle;
 	private HashMap<Node, Command> nodeCommandMap;
 	private Double store = 0.0;
+	private final String RIGHT_BRACKET = "]";
+	private final String SPACE = " ";
 	String substr;
-	public Tree interpretString(String input){
+	public Tree interpretString(String input) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException{
 		parse = new ProgramParser();
 		List<String> stringList = separateStrings(input);
 		List<String> parsedList = new ArrayList<String>();
@@ -82,7 +87,7 @@ public class Interpreter {
 		}
 		return stringList;
 	}
-	public List<Command> createCommandList(List<String> list) {
+	public List<Command> createCommandList(List<String> list) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException {
 		//  must handle all types when converting to commands
 		commandList = new ArrayList<Command>();
 		for (int i = 0; i < list.size(); i++){
@@ -97,6 +102,12 @@ public class Interpreter {
 			else if (list.get(i).equals("Command")){
 				if (varHouse.getVariable(stringList.get(i))!= null){
 					tempCommand = new CommandNumber(Integer.parseInt(varHouse.getVariable(stringList.get(i))));
+				}
+				else if (varHouse.isCommand(stringList.get(i))){
+					Class<?> cls = Class.forName("backend.variables.RunUserInstruction");
+					Constructor<?> cst = cls.getConstructor(Playground.class, Turtle.class, VariableHouse.class, String.class);
+					Object instance = cst.newInstance(myPlayground, turtle, varHouse, stringList.get(i+1));
+					tempCommand = (Command) instance;
 				}
 			}
 			else{
@@ -137,7 +148,26 @@ public class Interpreter {
 					else if (substr.contains("variables")){
 						cst = cls.getConstructor(Turtle.class, VariableHouse.class, String.class);
 						instance = cst.newInstance(turtle, varHouse, stringList.get(i + 1) +" " + stringList.get(i+2));
-						i = i + 2; //NOT SURE ABOUT THIS
+						i = i + 2; 
+					}
+					else if (substr.contains("usercommands")){
+						cst = cls.getConstructor(Turtle.class, VariableHouse.class, String.class);
+						int ind = 0;
+						int j = i+1;
+						StringBuilder build = new StringBuilder();
+						while (ind < 2){
+							
+							build.append(stringList.get(j)+ SPACE);
+							if (stringList.get(j).equals(RIGHT_BRACKET)){
+								ind++;
+							}
+							
+							j++;
+						}						
+						System.out.println(build.toString());
+						instance = cst.newInstance(turtle, varHouse, build.toString());
+						System.out.println("A");
+						i = list.size();
 					}
 					else{
 						instance = cls.newInstance();

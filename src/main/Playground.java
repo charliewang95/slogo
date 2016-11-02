@@ -1,9 +1,11 @@
 package main;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Observer;
+
 import backend.Interpreter;
 import backend.Turtle;
 import backend.observables.ObservableDirection;
@@ -14,11 +16,6 @@ import frontend.Display;
 import frontend.center.TurtleLand;
 import frontend.center.TurtleMascot;
 import frontend.observers.*;
-import frontend.observers.DirectionObserver;
-import frontend.observers.OutputObserver;
-import frontend.observers.PenObserver;
-import frontend.observers.PositionObserver;
-import frontend.observers.VisibilityObserver;
 import javafx.beans.Observable;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -120,6 +117,21 @@ public class Playground {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -3,6 +3,7 @@ package frontend.bottom;
 import java.io.File;
 import java.util.HashMap;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ResourceBundle;
 
 import javax.swing.JOptionPane;
@@ -120,7 +121,15 @@ public class Console {
 				sBuild.append(" " + inputStrings[i]);
 				}
 				System.out.println(sBuild.toString());
-				myInterpreter.interpretString(sBuild.toString());
+				try {
+					myInterpreter.interpretString(sBuild.toString());
+				} catch (NoSuchMethodException | SecurityException
+						| InstantiationException | IllegalAccessException
+						| IllegalArgumentException | InvocationTargetException
+						| ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 
@@ -199,7 +208,15 @@ public class Console {
 	}
 
 	public void interpretInput(String input) {
-		myInterpreter.interpretString(input);
+		try {
+			myInterpreter.interpretString(input);
+		} catch (NoSuchMethodException | SecurityException
+				| InstantiationException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException
+				| ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public HBox getConsole() {
