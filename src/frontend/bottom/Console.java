@@ -10,7 +10,6 @@ import javax.swing.JOptionPane;
 import com.sun.javafx.collections.MappingChange.Map;
 
 import backend.Interpreter;
-import backend.observables.Communication;
 import frontend.Display;
 import frontend.ErrorException;
 import javafx.beans.property.SimpleObjectProperty;
@@ -41,7 +40,6 @@ import javafx.stage.FileChooser;
 public class Console {
 	private static final String DEFAULT_RESOURCE_PACKAGE = "resources.common/";
 	private Display myDisplay;
-	private Communication myCommunicator;
 	private Interpreter myInterpreter;
 	private History myHistory;
 	private TextArea myTextArea;

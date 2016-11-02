@@ -26,6 +26,7 @@ public abstract class TurtleObserver implements Observer {
     
     private TurtleLandToLayout converter;
     private Point2D[] corners;
+    private Line2D[] sides;
 
     public TurtleObserver(TurtleMascot turtle, GraphicsContext gcc, int width, int height) {
             myTurtle = turtle;
@@ -41,7 +42,14 @@ public abstract class TurtleObserver implements Observer {
         Point2D tl = new Point2D((-1) * halfWidth, halfHeight);
         Point2D bl = new Point2D((-1) * halfWidth, (-1) * halfHeight);
         Point2D br = new Point2D(halfWidth, (-1) * halfHeight);
-        corners = new Point2D[]{tr,br,bl,tl};
+        corners = new Point2D[]{tl,tr,br,bl};
+        
+        // Define sides
+        sides = new Line2D[corners.length];
+        for (int i = 0; i < corners.length-1; i++) {
+            sides[i] = new Line2D.Double(new java.awt.geom.Point2D.Double(corners[i].getX(), corners[i].getY()),new java.awt.geom.Point2D.Double(corners[i+1].getX(), corners[i+1].getY()));
+        }
+        sides[corners.length-1] = new Line2D.Double(new java.awt.geom.Point2D.Double(corners[corners.length-1].getX(), corners[corners.length-1].getY()),new java.awt.geom.Point2D.Double(corners[0].getX(), corners[0].getY()));
     }
     
     // Only subclasses should be able to access the TurtleMascot
@@ -198,21 +206,17 @@ public abstract class TurtleObserver implements Observer {
         java.awt.geom.Point2D start = new java.awt.geom.Point2D.Double(myTurtle.getPen().getX(), myTurtle.getPen().getY());
         Line2D path = new Line2D.Double(start,new java.awt.geom.Point2D.Double(end.getX(), end.getY()));
 
-        // Define sides
-        Line2D[] sides = new Line2D[corners.length];
-        for (int i = 0; i < corners.length-1; i++) {
-            sides[i] = new Line2D.Double(new java.awt.geom.Point2D.Double(corners[i].getX(), corners[i].getY()),new java.awt.geom.Point2D.Double(corners[i+1].getX(), corners[i+1].getY()));
-        }
-        sides[corners.length-1] = new Line2D.Double(new java.awt.geom.Point2D.Double(corners[corners.length-1].getX(), corners[corners.length-1].getY()),new java.awt.geom.Point2D.Double(corners[0].getX(), corners[0].getY()));
-        
         // Find intersection point
         Point2D intersection = null;
         int count = 0;
         for (int j = 0; j < sides.length; j++) {
             Line2D side = sides[j];
             if (side.intersectsLine(path)) {
+                System.out.println("Intersected side "+j);
                 count++;
-                intersection = getIntersectionPt(new Point2D(path.getP1().getX(),path.getP1().getY()),new Point2D(path.getP2().getX(),path.getP2().getY()),new Point2D(side.getP1().getX(),side.getP1().getY()),new Point2D(side.getP2().getX(),side.getP2().getY()));
+                intersection = intersectLines(new Point2D(path.getP1().getX(),path.getP1().getY()),new Point2D(path.getP2().getX(),path.getP2().getY()),new Point2D(side.getP1().getX(),side.getP1().getY()),new Point2D(side.getP2().getX(),side.getP2().getY()));
+                Point2D pt = intersectPathWithSide(new Point2D(path.getP1().getX(),path.getP1().getY()),new Point2D(path.getP2().getX(),path.getP2().getY()),j);
+                return pt;
             }
         }
         
@@ -222,8 +226,56 @@ public abstract class TurtleObserver implements Observer {
     }
     
     /**
-     * Finds the intersection point between the line segments pr and qs.
-     * If segments don't intersect, returns null.
+     * Returns the intersection point of path between start/end and given side.
+     * 
+     * @param start
+     * @param end
+     * @param side - index of side (0 is top, increases clockwise)
+     * @return
+     */
+    private Point2D intersectPathWithSide(Point2D start, Point2D end, int side) {
+        double halfWidth = converter.getWidth()/2.0;
+        double halfHeight = converter.getHeight()/2.0;
+        double px = Double.MIN_VALUE, py = Double.MIN_VALUE;
+        double dx, dy;
+        switch (side) {
+            case 0: // top
+                py = halfHeight;
+                px = calculatePx(start,end,py,false);
+                break;
+            case 1: // right
+                px = halfWidth;
+                py = calculatePy(start,end,px,false);
+                break;
+            case 2: // bottom
+                py = (-1)*halfHeight;
+                px = calculatePx(start,end,py,true);
+                break;
+            case 3: // left
+                px = (-1)*halfWidth;
+                py = calculatePy(start,end,px,true);
+                break;
+        }
+        return new Point2D(px,py);
+    }
+    
+    private double calculatePx(Point2D start, Point2D end, double py, boolean invert) {
+        double dy = (invert) ? (-1)*(py-start.getY()) : (py-start.getY());
+        double dx = dy/Math.tan((Math.PI/180)*getSegmentBearing(start,end));
+        
+        return start.getX() + dx;
+    }
+    
+    private double calculatePy(Point2D start, Point2D end, double px, boolean invert) {
+        double dx = (invert) ? (-1)*(px - start.getX()) : (px - start.getX());
+        double dy = dx*Math.tan((Math.PI/180)*getSegmentBearing(start,end));
+        
+        return start.getY() + dy;
+    }
+    
+    /**
+     * Finds the intersection point between the lines PR and QS.
+     * If segments are parallel or collinear, returns null.
      * 
      * TODO: doesn't return the correct point of intersection.
      * 
@@ -233,9 +285,29 @@ public abstract class TurtleObserver implements Observer {
      * @param s - end of line 2
      * @return intersection point
      */
-    private Point2D getIntersectionPt (Point2D p, Point2D r, Point2D q, Point2D s) {
+    private Point2D intersectLines (Point2D p, Point2D r, Point2D q, Point2D s) {
         System.out.println("Path: "+p.toString()+"->"+r.toString()+"\nSide: "+q.toString()+"->"+s.toString());
         
+        System.out.println("Line 1: "+p.toString()+","+r.toString()+"\nLine 2: "+q.toString()+","+s.toString());
+        
+        double prXdet = det(p.getX(),1,r.getX(),1);
+        double prYdet = det(p.getY(),1,r.getY(),1);
+        double qsXdet = det(q.getX(),1,s.getX(),1);
+        double qsYdet = det(q.getY(),1,s.getY(),1);
+        double denominator = det(prXdet,prYdet,qsXdet,qsYdet);
+        
+        if (denominator != 0) {
+            double prDet = det(p.getX(),p.getY(),r.getX(),r.getY());
+            double qsDet = det(q.getX(),q.getY(),s.getX(),s.getY());
+            double px = det(prDet,prXdet,qsDet,qsXdet);
+            double py = det(prDet,prYdet,qsDet,qsYdet);
+            System.out.println("Lines intersect: "+denominator+"\nPt: "+px+","+py);
+            return new Point2D(px,py);
+        }
+        
+        return null;
+        
+        /*
         // Find  t,u   s.t.   p + tr = q + us
         Point2D qMinP = q.subtract(p);
         double rXs = cross(r,s);
@@ -252,8 +324,20 @@ public abstract class TurtleObserver implements Observer {
             System.out.println("Found the intersection point: "+otherx+","+othery);
             return new Point2D(x,y);
         }
-        
-        return null;
+        */
+    }
+    
+    /**
+     * Returns the determinant of the 2D matrix defined by a,b,c,d
+     * 
+     * @param a - top left
+     * @param b - top right
+     * @param c - bottom left
+     * @param d - bottom right
+     * @return
+     */
+    private double det(double a, double b, double c, double d) {
+        return a*d - b*c;
     }
     
     private boolean between0and1(double value) {

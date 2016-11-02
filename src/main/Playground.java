@@ -15,7 +15,6 @@ import frontend.center.TurtleLand;
 import frontend.center.TurtleMascot;
 import frontend.observers.*;
 import frontend.observers.DirectionObserver;
-import frontend.observers.OutputObserver;
 import frontend.observers.PenObserver;
 import frontend.observers.PositionObserver;
 import frontend.observers.VisibilityObserver;
@@ -66,9 +65,6 @@ public class Playground {
 			} else if (obs.getClass() == VisibilityObserver.class) {
 				myTurtle.observeVisibility((VisibilityObserver) obs);
 				count++;
-			} else if (obs.getClass() == OutputObserver.class) {
-				myTurtle.observeOutput((OutputObserver) obs);
-				count++;
 			}
 		}
 		return count;
@@ -99,7 +95,6 @@ public class Playground {
 		observers.add(new PenObserver(turtle, gc, width, height, turtleModel.getPenObs()));
 		observers.add(new PositionObserver(turtle, gc, width, height, turtleModel.getPosObs()));
 		observers.add(new VisibilityObserver(turtle, gc, width, height, turtleModel.getVisObs()));
-		observers.add(new OutputObserver(turtle, gc, width, height, turtleModel.getOutObs(), display));
 		return observers;
 	}
 
