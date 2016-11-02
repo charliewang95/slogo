@@ -272,4 +272,16 @@ public class Console {
 		myDisplay.updateText();
 		myOutputs.getValue().add(myInterpreter.getOutput());
 	}
+	
+	public void changeVariable(String old, String define) {
+		myInterpreter.changeVariable(old, define);
+	}
+	
+	public ArrayList<String> makeNewCommandArr() {
+		ArrayList<String> arr = new ArrayList<String>();
+		for (String key : newCommandsMap.keySet()) {
+			arr.add(key+" = "+newCommandsMap.get(key));
+		}
+		return arr;
+	}
 }

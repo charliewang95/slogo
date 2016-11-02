@@ -361,4 +361,8 @@ public class Interpreter {
 	public void setVariableHouse(VariableHouse vh) {
 		varHouse = vh;
 	}	
+	
+	public void changeVariable(String old, String define) {
+		varHouse.makeVariable(old, define);
+	}
 }

@@ -83,7 +83,7 @@ public class Display {
 		myBorderPane.setLeft(myTool.getTool());
 
 		// set up variable and new commands screen
-		myVariable = new Variable();
+		myVariable = new Variable(this);
 		myBorderPane.setRight(myVariable.getVariable());
 
 		// set up canvas
@@ -176,7 +176,7 @@ public class Display {
 	}
 	
 	public void bindNewCommands(String user, String existed) {
-		myVariable.bindNewCommands(user, existed);
+		myVariable.bindNewCommands(myConsole.makeNewCommandArr());
 	}
 
 	public void setPenColor(Color color) {
@@ -191,6 +191,10 @@ public class Display {
 		myTurtleLand.setPenSize(size);
 	}
 
+	public void changeVariable(String old, String define) {
+		myConsole.changeVariable(old, define);
+	}
+	
 	public void setPenStyleEvent(String value) {
 		if (value.equals("Pen Down")) {
 			myTurtleLand.setPenDown();
