@@ -2,6 +2,10 @@ package frontend.center;
 
 import java.util.List;
 import frontend.coordinates.TurtleLandToLayout;
+import javafx.animation.Animation;
+import javafx.animation.PathTransition;
+import javafx.animation.RotateTransition;
+import javafx.animation.SequentialTransition;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
@@ -11,6 +15,8 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.PathElement;
+import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 /**
  * TODO: The ListChangeListener is not drawing the newly added path elements
@@ -24,22 +30,25 @@ public class Pen {
 	private GraphicsContext gc;
 	private Color color = Color.BLACK;
 	private double thickness = 1;
+	private TurtleMascot myTurtle;
 
 	private double myX;
 	private double myY;
 
-	public Pen(GraphicsContext gc, TurtleLandToLayout converter) {
+	public Pen(GraphicsContext gc, TurtleLandToLayout converter, TurtleMascot turtle) {
 		this.gc = gc;
 		this.converter = converter;
 		listenToPath();
 		moveTo(0, 0);
+		myTurtle = turtle;
 	}
 
-	public Pen(GraphicsContext gc, TurtleLandToLayout converter, double x, double y) {
+	public Pen(GraphicsContext gc, TurtleLandToLayout converter, double x, double y, TurtleMascot turtle) {
 		this.gc = gc;
 		this.converter = converter;
 		listenToPath();
 		moveTo(x, y);
+		myTurtle = turtle;
 	}
 
 	public void setColor(Color color) {
@@ -164,6 +173,10 @@ public class Pen {
 		path.stream().forEach((pe) -> {
 			if (pe.getClass() == MoveTo.class) {
 				gc.moveTo(((MoveTo) pe).getX(), ((MoveTo) pe).getY());
+//				Rectangle rec = new Rectangle(30, 30);
+//				PathTransition pt = new PathTransition(Duration.millis(4000), pe., rec);
+//				Animation myAnimation = new SequentialTransition(rec, pt);
+//				myAnimation.play();
 			} else if (pe.getClass() == LineTo.class) {
 				gc.lineTo(((LineTo) pe).getX(), ((LineTo) pe).getY());
 				System.out.println("LineTo");
@@ -175,6 +188,14 @@ public class Pen {
 		gc.closePath();
 	}
 
+	public void setDash() {
+		gc.setLineDashes(2);
+	}
+	
+	public void setSolid() {
+		gc.setLineDashes(null);
+	}
+	
 	private void listenToPath() {
 		ListChangeListener<PathElement> listener = pathListener();
 		myPath.getElements().addListener(listener);

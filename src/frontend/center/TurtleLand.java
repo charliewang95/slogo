@@ -66,7 +66,7 @@ public class TurtleLand {
 
 		myTurtle = new TurtleMascot(myWidth, myHeight, converter);
 		myTurtleImage = myTurtle.getImage();
-		myPen = new Pen(gcc, converter);
+		myPen = new Pen(gcc, converter, myTurtle);
 		myTurtle.setPen(myPen);
 		// put turtle in center
 		myTurtle.setX(0);
@@ -144,7 +144,7 @@ public class TurtleLand {
 		WritableImage wi = new WritableImage(myWidth, myHeight);
 		myBackground.snapshot(null, wi);
 		myCanvas.snapshot(null, wi);
-		File file = new File("output.png");
+		File file = new File("images/output.png");
 		try {
 			ImageIO.write(SwingFXUtils.fromFXImage(wi, null), "png", file);
 		} catch (IOException e) {
@@ -167,15 +167,17 @@ public class TurtleLand {
 		double roundedX = roundToNearestHundredth(myTurtle.getX());
 		double roundedY = roundToNearestHundredth(myTurtle.getY());
 		double roundedDir = roundToNearestHundredth(myTurtle.getDirection());
+		double penSize =  roundToNearestHundredth(myPen.getThickness());
 		// Set text
 		String xText = "x: " + roundedX + "\n";
 		String yText = "y: " + roundedY + "\n";
 		String dirText = "direction: " + roundedDir + "\n";
 		String pen = myTurtle.isDrawing()?"down":"up";
-		String penText = "pen: " + pen;
-		String out = xText + yText + dirText + penText;
-		gct.setFont(new Font("Verdana", 10));
-		gct.fillText(out, 0, 10	);
+		String penText = "pen: " + pen + "\n";
+		String penSizeText = "pen size: " + penSize;
+		String out = xText + yText + dirText + penText + penSizeText;
+		gct.setFont(new Font("Verdana", 9));
+		gct.fillText(out, 0, 10);
 	}
 	
 	private double roundToNearestHundredth(double a) {
@@ -188,5 +190,21 @@ public class TurtleLand {
 	
 	public void setPenSize(double size) {
 		myPen.setThickness(size);
+	}
+	
+	public void setDash() {
+		myPen.setDash();
+	}
+	
+	public void setSolid() {
+		myPen.setSolid();
+	}
+	
+	public void setPenDown() {
+		myTurtle.setDrawing(true);
+	}
+	
+	public void setPenUp() {
+		myTurtle.setDrawing(false);
 	}
 }
