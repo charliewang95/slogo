@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Observer;
 import backend.observables.*;
 import frontend.observers.DirectionObserver;
-import frontend.observers.OutputObserver;
 import frontend.observers.PenObserver;
 import frontend.observers.PositionObserver;
 import frontend.observers.VisibilityObserver;
@@ -27,7 +26,6 @@ public class Turtle {
 	private ObservablePen myPenDown = new ObservablePen(true);
 	private ObservablePosition myPosition = new ObservablePosition(0,0);
 	private ObservableVisibility myVisibility = new ObservableVisibility(true);
-	private Communication myOutput = new Communication();
 	
 	/*
 	private ObservableShape myShape = new ObservableShape(0);
@@ -74,10 +72,6 @@ public class Turtle {
 	
 	public void observeDirection(DirectionObserver o) {
 	    myDirection.addObserver(o);
-	}
-	
-	public void observeOutput(OutputObserver o) {
-	    myOutput.addObserver(o);
 	}
 	
 	public void observePen(PenObserver o) {
@@ -159,10 +153,6 @@ public class Turtle {
 	
 	public ObservableVisibility getVisObs() {
 	        return myVisibility;
-	}
-	
-	public Communication getOutObs() {
-	        return myOutput;
 	}
 	
 }
