@@ -3,6 +3,7 @@ package frontend.observers;
 import java.awt.geom.Line2D;
 import java.util.List;
 import java.util.Observer;
+import backend.Turtle;
 import frontend.Display;
 import frontend.center.Pen;
 import frontend.center.TurtleMascot;
@@ -21,15 +22,17 @@ import javafx.scene.shape.PathElement;
 public abstract class TurtleObserver implements Observer {
     private static final double EPSILON = 0.005;
     
-    private TurtleMascot myTurtle;
+    private TurtleMascot myTurtleView;
+    private Turtle myTurtleModel;
     private GraphicsContext gc;
     
     private TurtleLandToLayout converter;
     private Point2D[] corners;
     private Line2D[] sides;
 
-    public TurtleObserver(TurtleMascot turtle, GraphicsContext gcc, int width, int height) {
-            myTurtle = turtle;
+    public TurtleObserver(TurtleMascot turtleView, Turtle turtleModel, GraphicsContext gcc, int width, int height) {
+            myTurtleView = turtleView;
+            myTurtleModel = turtleModel;
             gc = gcc;
             converter = new TurtleLandToLayout(width,height);
             initializeCorners(converter);
@@ -53,41 +56,41 @@ public abstract class TurtleObserver implements Observer {
     }
     
     // Only subclasses should be able to access the TurtleMascot
-    
+
     protected double getMascotX() {
-        return myTurtle.getX();
+        return myTurtleView.getX();
     }
     
     protected double getMascotY() {
-        return myTurtle.getY();
+        return myTurtleView.getY();
     }
     
     protected void setPosition(double[] pos) {
-            myTurtle.setPosition(pos);
+            myTurtleView.setPosition(pos);
     }
 
     protected void setX(double x) {
-            myTurtle.setX(x);
+            myTurtleView.setX(x);
     }
 
     protected void setY(double y) {
-            myTurtle.setY(y);
+            myTurtleView.setY(y);
     }
 
     protected void setDirection(double degrees) {
-            myTurtle.setDirection(degrees);
+            myTurtleView.setDirection(degrees);
     }
 
     protected void setVisibility(boolean visible) {
-            myTurtle.setVisible(visible);
+            myTurtleView.setVisible(visible);
     }
 
     protected void setPenDown(boolean penDown) {
-            myTurtle.setDrawing(penDown);
+            myTurtleView.setDrawing(penDown);
     }
     
     protected boolean getPenStatus() {
-        return myTurtle.isDrawing();
+        return myTurtleView.isDrawing();
     }
     
     protected void moveTurtle(Point2D start, Point2D end) {
@@ -96,7 +99,7 @@ public abstract class TurtleObserver implements Observer {
         
         // Update (and draw) path
         move(x,y);
-        drawPath(myTurtle.getPen());
+        drawPath(myTurtleView.getPen());
     }
     
     private void move(double x, double y) {
@@ -105,16 +108,16 @@ public abstract class TurtleObserver implements Observer {
         double halfWidth = converter.getWidth() / 2.0;
         double halfHeight = converter.getHeight() / 2.0;
         
-        Pen pen = myTurtle.getPen();
+        Pen pen = myTurtleView.getPen();
         
         if (Math.abs(x) < halfWidth && Math.abs(y) < halfHeight) {
             System.out.println("Normal case, no collisions");
             // Normal case (within bounds)
             // Update position
-            myTurtle.setX(x);
-            myTurtle.setY(y);
+            myTurtleView.setX(x);
+            myTurtleView.setY(y);
             // Draw path or Move pen
-            if (myTurtle.isDrawing()) {
+            if (myTurtleView.isDrawing()) {
                 pen.lineTo(x, y);
             } else {
                 pen.moveTo(x, y);
@@ -130,13 +133,13 @@ public abstract class TurtleObserver implements Observer {
             
             System.out.println("Collision Point: "+wallCollisionPt.toString());
             
-            if (myTurtle.isDrawing()) {
+            if (myTurtleView.isDrawing()) {
                 pen.lineTo(wallCollisionPt.getX(),wallCollisionPt.getY());
             } else {
                 pen.moveTo(wallCollisionPt.getX(),wallCollisionPt.getY());
             }
-            myTurtle.setX(wallCollisionPt.getX());
-            myTurtle.setY(wallCollisionPt.getY());
+            myTurtleView.setX(wallCollisionPt.getX());
+            myTurtleView.setY(wallCollisionPt.getY());
             
             double distanceLeft = start.distance(end) - start.distance(wallCollisionPt);
             double direction = getSegmentBearing(start,end);
@@ -168,9 +171,10 @@ public abstract class TurtleObserver implements Observer {
             
             System.out.println("Next Starting Point: "+nextStart.toString());
             
-            // Update position and recurse
-            myTurtle.setX(nextStart.getX());
-            myTurtle.setY(nextStart.getY());
+            // Update positions and recurse
+            myTurtleView.setX(nextStart.getX());
+            myTurtleView.setY(nextStart.getY());
+            myTurtleModel.setMyPosQuiet(nextStart.getX(),nextStart.getY());
             pen.moveTo(nextStart.getX(),nextStart.getY());
             nextEnd = nextStart.add(dirVector);
             move(nextEnd.getX(),nextEnd.getY());
@@ -203,7 +207,7 @@ public abstract class TurtleObserver implements Observer {
      * @return
      */
     private Point2D getCollisionPt (Point2D end, double halfWidth, double halfHeight) {
-        java.awt.geom.Point2D start = new java.awt.geom.Point2D.Double(myTurtle.getPen().getX(), myTurtle.getPen().getY());
+        java.awt.geom.Point2D start = new java.awt.geom.Point2D.Double(myTurtleView.getPen().getX(), myTurtleView.getPen().getY());
         Line2D path = new Line2D.Double(start,new java.awt.geom.Point2D.Double(end.getX(), end.getY()));
 
         // Find intersection point
@@ -211,6 +215,7 @@ public abstract class TurtleObserver implements Observer {
         int count = 0;
         for (int j = 0; j < sides.length; j++) {
             Line2D side = sides[j];
+            System.out.println("Side "+(j+1)+" ");
             if (side.intersectsLine(path)) {
                 System.out.println("Intersected side "+j);
                 count++;
@@ -384,8 +389,8 @@ public abstract class TurtleObserver implements Observer {
                 gc.lineTo(((LineTo)pe).getX(), ((LineTo)pe).getY());
             }
         });
-        gc.setStroke(myTurtle.getPenColor());
-        gc.setLineWidth(myTurtle.getPenThickness());
+        gc.setStroke(myTurtleView.getPenColor());
+        gc.setLineWidth(myTurtleView.getPenThickness());
         gc.stroke();
         gc.closePath();
     }

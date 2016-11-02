@@ -1,6 +1,7 @@
 package frontend.observers;
 
 import java.util.Observable;
+import backend.Turtle;
 import backend.observables.ObservableVisibility;
 import frontend.center.TurtleMascot;
 import javafx.scene.canvas.GraphicsContext;
@@ -12,9 +13,9 @@ import javafx.scene.canvas.GraphicsContext;
 public class VisibilityObserver extends TurtleObserver {
     private ObservableVisibility turtleVisibility = null;
 
-    public VisibilityObserver(TurtleMascot turtle, GraphicsContext gcc, int width, int height, ObservableVisibility visible) {
-            super(turtle, gcc,width,height);
-            turtleVisibility = visible;
+    public VisibilityObserver(TurtleMascot turtleView, Turtle turtleModel, GraphicsContext gcc, int width, int height) {
+            super(turtleView,turtleModel,gcc,width,height);
+            turtleVisibility = turtleModel.getVisObs();
     }
 
     public void update(Observable obs, Object obj) {

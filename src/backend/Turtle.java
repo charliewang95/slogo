@@ -99,6 +99,10 @@ public class Turtle {
 		myPosition.setPosition(x, y);
 	}
 	
+	public void setMyPosQuiet(double x, double y) {
+	        myPosition.setPositionQuiet(x, y);
+	}
+	
 	public double getMyX() {
 		return myPosition.getX();
 	}

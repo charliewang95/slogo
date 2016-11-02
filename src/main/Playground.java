@@ -93,10 +93,10 @@ public class Playground {
 		// TODO: change Observers to take in Display instead of TurtleLand
 
 		Collection<Observer> observers = new ArrayList<>();
-		observers.add(new DirectionObserver(turtle, gc, width, height, turtleModel.getDirObs()));
-		observers.add(new PenObserver(turtle, gc, width, height, turtleModel.getPenObs()));
-		observers.add(new PositionObserver(turtle, gc, width, height, turtleModel.getPosObs()));
-		observers.add(new VisibilityObserver(turtle, gc, width, height, turtleModel.getVisObs()));
+		observers.add(new DirectionObserver(turtle, turtleModel, gc, width, height));
+		observers.add(new PenObserver(turtle, turtleModel, gc, width, height));
+		observers.add(new PositionObserver(turtle, turtleModel, gc, width, height));
+		observers.add(new VisibilityObserver(turtle, turtleModel, gc, width, height));
 		return observers;
 	}
 
