@@ -7,6 +7,7 @@ import backend.Turtle;
 import frontend.Display;
 import frontend.center.Pen;
 import frontend.center.TurtleMascot;
+import frontend.coordinates.LayoutToTurtleLand;
 import frontend.coordinates.TurtleLandToLayout;
 import javafx.animation.Animation;
 import javafx.animation.PathTransition;
@@ -32,6 +33,7 @@ public abstract class TurtleObserver implements Observer {
     private GraphicsContext gc;
     
     private TurtleLandToLayout converter;
+    private LayoutToTurtleLand layoutToTL;
     private Point2D[] corners;
     private Line2D[] sides;
 
@@ -40,6 +42,7 @@ public abstract class TurtleObserver implements Observer {
             myTurtleModel = turtleModel;
             gc = gcc;
             converter = new TurtleLandToLayout(width,height);
+            layoutToTL = new LayoutToTurtleLand(width,height);
             initializeCorners(converter);
     }
 
@@ -108,7 +111,7 @@ public abstract class TurtleObserver implements Observer {
     }
     
     private void move(double x, double y) {
-        System.out.println("Move to "+x+","+y);
+        //System.out.println("Move to "+x+","+y);
         
         double halfWidth = converter.getWidth() / 2.0;
         double halfHeight = converter.getHeight() / 2.0;
@@ -116,9 +119,7 @@ public abstract class TurtleObserver implements Observer {
         Pen pen = myTurtleView.getPen();
         
         if (Math.abs(x) < halfWidth && Math.abs(y) < halfHeight) {
-            System.out.println("Normal case, no collisions");
-            double direction = getSegmentBearing(new Point2D(pen.getX(),pen.getY()),new Point2D(x,y));
-            System.out.println("Turtle Direction = "+myTurtleModel.getDirection());
+            //System.out.println("Normal case, no collisions");
             // Normal case (within bounds)
             // Update position
             myTurtleView.setX(x);
@@ -132,11 +133,10 @@ public abstract class TurtleObserver implements Observer {
             }
         }
         else {
+            //System.out.println("Out of bounds, split path in 2");
             Point2D start = new Point2D(pen.getX(), pen.getY());
             Point2D end = new Point2D(x,y);
             Point2D wallCollisionPt = getCollisionPt(start, end, halfWidth, halfHeight);
-            
-            System.out.println("Collision Pt: "+wallCollisionPt.toString());
             
             if (myTurtleView.isDrawing()) {
                 pen.lineTo(wallCollisionPt.getX(),wallCollisionPt.getY());
@@ -146,17 +146,14 @@ public abstract class TurtleObserver implements Observer {
             myTurtleView.setX(wallCollisionPt.getX());
             myTurtleView.setY(wallCollisionPt.getY());
             
-            double distanceLeft = start.distance(end) - start.distance(wallCollisionPt);
-            double direction = getSegmentBearing(start,end);
-            System.out.println("Turtle Direction = "+myTurtleModel.getDirection());
-            Point2D dirVector = end.subtract(wallCollisionPt);
+            // initialize next path's endpoints
             Point2D nextStart = null;
             Point2D nextEnd = null;
             
             // Corner case
             if (getCornerIndex(wallCollisionPt) > -1) {
                 // split line up and start from opposite corner
-                System.out.println("Hit corner");
+                //System.out.println("Hit corner");
                 int cornerIndex = getCornerIndex(wallCollisionPt);
                 nextStart = new javafx.geometry.Point2D(corners[(cornerIndex+2)%corners.length].getX(),corners[(cornerIndex+2)%corners.length].getY());
             }
@@ -164,28 +161,24 @@ public abstract class TurtleObserver implements Observer {
             // Side case
             if (Math.abs(wallCollisionPt.getX()) == halfWidth) {
                 // split line up and start at (-x,y)
-                System.out.println("Hit side");
+                //System.out.println("Hit side");
                 nextStart = new javafx.geometry.Point2D((-1)*wallCollisionPt.getX(),wallCollisionPt.getY());
             }
             
             // Top/Bottom case
             if (Math.abs(wallCollisionPt.getY()) == halfHeight) {
                 // split line up and start at (x,-y)
-                System.out.println("Hit top/bottom");
+                //System.out.println("Hit top/bottom");
                 nextStart = new javafx.geometry.Point2D(wallCollisionPt.getX(),(-1)*wallCollisionPt.getY());
             }
-            
-            System.out.println("Pen Position (before update): "+pen.getX()+","+pen.getY());
             
             // Update positions and recurse
             myTurtleView.setX(nextStart.getX());
             myTurtleView.setY(nextStart.getY());
             myTurtleModel.setMyPosQuiet(nextStart.getX(),nextStart.getY());
             pen.moveTo(nextStart.getX(),nextStart.getY());
+            Point2D dirVector = end.subtract(wallCollisionPt);
             nextEnd = nextStart.add(dirVector);
-            
-            System.out.println("Pen Position (after update): "+pen.getX()+","+pen.getY());
-            System.out.println("Next Start: "+nextStart.toString()+"\nNext End: "+nextEnd.toString());
             
             move(nextEnd.getX(),nextEnd.getY());
         }
@@ -225,7 +218,7 @@ public abstract class TurtleObserver implements Observer {
         for (int j = 0; j < sides.length; j++) {
             Line2D side = sides[j];
             if (side.intersectsLine(path)) {
-                System.out.println("Intersected side "+j);
+                //System.out.println("Intersected side "+j);
                 intersection = intersectPathWithSide(new Point2D(path.getP1().getX(),path.getP1().getY()),new Point2D(path.getP2().getX(),path.getP2().getY()),j);
             }
         }
@@ -302,30 +295,39 @@ public abstract class TurtleObserver implements Observer {
         double bearingDegrees = bearingRadians * (180.0 / Math.PI); // convert to degrees
         bearingDegrees = (bearingDegrees > 0.0 ? bearingDegrees : (360.0 + bearingDegrees)); // correct
                                                                                              // discontinuity
-        System.out.println("Bearing = "+bearingDegrees);
-        return bearingDegrees; 
+        return bearingDegrees;
     }
     
     private void drawPath(Pen pen) {
         List<PathElement> path = pen.getPathElements();
+        Path p = new Path();
         
         gc.beginPath();
-        path.stream().forEach((pe) -> {
+        path.stream().forEachOrdered((pe) -> {
             if (pe.getClass() == MoveTo.class) {
-                gc.moveTo(((MoveTo)pe).getX(), ((MoveTo)pe).getY());
-//                System.out.println(((MoveTo)pe).getX()+" "+((MoveTo)pe).getY());
-//                Path p = new Path();
-//                p.getElements().addAll(new MoveTo(15, 65), new LineTo(50, 65));
-//                PathTransition pt = new PathTransition(Duration.millis(1000), p, myTurtleView.getImage());
-//                Animation ani = new SequentialTransition(myTurtleView.getImage(), pt);
-//                ani.play();
+                MoveTo mt = (MoveTo)pe;
+                gc.moveTo(mt.getX(), mt.getY());
+//                p.getElements().add(new MoveTo(layoutToTL.convertX(mt.getX()),layoutToTL.convertY(mt.getY())));
             } else if (pe.getClass() == LineTo.class) {
-                gc.lineTo(((LineTo)pe).getX(), ((LineTo)pe).getY());
+                LineTo lt = (LineTo)pe;
+                gc.lineTo(lt.getX(), lt.getY());
+//                p.getElements().add(new LineTo(layoutToTL.convertX(lt.getX()),layoutToTL.convertY(lt.getY())));
             }
         });
+        
+        //animate(p);
+        
         gc.setStroke(myTurtleView.getPenColor());
         gc.setLineWidth(myTurtleView.getPenThickness());
         gc.stroke();
         gc.closePath();
+    }
+    
+    private void animate(Path p) {
+        // offset: (15,65)
+        System.out.println("Animation: Path Elements\n\t"+p.toString());
+        PathTransition pt = new PathTransition(Duration.millis(4000),p,myTurtleView.getImage());
+        Animation ani = new SequentialTransition(myTurtleView.getImage(), pt);
+        ani.play();
     }
 }
