@@ -16,7 +16,6 @@ public class CommandListInterpreter {
 	
 	public List<Command> createCommandList(List<String> list) {
 		//  must handle all types when converting to commands
-		System.out.println(list);
 		commandList = new ArrayList<Command>();
 		for (int i = 0; i < list.size(); i++){
 
@@ -49,15 +48,11 @@ public class CommandListInterpreter {
 								
 								substr = d.toString().substring(4, d.toString().length());
 								substr = "backend."+substr.substring(8, substr.length());
-								System.out.println(substr + "." + list.get(i));
 								cls = Class.forName(substr + "." + list.get(i));//Class.forName("backend." + getType(list.get(i))+"." + list.get(i));
 								break;
 							}
 							}
 						}
-					/*
-					 * refactor this later
-					 */
 					if (substr.contains("turtlecommands")||substr.contains("turtlequeries")||substr.contains("booleanoperations")){//(getType(list.get(i)).equals("turtlecommands")||getType(list.get(i)).equals("turtlequeries")||getType(list.get(i)).equals("booleanoperations")){		
 						cst = cls.getConstructor(Turtle.class);
 						instance = cst.newInstance(turtle);
@@ -96,7 +91,6 @@ public class CommandListInterpreter {
 				commandList.add(tempCommand);
 			}
 		}
-		System.out.println(commandList.size());
 		return commandList;
 
 	}

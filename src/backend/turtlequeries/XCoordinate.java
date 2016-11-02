@@ -21,7 +21,6 @@ public class XCoordinate extends Command {
 //			return "0";
 //		}
 
-		System.out.println(myTurtle.getMyX());
 		return ( (Double) myTurtle.getMyX() ).toString();
 		
 	}
