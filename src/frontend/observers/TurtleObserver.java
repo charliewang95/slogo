@@ -7,13 +7,19 @@ import backend.Turtle;
 import frontend.Display;
 import frontend.center.Pen;
 import frontend.center.TurtleMascot;
+import frontend.coordinates.LayoutToTurtleLand;
 import frontend.coordinates.TurtleLandToLayout;
+import javafx.animation.Animation;
+import javafx.animation.PathTransition;
+import javafx.animation.SequentialTransition;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.shape.PathElement;
+import javafx.util.Duration;
 
 /**
  * @author Niklas Sjoquist
@@ -27,6 +33,7 @@ public abstract class TurtleObserver implements Observer {
     private GraphicsContext gc;
     
     private TurtleLandToLayout converter;
+    private LayoutToTurtleLand layoutToTL;
     private Point2D[] corners;
     private Line2D[] sides;
 
@@ -35,6 +42,7 @@ public abstract class TurtleObserver implements Observer {
             myTurtleModel = turtleModel;
             gc = gcc;
             converter = new TurtleLandToLayout(width,height);
+            layoutToTL = new LayoutToTurtleLand(width,height);
             initializeCorners(converter);
     }
 
@@ -292,18 +300,33 @@ public abstract class TurtleObserver implements Observer {
     
     private void drawPath(Pen pen) {
         List<PathElement> path = pen.getPathElements();
+        Path p = new Path();
         
         gc.beginPath();
-        path.stream().forEach((pe) -> {
+        path.stream().forEachOrdered((pe) -> {
             if (pe.getClass() == MoveTo.class) {
-                gc.moveTo(((MoveTo)pe).getX(), ((MoveTo)pe).getY());
+                MoveTo mt = (MoveTo)pe;
+                //gc.moveTo(mt.getX(), mt.getY());
+                p.getElements().add(new MoveTo(layoutToTL.convertX(mt.getX()),layoutToTL.convertY(mt.getY())));
             } else if (pe.getClass() == LineTo.class) {
-                gc.lineTo(((LineTo)pe).getX(), ((LineTo)pe).getY());
+                LineTo lt = (LineTo)pe;
+                //gc.lineTo(lt.getX(), lt.getY());
+                p.getElements().add(new LineTo(layoutToTL.convertX(lt.getX()),layoutToTL.convertY(lt.getY())));
             }
         });
+        
+        animate(p);
+        
         gc.setStroke(myTurtleView.getPenColor());
         gc.setLineWidth(myTurtleView.getPenThickness());
         gc.stroke();
         gc.closePath();
+    }
+    
+    private void animate(Path p) {
+        System.out.println("Animation: Path Elements\n\t"+p.toString());
+        PathTransition pt = new PathTransition(Duration.millis(4000),p,myTurtleView.getImage());
+        Animation ani = new SequentialTransition(myTurtleView.getImage(), pt);
+        ani.play();
     }
 }
