@@ -140,9 +140,6 @@ public class Console {
 				try {
 					FileChooser fileChooser = new FileChooser();
 					fileChooser.setTitle(myResources.getString("LoadTitle"));
-					FileChooser.ExtensionFilter filterTXT = new FileChooser.ExtensionFilter("TXT files (*.txt)",
-							"*.txt");
-					fileChooser.getExtensionFilters().addAll(filterTXT);
 					File preset = fileChooser.showOpenDialog(null);
 					String[] inputStrings = myInterpreter.convertFileToString(preset.getAbsolutePath());
 					StringBuilder sBuild = new StringBuilder();
@@ -160,7 +157,7 @@ public class Console {
 					}
 				} catch (Exception exc) {
 					//Do nothing
-				}
+				} 
 			}
 		});
 	}
