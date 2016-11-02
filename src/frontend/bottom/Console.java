@@ -55,7 +55,6 @@ public class Console {
 	private int bracketCount = 0;
 	private SimpleObjectProperty<ObservableList<String>> myCommands;
 	private SimpleObjectProperty<ObservableList<String>> myOutputs;
-	private String savedString;
 
 	public Console(Display display, Interpreter inter) {
 		myInterpreter = inter;
@@ -74,20 +73,52 @@ public class Console {
 		myMidArea.setSpacing(10);
 		myBottomArea.setSpacing(10);
 
+		makeConsoleLabel();
+		makeEnterButton();
+		makeClearButton();
+		makeLoadButton();
+		makeTextArea();
+
+		myMidArea.getChildren().add(myTextArea);
+		myMidArea.getChildren().add(myBottomArea);
+		myHBox.getChildren().add(myMidArea);
+
+		makeHistoryLabel();
+		makeOutputLabel();
+		makeOutputArea();
+
+	}
+
+	private void makeConsoleLabel() {
 		Label label1 = new Label(myResources.getString("ConsoleText"));
 		myHBox.getChildren().add(label1);
 		GridPane.setMargin(label1, new Insets(0, 0, 0, 5));
+	}
 
+	private void makeHistoryLabel() {
+		Label label2 = new Label(myResources.getString("HistoryTitle"));
+		myHBox.getChildren().add(label2);
+		myHBox.getChildren().add(myHistory.getHistory());
+	}
+
+	private void makeOutputLabel() {
+		Label label3 = new Label(myResources.getString("OutputText"));
+		myHBox.getChildren().add(label3);
+		GridPane.setMargin(label3, new Insets(0, 0, 0, 5));
+	}
+
+	private void makeEnterButton() {
 		Button button1 = new Button(myResources.getString("ConsoleButton"));
 		myBottomArea.getChildren().add(button1);
 		button1.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 				checkInput(e);
-				myOutputs.getValue().add(myInterpreter.getOutput());
 			}
 		});
+	}
 
+	private void makeClearButton() {
 		Button button2 = new Button(myResources.getString("ConsoleClear"));
 		GridPane.setConstraints(button2, 0, 2);
 		myBottomArea.getChildren().add(button2);
@@ -98,7 +129,9 @@ public class Console {
 				e.consume();
 			}
 		});
+	}
 
+	private void makeLoadButton() {
 		Button button3 = new Button(myResources.getString("ConsoleLoad"));
 		GridPane.setConstraints(button3, 0, 3);
 		myBottomArea.getChildren().add(button3);
@@ -113,12 +146,12 @@ public class Console {
 				System.out.println(preset.getAbsolutePath());
 				String[] inputStrings = myInterpreter.convertFileToString(preset.getAbsolutePath());
 				StringBuilder sBuild = new StringBuilder();
-				for (int i = 0; i < inputStrings.length; i++){
-					if (inputStrings[i].contains("#")){
+				for (int i = 0; i < inputStrings.length; i++) {
+					if (inputStrings[i].contains("#")) {
 						int commentIndex = inputStrings[i].indexOf("#");
 						inputStrings[i] = inputStrings[i].substring(0, commentIndex);
 					}
-				sBuild.append(" " + inputStrings[i]);
+					sBuild.append(" " + inputStrings[i]);
 				}
 				System.out.println(sBuild.toString());
 				try {
@@ -130,39 +163,28 @@ public class Console {
 				}
 			}
 		});
+	}
 
+	private void makeTextArea() {
 		myTextArea = new TextArea();
 		myTextArea.setPromptText(myResources.getString("ConsoleHint"));
 		myTextArea.setPrefColumnCount(Integer.parseInt(myResources.getString("ConsoleColumn")));
 		myTextArea.getText();
 		myTextArea.setPrefSize(Integer.parseInt(myResources.getString("ConsoleWidth")),
 				Integer.parseInt(myResources.getString("ConsoleHeight")));
-		//myHBox.getChildren().add(myTextArea);
 		myTextArea.setOnKeyPressed(e -> {
 			if (e.getCode().equals(KeyCode.ENTER)) {
 				checkInput(e);
-				myOutputs.getValue().add(myInterpreter.getOutput());
 			}
 		});
-		myMidArea.getChildren().add(myTextArea);
-		myMidArea.getChildren().add(myBottomArea);
-		myHBox.getChildren().add(myMidArea);
-		
-		Label label2 = new Label(myResources.getString("HistoryTitle"));
-		myHBox.getChildren().add(label2);
-		
-		
-		myHBox.getChildren().add(myHistory.getHistory());
+	}
 
-		Label label3 = new Label(myResources.getString("OutputText"));
-		myHBox.getChildren().add(label3);
-		GridPane.setMargin(label3, new Insets(0, 0, 0, 5));
+	private void makeOutputArea() {
 		myOutputArea = new ListView<>();
 		myOutputArea.itemsProperty().bind(myOutputs);
 		myOutputArea.setPrefSize(Integer.parseInt(myResources.getString("OutputWidth")),
 				Integer.parseInt(myResources.getString("OutputHeight")));
 		myHBox.getChildren().add(myOutputArea);
-
 	}
 
 	private void checkInput(Event e) {
@@ -171,7 +193,7 @@ public class Console {
 			String str = myTextArea.getText().trim().replace(">> ", "").replace("\t", "").replace("\n", " ")
 					.replaceAll(" +", " ");
 			String[] words = str.split(" ");
-			for (int i=0; i<words.length; i++) {
+			for (int i = 0; i < words.length; i++) {
 				if (words[i].equals("[")) {
 					bracketCount++;
 				} else if (words[i].equals("]")) {
@@ -186,15 +208,16 @@ public class Console {
 			}
 			StringBuilder sb = new StringBuilder();
 			for (String word : words) {
-				sb.append(word+" ");
+				sb.append(word + " ");
 			}
 			if (bracketCount == 0) {
-				str = sb.toString().trim();
+				str = sb.toString().trim().replace("[", "").replace(" ]", "").replaceAll(" +", " ");
 				System.out.println("checking: " + str);
 				myTextArea.clear();
 				e.consume();
 				try {
 					interpretInput(str);
+					myOutputs.getValue().add(myInterpreter.getOutput());
 					myCommands.getValue().add(str);
 					myDisplay.updateText();
 				} catch (Exception exception) {

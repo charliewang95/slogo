@@ -197,6 +197,7 @@ public class ToolBox {
 				} else {
 					ErrorException ee = new ErrorException(myResources.getString("NoButtonTitleError"));
 				}
+				event.consume();
 			}
 		});
 	}
@@ -205,8 +206,8 @@ public class ToolBox {
 		slider.valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				// TODO Auto-generated method stub
 				myDisplay.changePenSize(newValue.doubleValue());
+				myDisplay.updateText();
 			}
 		});
 	}
@@ -247,6 +248,7 @@ public class ToolBox {
 				}
 			}
 		});
+		
 	}
 
 	private void setTurtleEvent(ComboBox<String> box, String value) throws IOException {
