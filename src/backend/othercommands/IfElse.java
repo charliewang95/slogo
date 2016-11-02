@@ -2,19 +2,71 @@ package backend.othercommands;
 
 import java.util.ArrayList;
 
+import main.Playground;
 import backend.Command;
+import backend.Interpreter;
+import backend.Turtle;
+import backend.VariableHouse;
 
 public class IfElse extends Command{
 
-	public IfElse(String type, int inputs) {
-		super(type, inputs);
-		// TODO Auto-generated constructor stub
+	private Turtle myTurtle;
+	private VariableHouse myVariableHouse;
+	private Playground myPlayground;
+	private final String ONE = "1";
+	private String inString;
+	private final String ZERO = "0";
+
+	public IfElse(Playground p, Turtle t, VariableHouse vh, String com) {
+		super("Variables", 0);
+		myPlayground = p;
+		myTurtle = t;
+		myVariableHouse = vh;
+		inString = com;
 	}
 
-	@Override
 	public String compute(ArrayList<Command> inputs) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		String repeatExp = inString.substring(0, inString.indexOf('[')).trim();
+		Interpreter conditionalInterp = new Interpreter(myPlayground, myTurtle, myPlayground.getDisplay());
+		conditionalInterp.interpretString(repeatExp);
+		int repeat = Integer.parseInt(conditionalInterp.getOutput().substring(0, conditionalInterp.getOutput().indexOf('.')));
+		
+		String ifCommand = inString.substring(inString.indexOf('['), inString.indexOf(']'));
+
+		ifCommand = ifCommand.replace('[', ' ');
+		ifCommand = ifCommand.replace(']', ' ');
+		
+		String elseCommand = inString.substring(inString.indexOf(']')+1, inString.length());
+		
+		elseCommand = elseCommand.replace('[', ' ');
+		elseCommand = elseCommand.replace(']', ' ');
+		Interpreter i = new Interpreter(myPlayground, myTurtle, myPlayground.getDisplay());
+		if (repeat!= 0){
+
+
+			try {
+				return i.interpretString(ifCommand).root.returnValue;
+			} catch (SecurityException
+					| IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		else {
+			try {
+				return i.interpretString(elseCommand).root.returnValue;
+			} catch (SecurityException
+					| IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+
+		return ZERO;
+
 	}
 
 }

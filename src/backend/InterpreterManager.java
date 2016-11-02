@@ -25,9 +25,7 @@ public class InterpreterManager {
 	}
 
 	public void setLanguage(String language){
-		System.out.println(myLanguage);
 		myLanguage = stringInterp.setLanguage(language);
-		System.out.println(myLanguage);
 	}
 
 }

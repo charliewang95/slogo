@@ -14,7 +14,7 @@ public class Repeat extends Command {
 	private Turtle myTurtle;
 	private VariableHouse myVariableHouse;
 	private Playground myPlayground;
-	private final String ONE = "1";
+	private final String ZERO = "0";
 	private String inString;
 	private final char SPACE = ' ';
 
@@ -35,23 +35,13 @@ public class Repeat extends Command {
 		command = command.replace('[', ' ');
 		command = command.replace(']', ' ');
 		
-		System.out.println(command);
+		String returnVal = ZERO;
 		for (int j = 0; j < repeat; j++){
-//		if( ! myVariableHouse.isCommand(command)) {
-			//error
-//			return "0";
-//		}
-		System.out.println("help");
 		
 		Interpreter i = new Interpreter(myPlayground, myTurtle, myPlayground.getDisplay());
 		
-//		List<String> variables = myVariableHouse.getCommandVars(command);
-//		String commands = myVariableHouse.getCommandActions(command);
-		
-//		VariableHouse newVariableHouse = makeNewVariableHouse(variables);
-//		i.setVariableHouse(newVariableHouse);
 		try {
-			i.interpretString(command);
+			returnVal = i.interpretString(command).root.returnValue;
 		} catch (SecurityException
 				| IllegalArgumentException e) {
 			// TODO Auto-generated catch block
@@ -59,16 +49,10 @@ public class Repeat extends Command {
 		}
 		}
 		
-		return ONE;
+		return returnVal;
 		
 	}
 	
-	private VariableHouse makeNewVariableHouse(List<String> variables) {
-		VariableHouse ans = new VariableHouse(myPlayground.getDisplay());
-		for(String s : variables) {
-			ans.makeVariable( new String(s), new String( myVariableHouse.getVariable(s) ) );
-		}
-		return ans;
-	}
+
 
 }
