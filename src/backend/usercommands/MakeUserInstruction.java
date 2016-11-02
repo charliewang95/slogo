@@ -1,4 +1,4 @@
-package backend.variables;
+package backend.usercommands;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +34,14 @@ public class MakeUserInstruction extends Command {
 		List<String> commandVars = new ArrayList<String>();
 		s = s.trim();
 		String commandName = getCommandName(s);
+		System.out.println("1");
 		int helperIndex = commandName.length(); //goes past the space
 		helperIndex = pastNextChar(helperIndex, s, LEFT_BRACKET);
+		System.out.println("2");
 		helperIndex = makeCommandObjects(commandVars, s, helperIndex);
+		System.out.println("3");
 		helperIndex = pastNextChar(helperIndex, s, LEFT_BRACKET);
+		System.out.println("4");
 		String commandActions = makeCommandActions(s, helperIndex);
 		
 		myVariableHouse.makeCommands(commandName, commandVars, commandActions);
@@ -71,6 +75,7 @@ public class MakeUserInstruction extends Command {
 				}
 				currentString = new StringBuilder();
 			}
+			index++;
 		}
 		
 		if (!currentString.toString().isEmpty()) {
@@ -101,3 +106,4 @@ public class MakeUserInstruction extends Command {
 	}
 
 }
+

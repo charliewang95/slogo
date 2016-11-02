@@ -191,14 +191,16 @@ public class Display {
 	}
 
 	public void setPenStyleEvent(String value) {
-		if (value.equals(myResources.getString("Pen Down"))) {
-			
-		} else if (value.equals(myResources.getString("Pen Up"))) {
-			
-		} else if (value.equals(myResources.getString("Dashed"))) {
-//			myTurtleLand.toDashed();
-		} else if (value.equals(myResources.getString("Solid"))) {
-//			myTurtleLand.toSolid();
+		if (value.equals("Pen Down")) {
+			myTurtleLand.setPenDown();
+			updateText();
+		} else if (value.equals("Pen Up")) {
+			myTurtleLand.setPenUp();
+			updateText();
+		} else if (value.equals("Dash")) {
+			myTurtleLand.setDash();
+		} else if (value.equals("Solid")) {
+			myTurtleLand.setSolid();
 		}
 	}
 	
