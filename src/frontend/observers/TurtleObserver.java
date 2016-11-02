@@ -118,6 +118,7 @@ public abstract class TurtleObserver implements Observer {
             // Update position
             myTurtleView.setX(x);
             myTurtleView.setY(y);
+            myTurtleModel.setMyPosQuiet(x,y);
             // Draw path or Move pen
             if (myTurtleView.isDrawing()) {
                 pen.lineTo(x, y);
