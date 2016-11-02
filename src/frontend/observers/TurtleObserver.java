@@ -313,12 +313,12 @@ public abstract class TurtleObserver implements Observer {
         path.stream().forEach((pe) -> {
             if (pe.getClass() == MoveTo.class) {
                 gc.moveTo(((MoveTo)pe).getX(), ((MoveTo)pe).getY());
-                System.out.println(((MoveTo)pe).getX()+" "+((MoveTo)pe).getY());
-                Path p = new Path();
-                p.getElements().addAll(new MoveTo(15, 65), new LineTo(50, 65));
-                PathTransition pt = new PathTransition(Duration.millis(1000), p, myTurtleView.getImage());
-                Animation ani = new SequentialTransition(myTurtleView.getImage(), pt);
-                ani.play();
+//                System.out.println(((MoveTo)pe).getX()+" "+((MoveTo)pe).getY());
+//                Path p = new Path();
+//                p.getElements().addAll(new MoveTo(15, 65), new LineTo(50, 65));
+//                PathTransition pt = new PathTransition(Duration.millis(1000), p, myTurtleView.getImage());
+//                Animation ani = new SequentialTransition(myTurtleView.getImage(), pt);
+//                ani.play();
             } else if (pe.getClass() == LineTo.class) {
                 gc.lineTo(((LineTo)pe).getX(), ((LineTo)pe).getY());
             }
