@@ -15,6 +15,11 @@ public class ObservablePosition extends Observable {
             myX = x;
             myY = y;
     }
+    
+    public void setPositionQuiet(double x, double y) {
+        setX(x,false);
+        setY(y,false);
+    }
 
     public void setPosition(double x, double y) {
             setX(x,false);

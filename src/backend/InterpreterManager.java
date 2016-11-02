@@ -3,7 +3,6 @@ package backend;
 import java.util.List;
 
 import main.Playground;
-import backend.observables.Communication;
 
 public class InterpreterManager {
 	
@@ -12,13 +11,11 @@ public class InterpreterManager {
 //	private Interpreter mainInterp = new Interpreter();
 	private Playground myPlayground;
 	private Turtle turtle;
-	private Communication comm;
 	private String myLanguage;
 	
 	public InterpreterManager(Playground myPlay, Turtle turtle){
 		this.myPlayground = myPlay;
 		this.turtle = turtle;
-		comm = new Communication();
 	}
 	
 	public void InterpretUserInput(String input){

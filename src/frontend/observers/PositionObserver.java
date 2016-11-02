@@ -1,6 +1,7 @@
 package frontend.observers;
 
 import java.util.Observable;
+import backend.Turtle;
 import backend.observables.ObservablePosition;
 import frontend.center.TurtleMascot;
 import frontend.coordinates.CoordinateConverter;
@@ -16,9 +17,9 @@ import javafx.scene.shape.MoveTo;
 public class PositionObserver extends TurtleObserver {
     private ObservablePosition turtlePosition = null;
 
-    public PositionObserver(TurtleMascot turtle, GraphicsContext gcc, int width, int height, ObservablePosition position) {
-            super(turtle,gcc,width,height);
-            turtlePosition = position;
+    public PositionObserver(TurtleMascot turtleView, Turtle turtleModel, GraphicsContext gcc, int width, int height) {
+            super(turtleView,turtleModel,gcc,width,height);
+            turtlePosition = turtleModel.getPosObs();
     }
 
     public void update(Observable obs, Object obj) {
