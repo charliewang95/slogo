@@ -13,13 +13,13 @@ import javafx.collections.ObservableList;
 import java.awt.geom.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.HLineTo;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.PathElement;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-
 
 /**
  * TODO: The ListChangeListener is not drawing the newly added path elements
@@ -71,7 +71,7 @@ public class Pen {
 	public double getThickness() {
 		return thickness;
 	}
-	
+
 	public ObservableList<PathElement> getPathElements() {
 		return myPath.getElements();
 	}
@@ -80,11 +80,17 @@ public class Pen {
 		myPath.getElements().clear();
 		moveTo(0, 0);
 	}
-	
+
 	public void lineTo(double x, double y) {
 		double newX = converter.convertX(x);
 		double newY = converter.convertY(y);
+//		Path tmp = new Path();
+//		tmp.getElements().addAll(new MoveTo(newX, newY), new LineTo(newX, newY));
+//		PathTransition pt = new PathTransition(Duration.millis(4000), tmp, myTurtle.getImage());
+//		Animation ani = new SequentialTransition(myTurtle.getImage(), pt);
+//		ani.play();
 		addPathElement(new LineTo(newX, newY));
+		
 		myX = newX;
 		myY = newY;
 	}
@@ -97,9 +103,9 @@ public class Pen {
 		myY = newY;
 	}
 
-
 	private void addPathElement(PathElement pe) {
 		myPath.getElements().add(pe);
+		
 	}
 
 	/**
@@ -129,10 +135,11 @@ public class Pen {
 		path.stream().forEach((pe) -> {
 			if (pe.getClass() == MoveTo.class) {
 				gc.moveTo(((MoveTo) pe).getX(), ((MoveTo) pe).getY());
-//				Rectangle rec = new Rectangle(30, 30);
-//				PathTransition pt = new PathTransition(Duration.millis(4000), pe., rec);
-//				Animation myAnimation = new SequentialTransition(rec, pt);
-//				myAnimation.play();
+				// Rectangle rec = new Rectangle(30, 30);
+				// PathTransition pt = new PathTransition(Duration.millis(4000),
+				// pe., rec);
+				// Animation myAnimation = new SequentialTransition(rec, pt);
+				// myAnimation.play();
 			} else if (pe.getClass() == LineTo.class) {
 				gc.lineTo(((LineTo) pe).getX(), ((LineTo) pe).getY());
 				System.out.println("LineTo");
@@ -147,11 +154,11 @@ public class Pen {
 	public void setDash() {
 		gc.setLineDashes(2);
 	}
-	
+
 	public void setSolid() {
 		gc.setLineDashes(null);
 	}
-	
+
 	private void listenToPath() {
 		ListChangeListener<PathElement> listener = pathListener();
 		myPath.getElements().addListener(listener);
@@ -164,7 +171,8 @@ public class Pen {
 				while (c.next()) {
 					if (c.wasAdded()) {
 						System.out.println(c.getAddedSubList().toString());
-						drawAll((List<PathElement>) c.getAddedSubList());
+						// drawAll((List<PathElement>) c.getAddedSubList());
+						// draw(c.getList().get(c.getList().size()-1));
 					}
 				}
 			}
@@ -172,33 +180,33 @@ public class Pen {
 		return listener;
 	}
 
-    public Pen (GraphicsContext gc, TurtleLandToLayout converter) {
-        this.gc = gc;
-        this.converter = converter;
-        //listenToPath();
-        moveTo(0, 0);
-    }
+	public Pen(GraphicsContext gc, TurtleLandToLayout converter) {
+		this.gc = gc;
+		this.converter = converter;
+		// listenToPath();
+		moveTo(0, 0);
+	}
 
-    public Pen (GraphicsContext gc, TurtleLandToLayout converter, double x, double y) {
-        this.gc = gc;
-        this.converter = converter;
-        //listenToPath();
-        moveTo(x, y);
-    }
-    
-    public double getX() {
-        return myX;
-    }
-    
-    public double getY() {
-        return myY;
-    }
-    
-    public void setDrawing(boolean value) {
-        drawing = value;
-    }
-    
-    public boolean isDrawing() {
-        return drawing;
-    }
+	public Pen(GraphicsContext gc, TurtleLandToLayout converter, double x, double y) {
+		this.gc = gc;
+		this.converter = converter;
+		// listenToPath();
+		moveTo(x, y);
+	}
+
+	public double getX() {
+		return myX;
+	}
+
+	public double getY() {
+		return myY;
+	}
+
+	public void setDrawing(boolean value) {
+		drawing = value;
+	}
+
+	public boolean isDrawing() {
+		return drawing;
+	}
 }

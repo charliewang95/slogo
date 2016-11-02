@@ -13,6 +13,7 @@ import java.lang.reflect.*;
 import java.nio.charset.Charset;
 
 import main.Playground;
+import frontend.Display;
 import frontend.left.ToolBox;
 /**
  * 
@@ -23,11 +24,11 @@ public class Interpreter {
 	private Communication comm;
 	private VariableHouse varHouse;
 
-	public Interpreter(Playground myPlay, Turtle turtle){
+	public Interpreter(Playground myPlay, Turtle turtle, Display display){
 		this.myPlayground = myPlay;
 		this.turtle = turtle;
 		comm = new Communication();
-		varHouse = new VariableHouse();
+		varHouse = new VariableHouse(display);
 	}
 	private Playground myPlayground;
 	private ProgramParser parse;
@@ -58,7 +59,6 @@ public class Interpreter {
 			parsedList.add(parse.getSymbol(stringList.get(i)));
 		}
 
-
 		List<List<Command>> bigL;
 		try {
 			bigL = separateCommandLists(createCommandList(parsedList));
@@ -75,8 +75,9 @@ public class Interpreter {
 			e.printStackTrace();
 		}
 		
-
+		
 		return commandTree;
+		
 	}
 	private List<String> separateStrings(String input){
 		stringList = new ArrayList<String>();
@@ -352,6 +353,5 @@ public class Interpreter {
 	
 	public void setVariableHouse(VariableHouse vh) {
 		varHouse = vh;
-	}
-	
+	}	
 }
