@@ -137,27 +137,29 @@ public class Console {
 		button3.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				FileChooser fileChooser = new FileChooser();
-				fileChooser.setTitle(myResources.getString("LoadTitle"));
-				FileChooser.ExtensionFilter filterTXT = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-				fileChooser.getExtensionFilters().addAll(filterTXT);
-				File preset = fileChooser.showOpenDialog(null);
-				System.out.println(preset.getAbsolutePath());
-				String[] inputStrings = myInterpreter.convertFileToString(preset.getAbsolutePath());
-				StringBuilder sBuild = new StringBuilder();
-				for (int i = 0; i < inputStrings.length; i++) {
-					if (inputStrings[i].contains("#")) {
-						int commentIndex = inputStrings[i].indexOf("#");
-						inputStrings[i] = inputStrings[i].substring(0, commentIndex);
-					}
-					sBuild.append(" " + inputStrings[i]);
-				}
-				System.out.println(sBuild.toString());
 				try {
-					myInterpreter.interpretString(sBuild.toString());
-				} catch (SecurityException | IllegalArgumentException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					FileChooser fileChooser = new FileChooser();
+					fileChooser.setTitle(myResources.getString("LoadTitle"));
+					FileChooser.ExtensionFilter filterTXT = new FileChooser.ExtensionFilter("TXT files (*.txt)",
+							"*.txt");
+					fileChooser.getExtensionFilters().addAll(filterTXT);
+					File preset = fileChooser.showOpenDialog(null);
+					String[] inputStrings = myInterpreter.convertFileToString(preset.getAbsolutePath());
+					StringBuilder sBuild = new StringBuilder();
+					for (int i = 0; i < inputStrings.length; i++) {
+						if (inputStrings[i].contains("#")) {
+							int commentIndex = inputStrings[i].indexOf("#");
+							inputStrings[i] = inputStrings[i].substring(0, commentIndex);
+						}
+						sBuild.append(" " + inputStrings[i]);
+					}
+					try {
+						myInterpreter.interpretString(sBuild.toString());
+					} catch (Exception exc) {
+						ErrorException ee = new ErrorException(myResources.getString("UnbalancedCommand"));
+					}
+				} catch (Exception exc) {
+					//Do nothing
 				}
 			}
 		});
@@ -197,7 +199,7 @@ public class Console {
 				} else if (words[i].equals("}")) {
 					bracketCount--;
 					if (bracketCount < 0) {
-						ErrorException ee = new ErrorException(myResources.getString("UnbalancedCommand"));
+						ErrorException ee = new ErrorException(myResources.getString("FileNoGood"));
 					}
 				}
 				if (newCommandsMap.containsKey(words[i])) {
@@ -210,7 +212,6 @@ public class Console {
 			}
 			if (bracketCount == 0) {
 				str = sb.toString().trim().replace("{", "").replace("}", "").replaceAll(" +", " ");
-				System.out.println("checking: " + str);
 				myTextArea.clear();
 				e.consume();
 				try {
@@ -230,8 +231,7 @@ public class Console {
 		try {
 			myInterpreter.interpretString(input);
 		} catch (SecurityException | IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			ErrorException ee = new ErrorException(myResources.getString("FileNoGood"));
 		}
 	}
 
@@ -272,15 +272,15 @@ public class Console {
 		myDisplay.updateText();
 		myOutputs.getValue().add(myInterpreter.getOutput());
 	}
-	
+
 	public void changeVariable(String old, String define) {
 		myInterpreter.changeVariable(old, define);
 	}
-	
+
 	public ArrayList<String> makeNewCommandArr() {
 		ArrayList<String> arr = new ArrayList<String>();
 		for (String key : newCommandsMap.keySet()) {
-			arr.add(key+" = "+newCommandsMap.get(key));
+			arr.add(key + " = " + newCommandsMap.get(key));
 		}
 		return arr;
 	}

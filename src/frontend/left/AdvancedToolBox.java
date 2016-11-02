@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ResourceBundle;
 
 import frontend.Display;
+import frontend.ErrorException;
 import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
@@ -37,8 +38,7 @@ public class AdvancedToolBox {
 				try {
 					myDisplay.setDefaultConfig(config);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					ErrorException ee = new ErrorException(myResources.getString("FileNoGood"));
 				}
 			} else if (cb.getValue().equals(myResources.getString("SaveCommands"))) {
 				setSaveCommandsEvent();
