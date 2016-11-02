@@ -44,7 +44,7 @@ public class Interpreter {
 	private final String RIGHT_BRACKET = "]";
 	private final String SPACE = " ";
 	String substr;
-	public Tree interpretString(String input) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException{
+	public Tree interpretString(String input) {
 		parse = new ProgramParser();
 		List<String> stringList = separateStrings(input);
 		List<String> parsedList = new ArrayList<String>();
@@ -59,12 +59,22 @@ public class Interpreter {
 		}
 
 
-		List<List<Command>> bigL = separateCommandLists(createCommandList(parsedList));
-		for (int j = 0; j < bigL.size(); j++){
-			List<Command> commandList = bigL.get(j);
-			createCommandTree(commandList);
-			parseTree(commandTree.root);
+		List<List<Command>> bigL;
+		try {
+			bigL = separateCommandLists(createCommandList(parsedList));
+			for (int j = 0; j < bigL.size(); j++){
+				List<Command> commandList = bigL.get(j);
+				createCommandTree(commandList);
+				parseTree(commandTree.root);
+			}
+		} catch (NoSuchMethodException | SecurityException
+				| InstantiationException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException
+				| ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
 
 		return commandTree;
 	}
@@ -100,13 +110,16 @@ public class Interpreter {
 				tempCommand = new CommandOperator(stringList.get(i));
 			}
 			else if (list.get(i).equals("Command")){
-				if (varHouse.getVariable(stringList.get(i))!= null){
+				if (varHouse.isVariable(stringList.get(i))){
 					tempCommand = new CommandNumber(Integer.parseInt(varHouse.getVariable(stringList.get(i))));
 				}
 				else if (varHouse.isCommand(stringList.get(i))){
+					System.out.print("X");
 					Class<?> cls = Class.forName("backend.variables.RunUserInstruction");
+					System.out.print("Y");
 					Constructor<?> cst = cls.getConstructor(Playground.class, Turtle.class, VariableHouse.class, String.class);
 					Object instance = cst.newInstance(myPlayground, turtle, varHouse, stringList.get(i+1));
+					System.out.print("Z");
 					tempCommand = (Command) instance;
 				}
 			}

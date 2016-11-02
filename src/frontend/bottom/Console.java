@@ -123,10 +123,8 @@ public class Console {
 				System.out.println(sBuild.toString());
 				try {
 					myInterpreter.interpretString(sBuild.toString());
-				} catch (NoSuchMethodException | SecurityException
-						| InstantiationException | IllegalAccessException
-						| IllegalArgumentException | InvocationTargetException
-						| ClassNotFoundException e1) {
+				} catch (SecurityException
+						| IllegalArgumentException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -210,10 +208,8 @@ public class Console {
 	public void interpretInput(String input) {
 		try {
 			myInterpreter.interpretString(input);
-		} catch (NoSuchMethodException | SecurityException
-				| InstantiationException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException
-				| ClassNotFoundException e) {
+		} catch (SecurityException
+				| IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
